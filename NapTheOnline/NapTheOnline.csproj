@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\assets\uploads\" />
     <Folder Include="Helper\" />
   </ItemGroup>
 
