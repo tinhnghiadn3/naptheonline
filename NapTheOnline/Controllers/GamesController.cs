@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -20,14 +21,21 @@ namespace NapTheOnline.Controllers
             _context = context;
         }
 
-        // GET: api/Games
+        /// <summary>
+        /// GET: api/Games
+        /// </summary>
+        /// <returns>All game</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGame()
         {
             return await _context.Game.ToListAsync();
         }
 
-        // GET: api/Games/5
+        /// <summary>
+        /// GET: api/Games/id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>All game by id</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
@@ -35,71 +43,121 @@ namespace NapTheOnline.Controllers
 
             if (game == null)
             {
-                return NotFound();
+                return NotFound(new { status = "Empty" });
             }
 
             return game;
         }
 
-        // PUT: api/Games/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int id, Game game)
+        /// <summary>
+        /// PUT: api/Games/5
+        /// Update
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> PutGame(int id)
         {
-            if (id != game.Id)
+            if (!GameExists(id))
             {
-                return BadRequest();
+                return Ok(new { Status = false, Msg = "Not found!!!" });
             }
-
-            _context.Entry(game).State = EntityState.Modified;
-
-            try
+            else
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id))
+                UploadController uploadController = new UploadController();
+                string pathBanner = null, pathLogo = null;
+                if (Request.Form.Files.Count > 0)
                 {
-                    return NotFound();
+                    pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                    pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
                 }
-                else
+
+
+                Game game = FillGame(Request, id);
+                if (pathBanner != null)
+                    game.Banner = pathBanner;
+                if (pathLogo != null)
+                    game.Logo = pathLogo;
+                _context.Entry(game).State = EntityState.Modified;
+
+                try
                 {
-                    throw;
+                    await _context.SaveChangesAsync();
+                    return Ok(new { Status = true, Msg = "Success" });
+                }
+                catch (Exception ex)
+                {
+                    return Ok(new { Status = false, Msg = ex.Message });
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Games
         [HttpPost]
-        public async Task<ActionResult<Game>> PostGame(Game game)
+        public async Task<ActionResult> PostGame()
         {
-            _context.Game.Add(game);
-            await _context.SaveChangesAsync();
+            UploadController uploadController = new UploadController();
+            string pathBanner = null, pathLogo = null;
+            if (Request.Form.Files.Count > 0)
+            {
+                pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+            }
 
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
+            Game game = FillGame(Request);
+            game.Banner = pathBanner;
+            game.Logo = pathLogo;
+            _context.Game.Add(game);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { Status = true, Msg = "Success" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Status = false, Msg = ex.Message });
+            }
         }
 
         // DELETE: api/Games/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Game>> DeleteGame(int id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteGame(int id)
         {
             var game = await _context.Game.FindAsync(id);
             if (game == null)
             {
-                return NotFound();
+                return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
 
             _context.Game.Remove(game);
-            await _context.SaveChangesAsync();
-
-            return game;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { Status = true, Msg = "Success" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Status = false, Msg = ex.Message });
+            }
         }
 
         private bool GameExists(int id)
         {
             return _context.Game.Any(e => e.Id == id);
+        }
+
+        private Game FillGame(HttpRequest request, int? id = null)
+        {
+            Game game;
+            if (id == null)
+                game = new Game();
+            else
+                game = _context.Game.FirstOrDefault(x => x.Id == id);
+            game.Name = request.Form["Name"].ToString();
+            game.Description = request.Form["Description"].ToString();
+            game.Prices = request.Form["Prices"].ToString();
+            return game;
         }
     }
 }
