@@ -67,10 +67,22 @@ namespace NapTheOnline.Controllers
             {
                 UploadController uploadController = new UploadController();
                 string pathBanner = null, pathLogo = null;
-                if (Request.Form.Files.Count > 0)
+                foreach (var file in Request.Form.Files)
                 {
-                    pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
-                    pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                    switch (file.Name)
+                    {
+                        case "banner":
+                            {
+                                pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                                break;
+                            }
+                        case "logo":
+                            {
+                                pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                                break;
+                            }
+                        default: break;
+                    }
                 }
 
 
@@ -99,10 +111,23 @@ namespace NapTheOnline.Controllers
         {
             UploadController uploadController = new UploadController();
             string pathBanner = null, pathLogo = null;
-            if (Request.Form.Files.Count > 0)
+            
+            foreach (var file in Request.Form.Files)
             {
-                pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
-                pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                switch (file.Name)
+                {
+                    case "banner":
+                        {
+                            pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                            break;
+                        }
+                    case "logo":
+                        {
+                            pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                            break;
+                        }
+                    default: break;
+                }
             }
 
             Game game = FillGame(Request);
