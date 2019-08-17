@@ -1,4 +1,4 @@
-import {CARD_PRICE} from '../share/constant';
+import {CARD_PRICE} from '../constant';
 import {GameModel} from './game.model';
 import {NewsModel} from './news.model';
 

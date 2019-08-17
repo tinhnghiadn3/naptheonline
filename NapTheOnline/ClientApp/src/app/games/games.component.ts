@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {GameModel} from '../view-model/game.model';
-import {GAMES} from '../view-model/mock-data';
+import {GameModel} from '../share/view-model/game.model';
+import {GAMES} from '../share/view-model/mock-data';
 import {Router} from '@angular/router';
+import {GamesService} from '../service/games.service';
 
 @Component({
   selector: 'app-games',
@@ -13,7 +14,8 @@ export class GamesComponent implements OnInit {
   selectedGame: GameModel;
   games: GameModel[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private gameService: GamesService) {
   }
 
   ngOnInit() {
@@ -21,7 +23,9 @@ export class GamesComponent implements OnInit {
   }
 
   getGames() {
-    this.games = GAMES;
+    this.gameService.getGames().subscribe(res => {
+      this.games = res || GAMES;
+    });
   }
 
   showDetail(game: GameModel) {
