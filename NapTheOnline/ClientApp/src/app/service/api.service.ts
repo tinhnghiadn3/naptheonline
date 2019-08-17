@@ -12,8 +12,8 @@ import {catchError} from 'rxjs/operators';
 export class ApiService {
   private baseURL = environment.baseUrl;
 
-  public gameUrl = 'api/game';
-  public newUrl = 'api/new';
+  public gameUrl = 'api/games';
+  public newUrl = 'api/news';
   private routersNames: string[] = [];
 
   constructor(private httpClient: HttpClient, private router: Router) {

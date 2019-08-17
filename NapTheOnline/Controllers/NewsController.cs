@@ -145,6 +145,7 @@ namespace NapTheOnline.Controllers
         {
             return _context.News.Any(e => e.Id == id);
         }
+
         private News FillNews(HttpRequest request, int? id = null)
         {
             News news;
