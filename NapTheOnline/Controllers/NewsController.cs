@@ -1,82 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NapTheOnline.Models;
 using NapTheOnline.Helper;
+using NapTheOnline.Models;
 
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GamesController : ControllerBase
+    public class NewsController : ControllerBase
     {
         private readonly NapTheOnline247Context _context;
 
-        public GamesController(NapTheOnline247Context context)
+        public NewsController(NapTheOnline247Context context)
         {
             _context = context;
         }
 
-        /// <summary>
-        /// GET: api/Games
-        /// </summary>
-        /// <returns>All game</returns>
+        // GET: api/News
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGame()
+        public async Task<ActionResult<IEnumerable<News>>> GetNews()
         {
-            return await _context.Game.ToListAsync();
+            return await _context.News.ToListAsync();
         }
 
-        /// <summary>
-        /// GET: api/Games/id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>All game by id</returns>
+        // GET: api/News/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        public async Task<ActionResult<News>> GetNews(int id)
         {
-            var game = await _context.Game.FindAsync(id);
+            var news = await _context.News.FindAsync(id);
 
-            if (game == null)
+            if (news == null)
             {
                 return NotFound(new { status = "Empty" });
             }
 
-            return game;
+            return news;
         }
 
-        /// <summary>
-        /// PUT: api/Games/5
-        /// Update
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        [HttpPut]
-        public async Task<IActionResult> PutGame(int id)
+        // PUT: api/News/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutNews(int id)
         {
-            if (!GameExists(id))
+            if (!NewsExists(id))
             {
                 return Ok(new { Status = false, Msg = "Not found!!!" });
             }
             else
             {
                 FileUploads fileUploads = new FileUploads();
-                string pathBanner = null, pathLogo = null;
+                string pathLogo = null;
                 foreach (var file in Request.Form.Files)
                 {
                     switch (file.Name)
                     {
-                        case "banner":
-                            {
-                                pathBanner = fileUploads.UploadImage(file, "Banner_");
-                                break;
-                            }
                         case "logo":
                             {
                                 pathLogo = fileUploads.UploadImage(file, "Logo_");
@@ -87,12 +68,10 @@ namespace NapTheOnline.Controllers
                 }
 
 
-                Game game = FillGame(Request, id);
-                if (pathBanner != null)
-                    game.Banner = pathBanner;
+                News news = FillNews(Request, id);
                 if (pathLogo != null)
-                    game.Logo = pathLogo;
-                _context.Entry(game).State = EntityState.Modified;
+                    news.Logo = pathLogo;
+                _context.Entry(news).State = EntityState.Modified;
 
                 try
                 {
@@ -106,22 +85,17 @@ namespace NapTheOnline.Controllers
             }
         }
 
-        // POST: api/Games
+        // POST: api/News
         [HttpPost]
-        public async Task<ActionResult> PostGame()
+        public async Task<ActionResult<News>> PostNews()
         {
             FileUploads fileUploads = new FileUploads();
-            string pathBanner = null, pathLogo = null;
-            
+            string pathLogo = null;
+
             foreach (var file in Request.Form.Files)
             {
                 switch (file.Name)
                 {
-                    case "banner":
-                        {
-                            pathBanner = fileUploads.UploadImage(file, "Banner_");
-                            break;
-                        }
                     case "logo":
                         {
                             pathLogo = fileUploads.UploadImage(file, "Logo_");
@@ -131,10 +105,9 @@ namespace NapTheOnline.Controllers
                 }
             }
 
-            Game game = FillGame(Request);
-            game.Banner = pathBanner;
-            game.Logo = pathLogo;
-            _context.Game.Add(game);
+            News news = FillNews(Request);
+            news.Logo = pathLogo;
+            _context.News.Add(news);
             try
             {
                 await _context.SaveChangesAsync();
@@ -146,17 +119,17 @@ namespace NapTheOnline.Controllers
             }
         }
 
-        // DELETE: api/Games/5
-        [HttpDelete]
-        public async Task<ActionResult> DeleteGame(int id)
+        // DELETE: api/News/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<News>> DeleteNews(int id)
         {
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
+            var news = await _context.News.FindAsync(id);
+            if (news == null)
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
 
-            _context.Game.Remove(game);
+            _context.News.Remove(news);
             try
             {
                 await _context.SaveChangesAsync();
@@ -168,22 +141,21 @@ namespace NapTheOnline.Controllers
             }
         }
 
-        private bool GameExists(int id)
+        private bool NewsExists(int id)
         {
-            return _context.Game.Any(e => e.Id == id);
+            return _context.News.Any(e => e.Id == id);
         }
-
-        private Game FillGame(HttpRequest request, int? id = null)
+        private News FillNews(HttpRequest request, int? id = null)
         {
-            Game game;
+            News news;
             if (id == null)
-                game = new Game();
+                news = new News();
             else
-                game = _context.Game.FirstOrDefault(x => x.Id == id);
-            game.Name = request.Form["Name"].ToString();
-            game.Description = request.Form["Description"].ToString();
-            game.Prices = request.Form["Prices"].ToString();
-            return game;
+                news = _context.News.FirstOrDefault(x => x.Id == id);
+            news.Name = request.Form["Name"].ToString();
+            news.Description = request.Form["Description"].ToString();
+            news.DateCreated = request.Form["DateCreated"].ToString();
+            return news;
         }
     }
 }
