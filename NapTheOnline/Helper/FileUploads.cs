@@ -1,19 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
-namespace NapTheOnline.Controllers
+namespace NapTheOnline.Helper
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UploadController : ControllerBase
+    public class FileUploads
     {
-        public string Upload(IFormFile file, string fileName)
+        public string UploadImage(IFormFile file, string fileName)
         {
             try
             {

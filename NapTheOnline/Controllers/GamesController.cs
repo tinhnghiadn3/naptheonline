@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NapTheOnline.Models;
+using NapTheOnline.Helper;
 
 namespace NapTheOnline.Controllers
 {
@@ -65,7 +66,7 @@ namespace NapTheOnline.Controllers
             }
             else
             {
-                UploadController uploadController = new UploadController();
+                FileUploads fileUploads = new FileUploads();
                 string pathBanner = null, pathLogo = null;
                 foreach (var file in Request.Form.Files)
                 {
@@ -73,12 +74,12 @@ namespace NapTheOnline.Controllers
                     {
                         case "banner":
                             {
-                                pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                                pathBanner = fileUploads.UploadImage(Request.Form.Files[0], "Banner_");
                                 break;
                             }
                         case "logo":
                             {
-                                pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                                pathLogo = fileUploads.UploadImage(Request.Form.Files[1], "Logo_");
                                 break;
                             }
                         default: break;
@@ -109,7 +110,7 @@ namespace NapTheOnline.Controllers
         [HttpPost]
         public async Task<ActionResult> PostGame()
         {
-            UploadController uploadController = new UploadController();
+            FileUploads fileUploads = new FileUploads();
             string pathBanner = null, pathLogo = null;
             
             foreach (var file in Request.Form.Files)
@@ -118,12 +119,12 @@ namespace NapTheOnline.Controllers
                 {
                     case "banner":
                         {
-                            pathBanner = uploadController.Upload(Request.Form.Files[0], "Banner_");
+                            pathBanner = fileUploads.UploadImage(Request.Form.Files[0], "Banner_");
                             break;
                         }
                     case "logo":
                         {
-                            pathLogo = uploadController.Upload(Request.Form.Files[1], "Logo_");
+                            pathLogo = fileUploads.UploadImage(Request.Form.Files[1], "Logo_");
                             break;
                         }
                     default: break;
