@@ -43,7 +43,7 @@ namespace NapTheOnline.Controllers
         }
 
         // PUT: api/News/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutNews(int id)
         {
             if (!NewsExists(id))
@@ -120,7 +120,7 @@ namespace NapTheOnline.Controllers
         }
 
         // DELETE: api/News/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<News>> DeleteNews(int id)
         {
             var news = await _context.News.FindAsync(id);
