@@ -40,5 +40,18 @@ namespace NapTheOnline.Helper
                 return null;
             }
         }
+        public bool DeleteImage(string dirPath)
+        {
+            try
+            {
+                if (File.Exists(dirPath))
+                    File.Delete(dirPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

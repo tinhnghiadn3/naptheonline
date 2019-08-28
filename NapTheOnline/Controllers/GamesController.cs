@@ -89,9 +89,16 @@ namespace NapTheOnline.Controllers
 
                 Game game = FillGame(Request, id);
                 if (pathBanner != null)
+                {
+                    fileUploads.DeleteImage(game.Banner);
                     game.Banner = pathBanner;
+                }
+                   
                 if (pathLogo != null)
+                {
+                    fileUploads.DeleteImage(game.Logo);
                     game.Logo = pathLogo;
+                }
                 _context.Entry(game).State = EntityState.Modified;
 
                 try
@@ -155,7 +162,9 @@ namespace NapTheOnline.Controllers
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
-
+            FileUploads fileUploads = new FileUploads();
+            fileUploads.DeleteImage(game.Logo);
+            fileUploads.DeleteImage(game.Banner);
             _context.Game.Remove(game);
             try
             {

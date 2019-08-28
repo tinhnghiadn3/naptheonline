@@ -67,10 +67,12 @@ namespace NapTheOnline.Controllers
                     }
                 }
 
-
                 News news = FillNews(Request, id);
                 if (pathLogo != null)
+                {
+                    fileUploads.DeleteImage(news.Logo);
                     news.Logo = pathLogo;
+                }
                 _context.Entry(news).State = EntityState.Modified;
 
                 try
@@ -128,7 +130,8 @@ namespace NapTheOnline.Controllers
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
-
+            FileUploads fileUploads = new FileUploads();
+            fileUploads.DeleteImage(news.Logo);
             _context.News.Remove(news);
             try
             {
