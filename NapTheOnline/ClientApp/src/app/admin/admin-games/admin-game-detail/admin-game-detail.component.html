@@ -1,0 +1,74 @@
+<form autocomplete="off" *ngIf="game" (submit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Name</label>
+        <input name="name" [(ngModel)]="game.name" class="form-control">
+        <span>{{game.name}}</span>
+      </div>
+      <div class="form-group">
+        <label>Logo</label>
+        <input style="display: none"
+               accept="image/*"
+               type="file"
+               (change)="logoSelected($event)"
+               name="logo"
+               #logoInput/>
+        <img style="width: 150px; height: 150px" [src]="logoBase64" *ngIf="logoBase64"/>
+        <button type="button" (click)="logoInput.click()">Select file</button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Description</label>
+        <angular-editor name="description" [placeholder]="'Enter text here...'" [config]="editorConfig"
+                        [(ngModel)]="game.description"></angular-editor>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Banner</label>
+        <input style="display: none"
+               type="file"
+               accept="image/*"
+               (change)="bannerSelected($event)"
+               name="logo"
+               #bannerInput/>
+        <img style="width: 300px; height: 200px" [src]="bannerBase64" *ngIf="bannerBase64"/>
+        <button type="button" (click)="bannerInput.click()">Select file</button>
+      </div>
+    </div>
+  </div>
+  <!-- order items table-->
+  <table class="table table-borderless">
+    <thead class="thead-light">
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>
+      <a class="btn btn-sm btn-success text-white" (click)="addOrEditPrice(null, game.id)"><i
+        class="fa fa-plus"></i> Add Item</a>
+    </th>
+    </thead>
+    <tbody>
+    <tr *ngIf="game.prices.length==0" [class.text-danger]="!isValid && game.prices.length==0">
+      <td class="font-italic text-center" colspan="5">
+        No price item for this game.
+      </td>
+    </tr>
+
+    <tr *ngFor="let item of game.prices;let i=index;">
+      <td>{{item.name}}</td>
+      <td>{{item.value}}</td>
+      <td>
+        <a class="btn btn-sm btn-info text-white" (click)="addOrEditPrice(i,game.id)"><i
+          class="fas fa-pencil"></i></a>
+        <a class="btn btn-sm btn-danger text-white ml-1" (click)="deletePrice(item.name,i)"><i
+          class="fa fa-trash"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <button type="submit" class="btn btn-dark"><i class="fa fa-database"></i> Save</button>
+  </div>
+</form>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {NewsModel} from '../share/view-model/news.model';
@@ -8,10 +8,11 @@ import {NewsModel} from '../share/view-model/news.model';
 })
 export class NewsService {
 
-  private newUrl: string = this.baseService.newUrl;
+  private newUrl: string = this.baseService.newsUrl;
 
 
-  constructor(private baseService: ApiService) { }
+  constructor(private baseService: ApiService) {
+  }
 
   getNews(): Observable<NewsModel[]> {
     return this.baseService.get(`${this.newUrl}`);

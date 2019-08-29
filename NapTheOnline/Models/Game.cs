@@ -9,7 +9,7 @@ namespace NapTheOnline.Models
         public string Logo { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Prices { get; set; }
+        public List<PriceModel> Prices { get; set; }
         public string Banner { get; set; }
     }
 }

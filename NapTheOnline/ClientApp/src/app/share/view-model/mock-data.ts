@@ -1,4 +1,3 @@
-import {CARD_PRICE} from '../constant';
 import {GameModel} from './game.model';
 import {NewsModel} from './news.model';
 
@@ -15,7 +14,7 @@ export const GAMES: GameModel[] = [
       {name: '200.000 VNĐ', value: 2800},
       {name: '500.000 VNĐ', value: 6000},
       {name: '1.000.000 VNĐ', value: 15000},
-    ]
+    ],
   },
   {
     id: 2,
@@ -29,7 +28,7 @@ export const GAMES: GameModel[] = [
       {name: '200.000 VNĐ', value: 2800},
       {name: '500.000 VNĐ', value: 6000},
       {name: '1.000.000 VNĐ', value: 15000},
-    ]
+    ],
   },
   {
     id: 3,
@@ -43,7 +42,7 @@ export const GAMES: GameModel[] = [
       {name: '200.000 VNĐ', value: 2800},
       {name: '500.000 VNĐ', value: 6000},
       {name: '1.000.000 VNĐ', value: 15000},
-    ]
+    ],
   },
   {
     id: 4,
@@ -57,7 +56,7 @@ export const GAMES: GameModel[] = [
       {name: '200.000 VNĐ', value: 2800},
       {name: '500.000 VNĐ', value: 6000},
       {name: '1.000.000 VNĐ', value: 15000},
-    ]
+    ],
   },
   {
     id: 5,
@@ -71,7 +70,7 @@ export const GAMES: GameModel[] = [
       {name: '200.000 VNĐ', value: 2800},
       {name: '500.000 VNĐ', value: 6000},
       {name: '1.000.000 VNĐ', value: 15000},
-    ]
+    ],
   }
 ];
 

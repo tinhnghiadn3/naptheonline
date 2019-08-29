@@ -38,4 +38,4 @@ export const CARD_PRICE = [
   {value: PRICE_VALUE['1.000. 000'], text: '1.000.000 VND'},
 ];
 
-
+export const ALLOWED_FILE_TYPES = '.jpg,.jpeg,.png,.gif';

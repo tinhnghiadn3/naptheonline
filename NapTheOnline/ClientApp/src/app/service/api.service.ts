@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -13,7 +13,8 @@ export class ApiService {
   private baseURL = environment.baseUrl;
 
   public gameUrl = 'api/games';
-  public newUrl = 'api/news';
+  public newsUrl = 'api/news';
+  public authenticationUrl = 'api/authentication';
   private routersNames: string[] = [];
 
   constructor(private httpClient: HttpClient, private router: Router) {
@@ -23,22 +24,15 @@ export class ApiService {
   get headers(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      Accept: 'q=0.8;application/json;q=0.9',
-      APIKey: '~123456789~',
     });
-    // 'Authorization': 'Bearer ' + localStorage.getItem(TOKEN_STORE_NAME),
-    //   'SignalId': this.signalId || ''
   }
+
+  //
+  // 'Accept': 'q=0.8;application/json;q=0.9',
+  // 'APIKey': '~123456789~',
 
   get options() {
     return {headers: this.headers};
-  }
-
-  get fileHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      Accept: 'application/json',
-    });
-    // Authorization: 'Bearer ' + localStorage.getItem(TOKEN_STORE_NAME)
   }
 
   get<T>(url: string): Observable<T> {
@@ -47,24 +41,10 @@ export class ApiService {
       .pipe(catchError((error) => this.handleError(error)));
   }
 
-  post<T>(url: string, data: any): Observable<T> {
+  post<T>(url: string, data: any, options?: any): Observable<T> {
     return this.httpClient
       .post<T>(`${this.baseURL}/${url}`, data, this.options)
       .pipe(catchError(this.handleError));
-  }
-
-  postFile<T>(url: string, files: File[]): Observable<HttpEvent<T>> {
-    const formData: FormData = new FormData();
-    for (const file of files) {
-      formData.append(file.name, file, file.name);
-    }
-    const headers = this.fileHeaders;
-    const uploadReq = new HttpRequest('POST', `${this.baseURL}/${url}`, formData, {
-      reportProgress: true,
-      headers,
-    });
-
-    return this.httpClient.request(uploadReq);
   }
 
   update<T>(url: string, data: any): Observable<T> {

@@ -5,12 +5,14 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {NavMenuComponent} from './nav-menu/nav-menu.component';
 import {FooterComponent} from './footer/footer.component';
 import {MainComponent} from './main/main.component';
+import {HttpClientModule} from '@angular/common/http';
 
 const BASE_MODULES = [
   CommonModule,
   RouterModule,
   FormsModule,
   ReactiveFormsModule,
+  HttpClientModule
   // MomentModule,
   //
 ];

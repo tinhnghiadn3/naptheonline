@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NapTheOnline.Models;
 using NapTheOnline.Helper;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Controllers
 {
@@ -54,86 +55,91 @@ namespace NapTheOnline.Controllers
         /// PUT: api/Games/5
         /// Update
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="game"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> PutGame(int id)
+        public async Task<bool> PutGame([FromBody]Game game)
         {
-            if (!GameExists(id))
-            {
-                return Ok(new { Status = false, Msg = "Not found!!!" });
-            }
-            else
-            {
-                FileUploads fileUploads = new FileUploads();
-                string pathBanner = null, pathLogo = null;
-                foreach (var file in Request.Form.Files)
-                {
-                    switch (file.Name)
-                    {
-                        case "banner":
-                            {
-                                pathBanner = fileUploads.UploadImage(file, "Banner_");
-                                break;
-                            }
-                        case "logo":
-                            {
-                                pathLogo = fileUploads.UploadImage(file, "Logo_");
-                                break;
-                            }
-                        default: break;
-                    }
-                }
+            return true;
+            //if (!GameExists(id))
+            //{
+            //    return Ok(new { Status = false, Msg = "Not found!!!" });
+            //}
+            //else
+            //{
+            //    Game game = FillGame(Request, id);
+            //    _context.Entry(game).State = EntityState.Modified;
 
-
-                Game game = FillGame(Request, id);
-                if (pathBanner != null)
-                    game.Banner = pathBanner;
-                if (pathLogo != null)
-                    game.Logo = pathLogo;
-                _context.Entry(game).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    return Ok(new { Status = true, Msg = "Success" });
-                }
-                catch (Exception ex)
-                {
-                    return Ok(new { Status = false, Msg = ex.Message });
-                }
-            }
+            //    try
+            //    {
+            //        await _context.SaveChangesAsync();
+            //        return Ok(new { Status = true, Msg = "Success" });
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        return Ok(new { Status = false, Msg = ex.Message });
+            //    }
+            //}
         }
 
-        // POST: api/Games
-        [HttpPost]
-        public async Task<ActionResult> PostGame()
+        [HttpPut("update/game")]
+        public async Task<bool> UpdateGame([FromBody]Game input)
+        {
+            if (input.Id < 0 || input.Id == null)
+            {
+                return false;
+            }
+
+            var game = await _context.Game.FirstOrDefaultAsync(x => x.Id == input.Id);
+            game.Name = input.Name;
+            game.Logo = input.Logo;
+            game.Banner = input.Banner;
+            game.Prices = input.Prices;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        [HttpPost("upload/images")]
+        public ImagePathsModel UploadImages()
         {
             FileUploads fileUploads = new FileUploads();
-            string pathBanner = null, pathLogo = null;
-            
+            var result = new ImagePathsModel();
+
             foreach (var file in Request.Form.Files)
             {
                 switch (file.Name)
                 {
                     case "banner":
                         {
-                            pathBanner = fileUploads.UploadImage(file, "Banner_");
+                            result.PathBanner = fileUploads.UploadImage(file, "Banner_");
                             break;
                         }
                     case "logo":
                         {
-                            pathLogo = fileUploads.UploadImage(file, "Logo_");
+                            result.PathLogo = fileUploads.UploadImage(file, "Logo_");
+                            break;
+                        }
+                    case "description":
+                        {
+                            result.PathDescription.Add(fileUploads.UploadImage(file, "Description_"));
                             break;
                         }
                     default: break;
                 }
             }
 
+            return result;
+        }
+        
+        // POST: api/Games
+        [HttpPost]
+        public async Task<ActionResult> PostGame([FromBody]Game input)
+        {
             Game game = FillGame(Request);
-            game.Banner = pathBanner;
-            game.Logo = pathLogo;
+            //game.Banner = input.Banner;
+            //game.Logo = input.Logo;
             _context.Game.Add(game);
             try
             {
@@ -148,7 +154,7 @@ namespace NapTheOnline.Controllers
 
         // DELETE: api/Games/5
         [HttpDelete]
-        public async Task<ActionResult> DeleteGame(int id)
+        public async Task<ActionResult> DeleteGame([FromRoute]int id)
         {
             var game = await _context.Game.FindAsync(id);
             if (game == null)
@@ -182,7 +188,9 @@ namespace NapTheOnline.Controllers
                 game = _context.Game.FirstOrDefault(x => x.Id == id);
             game.Name = request.Form["Name"].ToString();
             game.Description = request.Form["Description"].ToString();
-            game.Prices = request.Form["Prices"].ToString();
+            //game.Prices = request.Form["Prices"].ToString();
+            game.Logo = request.Form["Logo"].ToString();
+            game.Banner = request.Form["Banner"].ToString();
             return game;
         }
     }
