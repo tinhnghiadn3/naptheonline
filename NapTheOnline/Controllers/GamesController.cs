@@ -90,11 +90,20 @@ namespace NapTheOnline.Controllers
                 return false;
             }
 
-            var game = await _context.Game.FirstOrDefaultAsync(x => x.Id == input.Id);
-            game.Name = input.Name;
-            game.Logo = input.Logo;
-            game.Banner = input.Banner;
-            game.Prices = input.Prices;
+
+                Game game = FillGame(Request, id);
+                if (pathBanner != null)
+                {
+                    fileUploads.DeleteImage(game.Banner);
+                    game.Banner = pathBanner;
+                }
+                   
+                if (pathLogo != null)
+                {
+                    fileUploads.DeleteImage(game.Logo);
+                    game.Logo = pathLogo;
+                }
+                _context.Entry(game).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
@@ -161,7 +170,9 @@ namespace NapTheOnline.Controllers
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
-
+            FileUploads fileUploads = new FileUploads();
+            fileUploads.DeleteImage(game.Logo);
+            fileUploads.DeleteImage(game.Banner);
             _context.Game.Remove(game);
             try
             {
@@ -188,9 +199,6 @@ namespace NapTheOnline.Controllers
                 game = _context.Game.FirstOrDefault(x => x.Id == id);
             game.Name = request.Form["Name"].ToString();
             game.Description = request.Form["Description"].ToString();
-            //game.Prices = request.Form["Prices"].ToString();
-            game.Logo = request.Form["Logo"].ToString();
-            game.Banner = request.Form["Banner"].ToString();
             return game;
         }
     }

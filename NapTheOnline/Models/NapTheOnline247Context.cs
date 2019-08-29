@@ -17,6 +17,7 @@ namespace NapTheOnline.Models
 
         public virtual DbSet<Game> Game { get; set; }
         public virtual DbSet<News> News { get; set; }
+        public virtual DbSet<Prices> Prices { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -38,6 +39,18 @@ namespace NapTheOnline.Models
             modelBuilder.Entity<News>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<Prices>(entity =>
+            {
+                entity.Property(e => e.GameId).HasColumnName("Game_Id");
+
+                entity.Property(e => e.Value).HasColumnType("decimal(18, 0)");
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.Prices)
+                    .HasForeignKey(d => d.GameId)
+                    .HasConstraintName("FK__Prices__Game_Id__5EBF139D");
             });
         }
     }
