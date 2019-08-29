@@ -191,7 +191,6 @@ namespace NapTheOnline.Controllers
                 game = _context.Game.FirstOrDefault(x => x.Id == id);
             game.Name = request.Form["Name"].ToString();
             game.Description = request.Form["Description"].ToString();
-            game.Prices = request.Form["Prices"].ToString();
             return game;
         }
     }
