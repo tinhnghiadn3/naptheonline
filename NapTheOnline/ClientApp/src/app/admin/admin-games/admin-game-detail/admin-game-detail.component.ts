@@ -5,7 +5,8 @@ import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {Router} from '@angular/router';
 import {finalize} from 'rxjs/operators';
 import {ImagesService} from '../../../service/images.service';
-
+import {PriceModel} from '../../../share/view-model/price.model';
+import * as lodash from 'lodash';
 @Component({
   selector: 'app-admin-game-detail',
   templateUrl: './admin-game-detail.component.html',
@@ -13,7 +14,7 @@ import {ImagesService} from '../../../service/images.service';
 })
 export class AdminGameDetailComponent implements OnInit {
 
-  @Output() onBack: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() backToList: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() game: GameModel;
   isValid = true;
@@ -72,6 +73,11 @@ export class AdminGameDetailComponent implements OnInit {
     sanitize: true,
     toolbarPosition: 'top',
   };
+
+  // price
+  addingPrice: PriceModel;
+  isPriceAdding = false;
+  updatingPrice: PriceModel;
 
   constructor(private gameService: GamesService,
               private imageService: ImagesService,
@@ -182,42 +188,62 @@ export class AdminGameDetailComponent implements OnInit {
       });
     }
 
-    formData.append('name', this.game.name);
-    formData.append('description', this.game.description);
-    const prices = this.game.prices.map(function(item) {
-      return item['name'];
+    this.imageService.uploadGameImages(formData).subscribe(res => {
+      this.game.logo = res.pathLogo;
+      this.game.banner = res.pathBanner;
+      const tmpDesc = this.game.description;
+      res.pathDescription.forEach((path, index) => {
+        this.game.description = tmpDesc.replace(`{${index}}`, `<img src="${path}"/>`);
+      });
+
+      this.gameService.updateGame(this.game).pipe(finalize(() => this.isUploading = false))
+        .subscribe(() => alert('Submitted Successfully'));
+
     });
-    formData.append('prices',  prices.toString());
-
-    this.gameService.updateGame(this.game).subscribe(() => alert('Submitted Successfully'));
-
-
-    // this.imageService.uploadGameImages(formData).pipe(finalize(() => {
-    // }))
-    //   .subscribe(res => {
-    //     this.game.logo = res.pathLogo;
-    //     this.game.banner = res.pathBanner;
-    //     const tmpDesc = this.game.description;
-    //     res.pathDescription.forEach((path, index) => {
-    //       this.game.description = tmpDesc.replace(`{${index}}`, `<img src="${path}"/>`);
-    //     });
-    //   });
-    // }
-    // .pipe(finalize(() => this.isUploading = false))
   }
 
-  addOrEditPrice(orderItemIndex, OrderID) {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.autoFocus = true;
-    // dialogConfig.disableClose = true;
-    // dialogConfig.width = '50%';
-    // dialogConfig.data = {orderItemIndex, OrderID};
-    // this.dialog.open(OrderItemsComponent, dialogConfig).afterClosed().subscribe();
+  enablePriceAdding() {
+    this.isPriceAdding = true;
+    this.addingPrice = new PriceModel();
   }
 
-  deletePrice(priceId, index) {
+  addPrice() {
+    this.isPriceAdding = false;
 
+    if (this.game.prices && this.game.prices.length > 0) {
+      this.game.prices.push(this.addingPrice);
+    } else {
+      this.game.prices = [];
+      this.game.prices.push(this.addingPrice);
+    }
+
+    this.addingPrice = null;
   }
 
+  cancelAddingPrice() {
+    this.isPriceAdding = false;
+    this.addingPrice = null;
+  }
 
+  enablePriceUpdating(price: PriceModel) {
+    this.updatingPrice = lodash.cloneDeep(price);
+    price.isUpdating = true;
+  }
+
+  editPrice(price) {
+    price.isUpdating = false;
+  }
+
+  cancelUpdatingPrice(price: PriceModel) {
+    price.name = this.updatingPrice.name;
+    price.value = this.updatingPrice.value;
+    price.isUpdating = false;
+  }
+
+  deletePrice(index) {
+    if (confirm('Are you sure to delete this record?')) {
+      this.game.prices.splice(index, 1);
+      alert('Deleted Successfully');
+    }
+  }
 }

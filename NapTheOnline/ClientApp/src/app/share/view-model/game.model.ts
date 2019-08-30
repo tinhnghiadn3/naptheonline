@@ -1,9 +1,11 @@
+import {PriceModel} from './price.model';
+
 export class GameModel {
   id: number;
   name: string;
   logo: string;
   description: string;
-  prices = [];
+  prices: PriceModel[] = [];
   banner: string;
 
   constructor(int: GameModel) {

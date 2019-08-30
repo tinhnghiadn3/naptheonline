@@ -30,7 +30,8 @@ namespace NapTheOnline.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGame()
         {
-            return await _context.Game.ToListAsync();
+            var result = await _context.Game.ToListAsync();
+            return result;
         }
 
         /// <summary>
@@ -58,56 +59,56 @@ namespace NapTheOnline.Controllers
         /// <param name="game"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<bool> PutGame([FromBody]Game game)
+        public async Task<bool> Update([FromBody]Game input)
         {
-            return true;
-            //if (!GameExists(id))
-            //{
-            //    return Ok(new { Status = false, Msg = "Not found!!!" });
-            //}
-            //else
-            //{
-            //    Game game = FillGame(Request, id);
-            //    _context.Entry(game).State = EntityState.Modified;
 
-            //    try
-            //    {
-            //        await _context.SaveChangesAsync();
-            //        return Ok(new { Status = true, Msg = "Success" });
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        return Ok(new { Status = false, Msg = ex.Message });
-            //    }
-            //}
-        }
-
-        [HttpPut("update/game")]
-        public async Task<bool> UpdateGame([FromBody]Game input)
-        {
-            if (input.Id < 0 || input.Id == null)
+            if (!GameExists(input.Id))
             {
-                return false;
+                throw new ApplicationException("Not Found");
             }
+            else
+            {
+                var game = await _context.Game.FindAsync(input.Id);
 
+                game.Name = input.Name;
+                game.Logo = input.Logo;
+                game.Banner = input.Banner;
+                game.Description = input.Description;
+                //_context.Entry(game).State = EntityState.Modified;
 
-                Game game = FillGame(Request, id);
-                if (pathBanner != null)
+                try
                 {
-                    fileUploads.DeleteImage(game.Banner);
-                    game.Banner = pathBanner;
+                    await _context.SaveChangesAsync();
+                    if (input.Prices.Count > 0)
+                    {
+                        var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
+                        if (prices.Count > 0 && prices != input.Prices)
+                        {
+                            _context.Prices.RemoveRange(prices);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        foreach (var item in input.Prices)
+                        {
+                            var price = new Prices
+                            {
+                                Name = item.Name,
+                                Value = item.Value,
+                                GameId = game.Id
+                            };
+
+                            await _context.Prices.AddAsync(price);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
+                    return true;
                 }
-                   
-                if (pathLogo != null)
+                catch (Exception ex)
                 {
-                    fileUploads.DeleteImage(game.Logo);
-                    game.Logo = pathLogo;
+                    throw new ApplicationException(ex.Message);
                 }
-                _context.Entry(game).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-
-            return true;
+            }
         }
 
         [HttpPost("upload/images")]
@@ -141,23 +142,60 @@ namespace NapTheOnline.Controllers
 
             return result;
         }
-        
+
         // POST: api/Games
         [HttpPost]
-        public async Task<ActionResult> PostGame([FromBody]Game input)
+        public async Task<bool> Add([FromBody]Game input)
         {
-            Game game = FillGame(Request);
-            //game.Banner = input.Banner;
-            //game.Logo = input.Logo;
-            _context.Game.Add(game);
-            try
+            if (GameExists(input.Id))
             {
-                await _context.SaveChangesAsync();
-                return Ok(new { Status = true, Msg = "Success" });
+                throw new ApplicationException("This game is existed");
             }
-            catch (Exception ex)
+            else
             {
-                return Ok(new { Status = false, Msg = ex.Message });
+                var game = new Game
+                {
+                    Name = input.Name,
+                    Logo = input.Logo,
+                    Banner = input.Banner,
+                    Description = input.Description,
+                };
+
+                //_context.Entry(game).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.Game.AddAsync(game);
+                    await _context.SaveChangesAsync();
+                    if (input.Prices.Count > 0)
+                    {
+                        var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
+                        if (prices.Count > 0 && prices != input.Prices)
+                        {
+                            _context.Prices.RemoveRange(prices);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        foreach (var item in input.Prices)
+                        {
+                            var price = new Prices
+                            {
+                                Name = item.Name,
+                                Value = item.Value,
+                                GameId = game.Id
+                            };
+
+                            await _context.Prices.AddAsync(price);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(ex.Message);
+                }
             }
         }
 
