@@ -32,6 +32,10 @@ export class AdminGamesComponent implements OnInit {
     this.selectedGame = game;
   }
 
+  createGame() {
+    this.selectedGame = new GameModel();
+  }
+
   deleteGame(id: number) {
     if (confirm('Are you sure to delete this record?')) {
       this.gamesService.deleteOrder(id).subscribe(res => {

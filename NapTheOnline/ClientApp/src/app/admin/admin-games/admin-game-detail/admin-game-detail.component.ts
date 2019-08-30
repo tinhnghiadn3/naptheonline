@@ -189,16 +189,18 @@ export class AdminGameDetailComponent implements OnInit {
     }
 
     this.imageService.uploadGameImages(formData).subscribe(res => {
-      this.game.logo = res.pathLogo;
-      this.game.banner = res.pathBanner;
-      const tmpDesc = this.game.description;
+      const newGame = lodash.cloneDeep(this.game);
+      newGame.logo = res.pathLogo;
+      newGame.banner = res.pathBanner;
       res.pathDescription.forEach((path, index) => {
-        this.game.description = tmpDesc.replace(`{${index}}`, `<img src="${path}"/>`);
+        newGame.description = newGame.description.replace(`{${index}}`, `<img src="${path}"/>`);
       });
 
       this.gameService.updateGame(this.game).pipe(finalize(() => this.isUploading = false))
-        .subscribe(() => alert('Submitted Successfully'));
-
+        .subscribe(() => {
+          alert('Submitted Successfully');
+          this.backToList.emit();
+        });
     });
   }
 

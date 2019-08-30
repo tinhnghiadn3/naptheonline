@@ -19,7 +19,7 @@ namespace NapTheOnline.Helper
                 if (file.Length > 0)
                 {
                     Random random = new Random();
-                    fileName += file.FileName + DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss") + random.Next(0, 1000).ToString() + ".jpg";
+                    fileName += DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss") + random.Next(0, 1000).ToString() + ".jpg";
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderPath, fileName);
 
