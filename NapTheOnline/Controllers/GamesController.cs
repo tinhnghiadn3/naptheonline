@@ -69,10 +69,19 @@ namespace NapTheOnline.Controllers
             else
             {
                 var game = await _context.Game.FindAsync(input.Id);
+                FileUploads fileUploads = new FileUploads();
+                if (!String.IsNullOrEmpty(input.Logo))
+                {
+                    fileUploads.DeleteImage(game.Logo);
+                    game.Logo = input.Logo;
+                }
+                if (!String.IsNullOrEmpty(input.Banner))
+                {
+                    fileUploads.DeleteImage(game.Banner);
+                    game.Banner = input.Banner;
+                }
 
                 game.Name = input.Name;
-                game.Logo = input.Logo;
-                game.Banner = input.Banner;
                 game.Description = input.Description;
                 //_context.Entry(game).State = EntityState.Modified;
 
@@ -237,18 +246,6 @@ namespace NapTheOnline.Controllers
         private bool GameExists(int id)
         {
             return _context.Game.Any(e => e.Id == id);
-        }
-
-        private Game FillGame(HttpRequest request, int? id = null)
-        {
-            Game game;
-            if (id == null)
-                game = new Game();
-            else
-                game = _context.Game.FirstOrDefault(x => x.Id == id);
-            game.Name = request.Form["Name"].ToString();
-            game.Description = request.Form["Description"].ToString();
-            return game;
         }
     }
 }
