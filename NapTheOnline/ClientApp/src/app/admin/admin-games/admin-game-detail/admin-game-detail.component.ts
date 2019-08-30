@@ -7,6 +7,7 @@ import {finalize} from 'rxjs/operators';
 import {ImagesService} from '../../../service/images.service';
 import {PriceModel} from '../../../share/view-model/price.model';
 import * as lodash from 'lodash';
+
 @Component({
   selector: 'app-admin-game-detail',
   templateUrl: './admin-game-detail.component.html',
@@ -196,11 +197,20 @@ export class AdminGameDetailComponent implements OnInit {
         newGame.description = newGame.description.replace(`{${index}}`, `<img src="${path}"/>`);
       });
 
-      this.gameService.updateGame(this.game).pipe(finalize(() => this.isUploading = false))
-        .subscribe(() => {
-          alert('Submitted Successfully');
-          this.backToList.emit();
-        });
+      if (this.game.id) {
+        this.gameService.updateGame(this.game).pipe(finalize(() => this.isUploading = false))
+          .subscribe(() => {
+            alert('Submitted Successfully');
+            this.backToList.emit();
+          });
+      } else {
+        this.gameService.addGame(this.game).pipe(finalize(() => this.isUploading = false))
+          .subscribe(() => {
+            alert('Submitted Successfully');
+            this.backToList.emit();
+          });
+      }
+
     });
   }
 
