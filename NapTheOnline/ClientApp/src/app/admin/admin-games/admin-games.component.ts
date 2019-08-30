@@ -24,8 +24,16 @@ export class AdminGamesComponent implements OnInit {
 
   refreshList() {
     this.gamesService.getGames().subscribe(res => {
-      this.games = res.length > 0 ? res : GAMES;
+      // this.games = res.length > 0 ? res : GAMES;
+      this.games = res;
     });
+  }
+
+  onBackToList(e) {
+    if (e) {
+      this.refreshList();
+      this.selectedGame = null;
+    }
   }
 
   openForEdit(game: GameModel) {

@@ -91,9 +91,14 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   getDetail() {
-    this.gameService.getGame(this.gameId).subscribe(res => {
-      this.game = res;
-    });
+    if (this.gameId && this.gameId > 0) {
+      this.gameService.getGame(this.gameId).subscribe(res => {
+          this.game = res;
+        },
+        () => this.backToList.emit(false));
+    }
+
+    this.game = new GameModel();
   }
 
   toBase64(file) {
@@ -209,13 +214,13 @@ export class AdminGameDetailComponent implements OnInit {
         this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
           .subscribe(() => {
             alert('Submitted Successfully');
-            this.backToList.emit();
+            this.backToList.emit(true);
           });
       } else {
         this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
           .subscribe(() => {
             alert('Submitted Successfully');
-            this.backToList.emit();
+            this.backToList.emit(true);
           });
       }
 

@@ -23,8 +23,10 @@ namespace NapTheOnline.Helper
 
                 return "../../assets/uploads/" + fileName;
             }
+
             return null;
         }
+
         public bool DeleteImage(string dirPath)
         {
             if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 4)

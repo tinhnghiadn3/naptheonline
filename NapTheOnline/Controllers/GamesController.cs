@@ -28,7 +28,7 @@ namespace NapTheOnline.Controllers
         /// </summary>
         /// <returns>All game</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGame()
+        public async Task<List<Game>> GetGame()
         {
             var result = await _context.Game.ToListAsync();
             return result;
@@ -43,11 +43,12 @@ namespace NapTheOnline.Controllers
         public async Task<ActionResult<Game>> GetGame(int id)
         {
             var game = await _context.Game.FindAsync(id);
-
             if (game == null)
             {
                 return NotFound(new { status = "Empty" });
             }
+
+            game.Prices = await _context.Prices.Where(_ => _.GameId == game.Id).ToListAsync();
 
             return game;
         }
@@ -176,6 +177,7 @@ namespace NapTheOnline.Controllers
                 {
                     await _context.Game.AddAsync(game);
                     await _context.SaveChangesAsync();
+
                     if (input.Prices.Count > 0)
                     {
                         var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();

@@ -13,6 +13,7 @@ import {AdminGameDetailComponent} from './admin-games/admin-game-detail/admin-ga
 import {AngularEditorModule} from '@kolkov/angular-editor';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-news-detail.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {HttpClientModule} from '@angular/common/http';
     AdminForgotPassComponent,
     AdminDashboardComponent,
     AdminNavMenuComponent,
-    AdminGameDetailComponent],
+    AdminGameDetailComponent,
+    AdminNewsDetailComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
