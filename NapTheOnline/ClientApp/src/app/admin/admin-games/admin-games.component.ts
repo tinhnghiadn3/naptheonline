@@ -38,7 +38,7 @@ export class AdminGamesComponent implements OnInit {
 
   deleteGame(id: number) {
     if (confirm('Are you sure to delete this record?')) {
-      this.gamesService.deleteOrder(id).subscribe(res => {
+      this.gamesService.deleteGame(id).subscribe(res => {
           this.refreshList();
           alert('Deleted Successfully');
         },

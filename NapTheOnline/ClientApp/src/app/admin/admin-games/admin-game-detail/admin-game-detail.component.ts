@@ -16,8 +16,9 @@ import * as lodash from 'lodash';
 export class AdminGameDetailComponent implements OnInit {
 
   @Output() backToList: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() gameId: number;
 
-  @Input() game: GameModel;
+  game: GameModel;
   isValid = true;
 
   // logo
@@ -86,12 +87,12 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getDetail();
+    this.getDetail();
   }
 
   getDetail() {
-    this.gameService.getGame(this.game.id).subscribe(res => {
-        this.game = res;
+    this.gameService.getGame(this.gameId).subscribe(res => {
+      this.game = res;
     });
   }
 

@@ -28,4 +28,4 @@
   </tr>
   </tbody>
 </table>
-<app-admin-game-detail *ngIf="selectedGame" [game]="selectedGame" (backToList)="selectedGame = null"></app-admin-game-detail>
+<app-admin-game-detail *ngIf="selectedGame" [gameId]="selectedGame.id" (backToList)="selectedGame = null"></app-admin-game-detail>

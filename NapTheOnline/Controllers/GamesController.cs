@@ -200,7 +200,7 @@ namespace NapTheOnline.Controllers
         }
 
         // DELETE: api/Games/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGame([FromRoute]int id)
         {
             var game = await _context.Game.FindAsync(id);
@@ -208,10 +208,21 @@ namespace NapTheOnline.Controllers
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
+
+            //
+            // Prices
+            var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
+            if (prices.Count > 0)
+            {
+                _context.Prices.RemoveRange(prices);
+                await _context.SaveChangesAsync();
+            }
+
             FileUploads fileUploads = new FileUploads();
             fileUploads.DeleteImage(game.Logo);
             fileUploads.DeleteImage(game.Banner);
             _context.Game.Remove(game);
+
             try
             {
                 await _context.SaveChangesAsync();

@@ -30,7 +30,7 @@ export class GamesService {
     return this.baseService.update(`${this.gameUrl}`, game);
   }
 
-  deleteOrder(gameId: number): Observable<boolean> {
+  deleteGame(gameId: number): Observable<boolean> {
     return this.baseService.delete(`${this.gameUrl}/${gameId}`);
   }
 }
