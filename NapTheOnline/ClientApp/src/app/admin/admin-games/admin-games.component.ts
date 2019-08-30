@@ -11,50 +11,9 @@ import {GAMES} from '../../share/view-model/mock-data';
 })
 export class AdminGamesComponent implements OnInit {
 
-  games: GameModel[];
-  selectedGame: GameModel;
-
-  constructor(private router: Router,
-              private gamesService: GamesService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.refreshList();
   }
-
-  refreshList() {
-    this.gamesService.getGames().subscribe(res => {
-      // this.games = res.length > 0 ? res : GAMES;
-      this.games = res;
-    });
-  }
-
-  onBackToList(e) {
-    if (e) {
-      this.refreshList();
-      this.selectedGame = null;
-    }
-  }
-
-  openForEdit(game: GameModel) {
-    this.selectedGame = game;
-  }
-
-  createGame() {
-    this.selectedGame = new GameModel();
-  }
-
-  deleteGame(id: number) {
-    if (confirm('Are you sure to delete this record?')) {
-      this.gamesService.deleteGame(id).subscribe(res => {
-          this.refreshList();
-          alert('Deleted Successfully');
-        },
-        error => {
-          alert('Deleted Failed');
-        }
-      );
-    }
-  }
-
 }

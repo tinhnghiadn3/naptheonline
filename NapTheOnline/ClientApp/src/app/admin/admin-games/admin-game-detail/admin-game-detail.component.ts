@@ -7,6 +7,7 @@ import {finalize} from 'rxjs/operators';
 import {ImagesService} from '../../../service/images.service';
 import {PriceModel} from '../../../share/view-model/price.model';
 import * as lodash from 'lodash';
+import {ImagePathsModel} from '../../../share/view-model/image-paths.model';
 
 @Component({
   selector: 'app-admin-game-detail',
@@ -15,11 +16,10 @@ import * as lodash from 'lodash';
 })
 export class AdminGameDetailComponent implements OnInit {
 
-  @Output() backToList: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() gameId: number;
-
   game: GameModel;
+
   isValid = true;
+  message: string;
 
   // logo
   selectedLogo: any;
@@ -31,6 +31,7 @@ export class AdminGameDetailComponent implements OnInit {
 
   // description
   descImages = [];
+  listBase64s: any[] = [];
 
   isUploading: boolean;
 
@@ -84,21 +85,24 @@ export class AdminGameDetailComponent implements OnInit {
   constructor(private gameService: GamesService,
               private imageService: ImagesService,
               private router: Router) {
+    if (this.gameService.adminGame) {
+      this.game = this.gameService.adminGame;
+    } else {
+      this.router.navigate(['/admin/games']);
+    }
   }
 
   ngOnInit() {
-    this.getDetail();
+    this.getPrices();
   }
 
-  getDetail() {
-    if (this.gameId && this.gameId > 0) {
-      this.gameService.getGame(this.gameId).subscribe(res => {
-          this.game = res;
+  getPrices() {
+    if (this.game && this.game.id) {
+      this.gameService.getPricesGame(this.game.id).subscribe(res => {
+          this.game.prices = res;
         },
-        () => this.backToList.emit(false));
+        () => this.router.navigate(['admin/games']));
     }
-
-    this.game = new GameModel();
   }
 
   toBase64(file) {
@@ -121,8 +125,8 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   getImageFromDescription(source) {
-    const listBase64s = this.getBase64(source);
-    this.descImages = this.base64ToImage(listBase64s);
+    this.listBase64s = this.getBase64(source);
+    this.descImages = this.base64ToImage(this.listBase64s);
   }
 
   getBase64(source) {
@@ -135,12 +139,6 @@ export class AdminGameDetailComponent implements OnInit {
         listBase64.push(imgBase64[1]);
       }
     } while (imgBase64);
-
-    const regex = /<img\ssrc="([^&]+)">/;
-    const tmpDesc = this.game.description;
-    listBase64.forEach((base64, index) => {
-      this.game.description = tmpDesc.replace(regex, `{${index}}`);
-    });
 
     return listBase64;
   }
@@ -163,6 +161,7 @@ export class AdminGameDetailComponent implements OnInit {
       const imageFile = new File([imageBlob], imageName, {type: 'image/jpg'});
       images.push(imageFile);
     });
+
     return images;
   }
 
@@ -178,17 +177,20 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   validateForm() {
-    this.isValid = true;
+    if (!this.game.name || !this.game.name.trim() || this.game.name.length <= 0) {
+      this.message = 'Name is required';
+      this.isValid = false;
+    }
     return this.isValid;
   }
 
-  onSubmit() {
-    // if (this.validateForm()) {
-    //
-    // Get img from description
-    this.getImageFromDescription(this.game.description);
-    //
-    // create FormData to post API
+  replaceMoreSpace(str) {
+    while (str.indexOf('  ') !== -1) {
+      str = str.replace(/ {2}/g, ' ');
+    }
+  }
+
+  createFormData() {
     const formData = new FormData();
     if (this.selectedLogo) {
       formData.append('logo', this.selectedLogo, this.selectedLogo.name);
@@ -202,34 +204,61 @@ export class AdminGameDetailComponent implements OnInit {
       });
     }
 
-    this.imageService.uploadGameImages(formData).subscribe(res => {
-      const newGame = lodash.cloneDeep(this.game);
-      newGame.logo = res.pathLogo;
-      newGame.banner = res.pathBanner;
-      res.pathDescription.forEach((path, index) => {
-        newGame.description = newGame.description.replace(`{${index}}`, `<img src="${path}"/>`);
-      });
+    return formData;
+  }
 
-      if (this.game.id) {
-        this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
-          .subscribe(() => {
-            alert('Submitted Successfully');
-            this.backToList.emit(true);
-          });
-      } else {
-        this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
-          .subscribe(() => {
-            alert('Submitted Successfully');
-            this.backToList.emit(true);
-          });
-      }
+  replaceImageUrl(game: GameModel, res: ImagePathsModel) {
+    game.logo = res.pathLogo;
+    game.banner = res.pathBanner;
 
+    const regex = /<img\ssrc="([^&]+)">/;
+    this.listBase64s.forEach((base64, index) => {
+      game.description = this.game.description.replace(regex, `{${index}}`);
+    });
+
+    res.pathDescription.forEach((path, index) => {
+      game.description = game.description.replace(`{${index}}`, `<img src="${path}"/>`);
     });
   }
 
+  onSubmit() {
+    if (this.validateForm()) {
+      //
+      // Get img from description
+      this.getImageFromDescription(this.game.description);
+      //
+      // create FormData to post API
+      const formData = this.createFormData();
+
+      this.imageService.uploadGameImages(formData).subscribe(res => {
+        const newGame = lodash.cloneDeep(this.game);
+
+        this.replaceImageUrl(newGame, res);
+
+        this.replaceMoreSpace(this.game.name);
+
+        if (this.game.id) {
+          this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
+            .subscribe(() => {
+              alert('Updating Successfully');
+              this.router.navigate(['admin/games']);
+            });
+        } else {
+          this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
+            .subscribe(() => {
+              alert('Adding Successfully');
+              this.router.navigate(['admin/games']);
+            });
+        }
+      });
+    }
+  }
+
   enablePriceAdding() {
-    this.isPriceAdding = true;
-    this.addingPrice = new PriceModel();
+    if (!this.isPriceAdding) {
+      this.isPriceAdding = true;
+      this.addingPrice = new PriceModel();
+    }
   }
 
   addPrice() {
@@ -270,5 +299,9 @@ export class AdminGameDetailComponent implements OnInit {
       this.game.prices.splice(index, 1);
       alert('Deleted Successfully');
     }
+  }
+
+  backClick() {
+    this.router.navigate(['admin/games']);
   }
 }

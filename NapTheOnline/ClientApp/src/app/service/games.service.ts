@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
 import {Observable} from 'rxjs';
 import {GameModel} from '../share/view-model/game.model';
-import {ImagePathsModel} from '../share/view-model/image-paths.model';
+import {PriceModel} from '../share/view-model/price.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,9 @@ export class GamesService {
 
   private gameUrl: string = this.baseService.gameUrl;
 
+  public selectedGame: GameModel;
+  public adminGame: GameModel;
+
   constructor(private baseService: ApiService) {
   }
 
@@ -18,7 +21,7 @@ export class GamesService {
     return this.baseService.get(`${this.gameUrl}`);
   }
 
-  getGame(gameId: number): Observable<GameModel> {
+  getPricesGame(gameId: number): Observable<PriceModel[]> {
     return this.baseService.get(`${this.gameUrl}/${gameId}`);
   }
 

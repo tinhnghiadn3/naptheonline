@@ -1,8 +1,6 @@
 export class PriceModel {
-  // id: string;
   name: string;
   value: number;
-  // gameId: number;
 
   isUpdating = false;
 

@@ -30,27 +30,45 @@ namespace NapTheOnline.Controllers
         [HttpGet]
         public async Task<List<Game>> GetGame()
         {
-            var result = await _context.Game.ToListAsync();
-            return result;
+            try
+            {
+                var result = await _context.Game.ToListAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         /// <summary>
-        /// GET: api/Games/id
+        /// Get prices of game
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>All game by id</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        [HttpGet("{gameId}")]
+        public async Task<List<PriceModel>> GetPricesGame(int gameId)
         {
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
+            try
             {
-                return NotFound(new { status = "Empty" });
+                var prices = await _context.Prices.Where(_ => _.GameId == gameId).ToListAsync();
+                var result = new List<PriceModel>();
+
+                prices.ForEach(item =>
+                {
+                    var price = new PriceModel
+                    {
+                        Name = item.Name,
+                        Value = Convert.ToDouble(item.Value)
+                    };
+
+                    result.Add(price);
+                });
+
+                return result;
             }
-
-            game.Prices = await _context.Prices.Where(_ => _.GameId == game.Id).ToListAsync();
-
-            return game;
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         /// <summary>

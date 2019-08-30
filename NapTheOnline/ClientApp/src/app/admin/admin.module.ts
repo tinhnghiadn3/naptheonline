@@ -14,6 +14,7 @@ import {AngularEditorModule} from '@kolkov/angular-editor';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-news-detail.component';
+import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-n
     AdminDashboardComponent,
     AdminNavMenuComponent,
     AdminGameDetailComponent,
-    AdminNewsDetailComponent],
+    AdminNewsDetailComponent,
+    AdminGamesListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -42,7 +44,17 @@ import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-n
           },
           {
             path: 'games',
-            component: AdminGamesComponent
+            component: AdminGamesComponent,
+            children: [
+              {
+                path: '',
+                component: AdminGamesListComponent,
+              },
+              {
+                path: ':friendlyName',
+                component: AdminGameDetailComponent,
+              }
+            ]
           },
           {
             path: 'news',

@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {GamesDetailComponent} from './games-detail/games-detail.component';
 import {RouterModule} from '@angular/router';
 import {GamesComponent} from './games.component';
+import { GamesListComponent } from './games-list/games-list.component';
 
 
 @NgModule({
@@ -13,16 +14,23 @@ import {GamesComponent} from './games.component';
       {
         path: '',
         component: GamesComponent,
-      },
-      {
-        path: 'lord-mobile',
-        component: GamesDetailComponent
+        children: [
+          {
+            path: '', pathMatch: 'full',
+            component: GamesListComponent
+          },
+          {
+            path: ':friendlyName',
+            component: GamesDetailComponent
+          }
+        ]
       }
     ])
   ],
   declarations: [
     GamesComponent,
     GamesDetailComponent,
+    GamesListComponent,
   ],
 })
 export class GamesModule {
