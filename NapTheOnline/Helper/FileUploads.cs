@@ -11,47 +11,34 @@ namespace NapTheOnline.Helper
     {
         public string UploadImage(IFormFile file, string fileName)
         {
-            try
+            if (file.Length > 0)
             {
-                //var file = Request.Form.Files[0];
-                var folderPath = Path.Combine("ClientApp", "src", "assets", "uploads");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderPath);
-                if (file.Length > 0)
+                Random random = new Random();
+                fileName += DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss") + random.Next(0, 100).ToString() + ".jpg";
+                var folderPath = Path.Combine("ClientApp", "src", "assets", "uploads", fileName);
+                using (var stream = new FileStream(folderPath, FileMode.Create))
                 {
-                    Random random = new Random();
-                    fileName += DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss") + random.Next(0, 1000).ToString() + ".jpg";
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderPath, fileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    return fullPath;
+                    file.CopyTo(stream);
                 }
-                else
-                {
-                    return null;
-                }
+
+                return "../../assets/uploads/" + fileName;
             }
-            catch (Exception)
-            {
-                return null;
-            }
+            return null;
         }
         public bool DeleteImage(string dirPath)
         {
-            try
+            if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 4)
             {
-                if (File.Exists(dirPath))
-                    File.Delete(dirPath);
-                return true;
+                dirPath = Path.Combine("ClientApp", "src", "assets", "uploads", dirPath.Split('/')[4]);
+                try
+                {
+                    if (File.Exists(dirPath))
+                        File.Delete(dirPath);
+                    return true;
+                }
+                catch { }
             }
-            catch
-            {
-                return false;
-            }
+            return false;
         }
     }
 }
