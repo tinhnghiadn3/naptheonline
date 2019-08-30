@@ -86,6 +86,13 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.getDetail();
+  }
+
+  getDetail() {
+    this.gameService.getGame(this.game.id).subscribe(res => {
+        this.game = res;
+    });
   }
 
   toBase64(file) {
@@ -198,13 +205,13 @@ export class AdminGameDetailComponent implements OnInit {
       });
 
       if (this.game.id) {
-        this.gameService.updateGame(this.game).pipe(finalize(() => this.isUploading = false))
+        this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
           .subscribe(() => {
             alert('Submitted Successfully');
             this.backToList.emit();
           });
       } else {
-        this.gameService.addGame(this.game).pipe(finalize(() => this.isUploading = false))
+        this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
           .subscribe(() => {
             alert('Submitted Successfully');
             this.backToList.emit();
