@@ -7,6 +7,7 @@ namespace NapTheOnline.Models
     {
         public Game()
         {
+            ImageGame = new HashSet<ImageGame>();
             Prices = new HashSet<Prices>();
         }
 
@@ -16,6 +17,7 @@ namespace NapTheOnline.Models
         public string Description { get; set; }
         public string Banner { get; set; }
 
+        public virtual ICollection<ImageGame> ImageGame { get; set; }
         public virtual ICollection<Prices> Prices { get; set; }
     }
 }

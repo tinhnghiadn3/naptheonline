@@ -16,6 +16,8 @@ namespace NapTheOnline.Models
         }
 
         public virtual DbSet<Game> Game { get; set; }
+        public virtual DbSet<ImageGame> ImageGame { get; set; }
+        public virtual DbSet<ImageNews> ImageNews { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<Prices> Prices { get; set; }
 
@@ -34,6 +36,26 @@ namespace NapTheOnline.Models
             modelBuilder.Entity<Game>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ImageGame>(entity =>
+            {
+                entity.Property(e => e.GameId).HasColumnName("Game_Id");
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.ImageGame)
+                    .HasForeignKey(d => d.GameId)
+                    .HasConstraintName("FK__ImageGame__Game___75A278F5");
+            });
+
+            modelBuilder.Entity<ImageNews>(entity =>
+            {
+                entity.Property(e => e.NewsId).HasColumnName("News_Id");
+
+                entity.HasOne(d => d.News)
+                    .WithMany(p => p.ImageNews)
+                    .HasForeignKey(d => d.NewsId)
+                    .HasConstraintName("FK__ImageNews__News___787EE5A0");
             });
 
             modelBuilder.Entity<News>(entity =>
