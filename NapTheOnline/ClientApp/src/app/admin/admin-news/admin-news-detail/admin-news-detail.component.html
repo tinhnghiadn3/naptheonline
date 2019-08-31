@@ -1,1 +1,33 @@
-<p>admin-news-detail works!</p>
+<form autocomplete="off" *ngIf="selectedNews" (submit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Name</label>
+        <input name="name" [(ngModel)]="selectedNews.name" class="form-control" [required]="true">
+        <span style="color: red">{{message}}</span>
+      </div>
+      <div class="form-group">
+        <label>Logo</label>
+        <input style="display: none"
+               accept="image/*"
+               type="file"
+               (change)="logoSelected($event)"
+               name="logo"
+               #logoInput/>
+        <img style="width: 150px; height: 150px" [attr.src]="logoBase64" *ngIf="logoBase64"/>
+        <button type="button" (click)="logoInput.click()" class="fa fa-upload">Select file</button>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Description</label>
+        <angular-editor name="description" [placeholder]="'Enter text here...'" [config]="editorConfig"
+                        [(ngModel)]="selectedNews.description"></angular-editor>
+      </div>
+    </div>
+  </div>
+  <div class="form-group dx-flex justify-content-lg-start">
+    <button type="submit" class="btn btn-success"><i class="fa fa-database mr-1"></i> Save</button>
+    <button type="button" (click)="backClick()" class="btn btn-dark"><i class="fa fa-database"></i> Back</button>
+  </div>
+</form>

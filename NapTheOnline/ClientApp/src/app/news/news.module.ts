@@ -3,12 +3,14 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {NewsComponent} from './news.component';
 import {NewsDetailComponent} from './news-detail/news-detail.component';
+import { NewsListComponent } from './news-list/news-list.component';
 
 
 @NgModule({
   declarations: [
     NewsComponent,
-    NewsDetailComponent
+    NewsDetailComponent,
+    NewsListComponent
   ],
   imports: [
     CommonModule,
@@ -16,10 +18,16 @@ import {NewsDetailComponent} from './news-detail/news-detail.component';
       {
         path: '',
         component: NewsComponent,
-      },
-      {
-        path: 'detail',
-        component: NewsDetailComponent,
+        children: [
+          {
+            path: '', pathMatch: 'full',
+            component: NewsListComponent,
+          },
+          {
+            path: ':friendlyName',
+            component: NewsDetailComponent,
+          }
+        ]
       }
     ])
   ]

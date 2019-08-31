@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NapTheOnline.Helper;
 using NapTheOnline.Models;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Controllers
 {
@@ -23,76 +24,57 @@ namespace NapTheOnline.Controllers
 
         // GET: api/News
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<News>>> GetNews()
+        public async Task<IList<News>> GetNews()
         {
-            return await _context.News.ToListAsync();
-        }
-
-        // GET: api/News/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<News>> GetNews(int id)
-        {
-            var news = await _context.News.FindAsync(id);
-
-            if (news == null)
+            try
             {
-                return NotFound(new { status = "Empty" });
+                return await _context.News.ToListAsync();
             }
-
-            return news;
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         // PUT: api/News/5
         [HttpPut]
-        public async Task<IActionResult> PutNews(int id)
+        public async Task<bool> Update([FromBody]News input)
         {
-            if (!NewsExists(id))
+            if (!NewsExists(input.Id))
             {
-                return Ok(new { Status = false, Msg = "Not found!!!" });
+                throw new ApplicationException("Not Found");
             }
             else
             {
+                var news = await _context.News.FindAsync(input.Id);
                 FileUploads fileUploads = new FileUploads();
-                string pathLogo = null;
-                foreach (var file in Request.Form.Files)
-                {
-                    switch (file.Name)
-                    {
-                        case "logo":
-                            {
-                                pathLogo = fileUploads.UploadImage(file, "Logo_");
-                                break;
-                            }
-                        default: break;
-                    }
-                }
-
-                News news = FillNews(Request, id);
-                if (pathLogo != null)
+                if (!String.IsNullOrEmpty(input.Logo))
                 {
                     fileUploads.DeleteImage(news.Logo);
-                    news.Logo = pathLogo;
+                    news.Logo = input.Logo;
                 }
-                _context.Entry(news).State = EntityState.Modified;
+
+                news.Name = input.Name;
+                news.Description = input.Description;
+                news.DateCreated = input.DateCreated;
 
                 try
                 {
                     await _context.SaveChangesAsync();
-                    return Ok(new { Status = true, Msg = "Success" });
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    return Ok(new { Status = false, Msg = ex.Message });
+                    throw new ApplicationException(ex.Message);
                 }
             }
         }
 
-        // POST: api/News
-        [HttpPost]
-        public async Task<ActionResult<News>> PostNews()
+        [HttpPost("upload/images")]
+        public ImagePathsModel UploadImages()
         {
             FileUploads fileUploads = new FileUploads();
-            string pathLogo = null;
+            var result = new ImagePathsModel();
 
             foreach (var file in Request.Form.Files)
             {
@@ -100,39 +82,67 @@ namespace NapTheOnline.Controllers
                 {
                     case "logo":
                         {
-                            pathLogo = fileUploads.UploadImage(file, "Logo_");
+                            result.PathLogo = fileUploads.UploadImage(file, "Logo_");
+                            break;
+                        }
+                    case "description":
+                        {
+                            result.PathDescription.Add(fileUploads.UploadImage(file, "Description_"));
                             break;
                         }
                     default: break;
                 }
             }
 
-            News news = FillNews(Request);
-            news.Logo = pathLogo;
-            _context.News.Add(news);
-            try
+            return result;
+        }
+
+        // POST: api/News
+        [HttpPost]
+        public async Task<int> Add([FromBody]News input)
+        {
+            if (NewsExists(input.Id))
             {
-                await _context.SaveChangesAsync();
-                return Ok(new { Status = true, Msg = "Success" });
+                throw new ApplicationException("This news is existed");
             }
-            catch (Exception ex)
+            else
             {
-                return Ok(new { Status = false, Msg = ex.Message });
+                var news = new News
+                {
+                    Name = input.Name,
+                    Description = input.Description,
+                    DateCreated = input.DateCreated
+                };
+
+                try
+                {
+                    await _context.News.AddAsync(news);
+                    await _context.SaveChangesAsync();
+
+                    return news.Id;
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(ex.Message);
+                }
             }
         }
 
         // DELETE: api/News/5
-        [HttpDelete]
-        public async Task<ActionResult<News>> DeleteNews(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteNews([FromRoute]int id)
         {
             var news = await _context.News.FindAsync(id);
             if (news == null)
             {
                 return NotFound(new { Status = true, Msg = "Not found!!!" });
             }
+
             FileUploads fileUploads = new FileUploads();
             fileUploads.DeleteImage(news.Logo);
+
             _context.News.Remove(news);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -147,19 +157,6 @@ namespace NapTheOnline.Controllers
         private bool NewsExists(int id)
         {
             return _context.News.Any(e => e.Id == id);
-        }
-
-        private News FillNews(HttpRequest request, int? id = null)
-        {
-            News news;
-            if (id == null)
-                news = new News();
-            else
-                news = _context.News.FirstOrDefault(x => x.Id == id);
-            news.Name = request.Form["Name"].ToString();
-            news.Description = request.Form["Description"].ToString();
-            news.DateCreated = request.Form["DateCreated"].ToString();
-            return news;
         }
     }
 }

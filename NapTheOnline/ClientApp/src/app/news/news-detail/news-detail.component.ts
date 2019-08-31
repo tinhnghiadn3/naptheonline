@@ -1,5 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NewsModel} from '../../share/view-model/news.model';
+import {GameModel} from '../../share/view-model/game.model';
+import {GamesService} from '../../service/games.service';
+import {Router} from '@angular/router';
+import {NewsService} from '../../service/news.service';
 
 @Component({
   selector: 'app-news-detail',
@@ -7,9 +11,16 @@ import {NewsModel} from '../../share/view-model/news.model';
   styleUrls: ['./news-detail.component.scss']
 })
 export class NewsDetailComponent implements OnInit {
-  @Input() selectedNew: NewsModel;
 
-  constructor() {
+  selectedNews: NewsModel;
+
+  constructor(private newsService: NewsService,
+              private router: Router) {
+    if (this.newsService.selectedNews) {
+      this.selectedNews = this.newsService.selectedNews;
+    } else {
+      this.router.navigate(['/news']);
+    }
   }
 
   ngOnInit() {

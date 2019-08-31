@@ -41,34 +41,15 @@ export const NEWS: NewsModel[] = [
     logo: '../../assets/images/img_01.jpg',
     name: 'MAECENAS DEVELOPERS SPEAK OUT ON \'DEATH MARCH\' CRUNCH',
     description: 'description',
-    dateCreated: '14/8/2019 - 7h30'
+    dateCreated: '14/8/2019 - 7h30',
+    friendlyName: 'aaa'
   },
   {
     id: 2,
     logo: '"../../assets/images/img_01.jpg',
     name: 'Lord Mobile',
     description: 'description',
-    dateCreated: '14/8/2019 - 7h30'
-  },
-  {
-    id: 3,
-    logo: '"../../assets/images/img_01.jpg',
-    name: 'Lord Mobile',
-    description: 'description',
-    dateCreated: '14/8/2019 - 7h30'
-  },
-  {
-    id: 4,
-    logo: '"../../assets/images/img_01.jpg',
-    name: 'Lord Mobile',
-    description: 'description',
-    dateCreated: '14/8/2019 - 7h30'
-  },
-  {
-    id: 5,
-    logo: '"../../assets/images/img_01.jpg',
-    name: 'Lord Mobile',
-    description: 'description',
-    dateCreated: '14/8/2019 - 7h30'
+    dateCreated: '14/8/2019 - 7h30',
+    friendlyName: 'aaa1'
   },
 ];

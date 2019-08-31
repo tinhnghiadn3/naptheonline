@@ -25,7 +25,7 @@ export class GamesService {
     return this.baseService.get(`${this.gameUrl}/${gameId}`);
   }
 
-  addGame(game: GameModel): Observable<boolean> {
+  addGame(game: GameModel): Observable<number> {
     return this.baseService.post(`${this.gameUrl}`, game);
   }
 

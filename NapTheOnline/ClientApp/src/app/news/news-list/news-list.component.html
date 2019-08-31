@@ -1,0 +1,75 @@
+<div class="news-247">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="top mb-4 ">
+          <div class="center">
+            <h1 class="pb-2" itemprop="name">Mẹo chơi Game</h1>
+          </div>
+        </div>
+        <div *ngFor="let item of listNews" class="news-list" (click)="showDetail(item)">
+          <!-- item -->
+          <div class="news-item mb-4">
+            <div class="row">
+              <div class="col-lg-4 mb-5 mb-lg-0">
+                <div class="card">
+                  <div>
+                    <img src="{{item.logo}}" alt="News">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="text-gray">
+                  <h5 class="text-uppercase fw-600"><a>{{item.name}}</a></h5>
+                  <div class="small-3 mb-2">
+                    <span class="mr-2"><i class="fas fa-calendar-alt mr-1"></i> {{item.dateCreated}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <div class="d-flex align-items-center bg-dark_A-10 px-4 py-2">
+                  <div class="text-uppercase small fw-600 mr-3">Share:</div>
+                  <div class="social-buttons">
+                    <a class="social-facebook mr-1" href="#"><i class="fab fa-facebook"></i></a>
+                    <a class="social-twitter mr-1" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="social-dribbble mr-1" href="#"><i class="fab fa-dribbble"></i></a>
+                    <a class="social-instagram" href="#"><i class="fab fa-instagram"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 new-thumb">
+        <div class="top mb-4 ">
+          <div class="center">
+            <h1 class="pb-2">Xem nhiều nhất</h1>
+          </div>
+        </div>
+        <div class=" news-list">
+          <!-- item -->
+          <div *ngFor="let item of news" class="news-item  mb-4">
+            <div class="row row-247online">
+              <div class="col-lg-4 mb-5 mb-lg-0 col-247online">
+                <div class="card">
+                  <div>
+                    <img src="{{item.logo}}" alt="News">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8">
+                <div class="text-gray">
+                  <h5 class="text-uppercase fw-600 title-thumb"><a href="#">{{item.name}}</a></h5>
+                  <div class="small-3 mb-2">
+                    <span class="mr-2"><i class="fas fa-calendar-alt mr-1"></i> {{item.dateCreated}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

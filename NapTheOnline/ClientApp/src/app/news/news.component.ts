@@ -10,23 +10,9 @@ import {NewsService} from '../service/news.service';
 })
 export class NewsComponent implements OnInit {
 
-  selectedNew: NewsModel;
-  news: NewsModel[];
-
-  constructor(private newService: NewsService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.getNews();
-  }
-
-  getNews() {
-    this.newService.getNews().subscribe(res => {
-      this.news = res || NEWS;
-    });
-  }
-
-  showNews(item: NewsModel) {
-    this.selectedNew = item;
   }
 }

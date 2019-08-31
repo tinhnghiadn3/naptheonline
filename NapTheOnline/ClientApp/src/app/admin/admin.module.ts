@@ -15,6 +15,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-news-detail.component';
 import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
+import { AdminNewsListComponent } from './admin-news/admin-news-list/admin-news-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-ga
     AdminNavMenuComponent,
     AdminGameDetailComponent,
     AdminNewsDetailComponent,
-    AdminGamesListComponent],
+    AdminGamesListComponent,
+    AdminNewsListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -58,7 +60,17 @@ import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-ga
           },
           {
             path: 'news',
-            component: AdminNewsComponent
+            component: AdminNewsComponent,
+            children: [
+              {
+                path: '',
+                component: AdminNewsListComponent,
+              },
+              {
+                path: ':friendlyName',
+                component: AdminNewsDetailComponent,
+              }
+            ]
           },
         ]
       },

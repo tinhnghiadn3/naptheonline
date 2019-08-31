@@ -245,7 +245,8 @@ export class AdminGameDetailComponent implements OnInit {
             });
         } else {
           this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
-            .subscribe(() => {
+            .subscribe(id => {
+              this.gameService.adminGame.id = id;
               alert('Adding Successfully');
               this.router.navigate(['admin/games']);
             });

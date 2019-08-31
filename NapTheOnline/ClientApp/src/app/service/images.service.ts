@@ -19,4 +19,8 @@ export class ImagesService {
   uploadGameImages(formData: FormData): Observable<any> {
     return this.httpClient.post(`${this.gameUrl}/upload/images`, formData);
   }
+
+  uploadNewsImages(formData: FormData): Observable<any> {
+    return this.httpClient.post(`${this.newsUrl}/upload/images`, formData);
+  }
 }

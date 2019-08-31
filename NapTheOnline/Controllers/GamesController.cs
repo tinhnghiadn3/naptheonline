@@ -32,8 +32,7 @@ namespace NapTheOnline.Controllers
         {
             try
             {
-                var result = await _context.Game.ToListAsync();
-                return result;
+                return await _context.Game.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -107,6 +106,8 @@ namespace NapTheOnline.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    //
+                    // Update prices
                     if (input.Prices.Count > 0)
                     {
                         var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
@@ -173,7 +174,7 @@ namespace NapTheOnline.Controllers
 
         // POST: api/Games
         [HttpPost]
-        public async Task<bool> Add([FromBody]Game input)
+        public async Task<int> Add([FromBody]Game input)
         {
             if (GameExists(input.Id))
             {
@@ -219,7 +220,7 @@ namespace NapTheOnline.Controllers
                         }
                     }
 
-                    return true;
+                    return game.Id;
                 }
                 catch (Exception ex)
                 {
