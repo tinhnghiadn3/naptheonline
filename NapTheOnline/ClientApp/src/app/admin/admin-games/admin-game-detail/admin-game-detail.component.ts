@@ -223,6 +223,7 @@ export class AdminGameDetailComponent implements OnInit {
 
   onSubmit() {
     if (this.validateForm()) {
+      this.isUploading = true;
       //
       // Get img from description
       this.getImageFromDescription(this.game.description);
