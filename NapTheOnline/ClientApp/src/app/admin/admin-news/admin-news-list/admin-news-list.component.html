@@ -13,7 +13,7 @@
     <th>{{i + 1}}</th>
     <th>{{item.name}}</th>
     <td><img src="{{item.logo}}" alt="" border=3 height=100 width=100/></td>
-    <td><img src="{{item.dateCreated}}" alt="" border=3 height=100 width=300/></td>
+    <td>{{item.dateCreated}}</td>
     <td>
       <a class="btn text-info" (click)="openForEdit(item)"><i class="fa fa-trash fa-lg"></i></a>
       <a class="btn text-danger" (click)="deleteNews(item.id)"><i class="fa fa-trash fa-lg"></i></a>

@@ -110,6 +110,7 @@ namespace NapTheOnline.Controllers
                 var news = new News
                 {
                     Name = input.Name,
+                    Logo = input.Logo,
                     Description = input.Description,
                     DateCreated = input.DateCreated
                 };

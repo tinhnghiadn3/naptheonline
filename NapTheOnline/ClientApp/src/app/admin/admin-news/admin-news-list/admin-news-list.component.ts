@@ -40,7 +40,11 @@ export class AdminNewsListComponent implements OnInit {
   deleteNews(id: number) {
     if (confirm('Are you sure to delete this record?')) {
       this.newsService.deleteNews(id).subscribe(res => {
-          this.refreshList();
+          const index = this.listNews.findIndex(_ => _.id === id);
+          if (index > -1) {
+            this.listNews.splice(index, 1);
+          }
+          // this.refreshList();
           alert('Deleted Successfully');
         },
         error => {

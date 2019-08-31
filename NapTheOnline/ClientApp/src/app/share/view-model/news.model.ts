@@ -1,9 +1,9 @@
 export class NewsModel {
   id: number;
+  logo: string;
   name: string;
   description: string;
   dateCreated: string;
-  logo: string;
 
   // only UI
   friendlyName: string;

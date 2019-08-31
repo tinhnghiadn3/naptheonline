@@ -7,6 +7,7 @@ import {finalize} from 'rxjs/operators';
 import * as lodash from 'lodash';
 import {NewsService} from '../../../service/news.service';
 import {NewsModel} from '../../../share/view-model/news.model';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-admin-news-detail',
@@ -208,7 +209,7 @@ export class AdminNewsDetailComponent implements OnInit {
 
         this.replaceMoreSpace(news.name);
 
-        news.dateCreated = Date.now();
+        news.dateCreated = formatDate(new Date(), 'MM/dd/yyyy, HH:MM:ss', 'en');
 
         if (this.selectedNews.id) {
           this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))

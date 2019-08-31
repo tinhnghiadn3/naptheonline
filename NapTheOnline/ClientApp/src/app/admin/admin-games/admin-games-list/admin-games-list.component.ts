@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameModel} from '../../../share/view-model/game.model';
 import {Router} from '@angular/router';
 import {GamesService} from '../../../service/games.service';
@@ -41,7 +41,11 @@ export class AdminGamesListComponent implements OnInit {
   deleteGame(id: number) {
     if (confirm('Are you sure to delete this record?')) {
       this.gamesService.deleteGame(id).subscribe(res => {
-          this.refreshList();
+          const index = this.games.findIndex(_ => _.id === id);
+          if (index > -1) {
+            this.games.splice(index, 1);
+          }
+          // this.refreshList();
           alert('Deleted Successfully');
         },
         error => {
