@@ -93,7 +93,8 @@
     </tbody>
   </table>
   <div class="form-group dx-flex justify-content-lg-start">
-    <button type="submit" class="btn btn-success"><i class="fa fa-database mr-1"></i> Save</button>
+    <button type="submit" class="btn btn-success"><i class="fa fa-database mr-1"></i>
+      Save <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}}%</span></button>
     <button type="button" (click)="backClick()" class="btn btn-dark" [disabled]="isUploading">
       <i class="fa fa-database"></i>
       Back

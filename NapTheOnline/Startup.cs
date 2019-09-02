@@ -1,4 +1,4 @@
- using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -35,20 +35,13 @@ namespace NapTheOnline
                 x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
             });
 
-            //services.Configure<IISServerOptions>(options =>
-            //{
-            //    options.AutomaticAuthentication = false;
-            //});
-
-            //services.Configure<IISOptions>(options =>
-            //{
-            //    options.ForwardClientCertificate = false;
-            //});
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist/ClientApp";
             });
+
+            //services.AddDirectoryBrowser();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,15 +58,29 @@ namespace NapTheOnline
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
-
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"ClientApp")),
-                RequestPath = new PathString("/ClientApp")
-            });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            var cachePeriod = env.IsDevelopment() ? "600" : "604800";
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Requires the following import:
+                    // using Microsoft.AspNetCore.Http;
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+                },
+
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "src", "assets")),
+                RequestPath = new PathString("/assets")
+            });
+            
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "src", "assets")),
+                RequestPath = new PathString("/assets")
+            });
 
             app.UseMvc(routes =>
             {

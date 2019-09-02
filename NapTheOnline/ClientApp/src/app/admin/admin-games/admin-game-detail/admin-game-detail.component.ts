@@ -33,6 +33,7 @@ export class AdminGameDetailComponent implements OnInit {
   descImages = [];
   listBase64s: any[] = [];
 
+  isImageChange = false;
   isUploading: boolean;
 
   // editor
@@ -116,11 +117,31 @@ export class AdminGameDetailComponent implements OnInit {
 
   async logoSelected(event: any) {
     this.selectedLogo = event.target.files[0];
+
+    if (!this.selectedLogo) {
+      return;
+    }
+
+    if (!this.selectedLogo.type || this.selectedLogo.type.split('/')[0] !== 'image') {
+      alert('Only accept image file!');
+      return;
+    }
+
     this.logoBase64 = await this.toBase64(this.selectedLogo);
   }
 
   async bannerSelected(event: any) {
     this.selectedBanner = event.target.files[0];
+
+    if (!this.selectedBanner) {
+      return;
+    }
+
+    if (!this.selectedBanner.type || this.selectedBanner.type.split('/')[0] !== 'image') {
+      alert('Only accept image file!');
+      return;
+    }
+
     this.bannerBase64 = await this.toBase64(this.selectedBanner);
   }
 
@@ -135,7 +156,7 @@ export class AdminGameDetailComponent implements OnInit {
     const listBase64 = [];
     do {
       imgBase64 = regexImg.exec(source);
-      if (imgBase64) {
+      if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
         listBase64.push(imgBase64[1]);
       }
     } while (imgBase64);
@@ -177,7 +198,7 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   validateForm() {
-    if (!this.game.name || !this.game.name.trim() || this.game.name.length <= 0) {
+    if (!this.game.name || !this.game.name.trim() || this.game.name.trim().length <= 0) {
       this.message = 'Name is required';
       this.isValid = false;
     }
@@ -188,71 +209,87 @@ export class AdminGameDetailComponent implements OnInit {
     while (str.indexOf('  ') !== -1) {
       str = str.replace(/ {2}/g, ' ');
     }
+
+    return str.trim();
   }
 
   createFormData() {
     const formData = new FormData();
     if (this.selectedLogo) {
+      this.isImageChange = true;
       formData.append('logo', this.selectedLogo, this.selectedLogo.name);
     }
     if (this.selectedBanner) {
+      this.isImageChange = true;
       formData.append('banner', this.selectedBanner, this.selectedBanner.name);
     }
     if (this.descImages && this.descImages.length > 0) {
-      this.descImages.forEach(img => {
-        formData.append('description', img, img.name);
+      this.isImageChange = true;
+      this.descImages.forEach((img, index) => {
+        formData.append(`description ${index}`, img, img.name);
       });
     }
 
     return formData;
   }
 
-  replaceImageUrl(game: GameModel, res: ImagePathsModel) {
-    game.logo = res.pathLogo;
-    game.banner = res.pathBanner;
-
+  replaceBase64FromDescription(game: GameModel) {
     const regex = /<img\ssrc="([^&]+)">/;
     this.listBase64s.forEach((base64, index) => {
-      game.description = this.game.description.replace(regex, `{${index}}`);
-    });
-
-    res.pathDescription.forEach((path, index) => {
-      game.description = game.description.replace(`{${index}}`, `<img src="${path}"/>`);
+      game.description = game.description.replace(regex, `{${index}}`);
     });
   }
 
   onSubmit() {
     if (this.validateForm()) {
       this.isUploading = true;
+
+      const newGame = lodash.cloneDeep(this.game);
       //
-      // Get img from description
+      // name
+      newGame.name = this.replaceMoreSpace(newGame.name);
+      //
+      // Get img from description and return list base64 to replace
       this.getImageFromDescription(this.game.description);
+      //
+      // description
+      this.replaceBase64FromDescription(newGame);
       //
       // create FormData to post API
       const formData = this.createFormData();
 
-      this.imageService.uploadGameImages(formData).subscribe(res => {
-        const newGame = lodash.cloneDeep(this.game);
-
-        this.replaceImageUrl(newGame, res);
-
-        this.replaceMoreSpace(this.game.name);
-
-        if (this.game.id) {
-          this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
-            .subscribe(() => {
-              alert('Updating Successfully');
+      if (this.game.id) {
+        this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
+          .subscribe(() => {
+            if (this.isImageChange) {
+              this.imageService.uploadGameImages(formData, newGame.id).then(() => {
+                this.isImageChange = false;
+                alert('Update Successfully');
+                this.router.navigate(['admin/games']);
+              });
+            } else {
+              alert('Update Successfully');
               this.router.navigate(['admin/games']);
-            });
-        } else {
-          this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
-            .subscribe(id => {
-              this.gameService.adminGame.id = id;
-              alert('Adding Successfully');
+            }
+          });
+      } else {
+        this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
+          .subscribe(id => {
+            this.gameService.adminGame.id = id;
+            newGame.id = id;
+
+            if (this.isImageChange) {
+              this.imageService.uploadGameImages(formData, newGame.id).then(() => {
+                this.isImageChange = false;
+                alert('Add Successfully');
+                this.router.navigate(['admin/games']);
+              });
+            } else {
+              alert('Add Successfully');
               this.router.navigate(['admin/games']);
-            });
-        }
-      });
+            }
+          });
+      }
     }
   }
 

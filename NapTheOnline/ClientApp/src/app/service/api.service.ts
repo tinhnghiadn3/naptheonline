@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpRequest} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -27,9 +27,11 @@ export class ApiService {
     });
   }
 
-  //
-  // 'Accept': 'q=0.8;application/json;q=0.9',
-  // 'APIKey': '~123456789~',
+  get fileHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Accept: 'application/json',
+    });
+  }
 
   get options() {
     return {headers: this.headers};
@@ -45,6 +47,15 @@ export class ApiService {
     return this.httpClient
       .post<T>(`${this.baseURL}/${url}`, data, this.options)
       .pipe(catchError(this.handleError));
+  }
+
+  postFile<T>(url: string, formData: FormData): Observable<HttpEvent<T>> {
+    const uploadReq = new HttpRequest('POST', `${this.baseURL}/${url}`, formData, {
+      reportProgress: true,
+      headers: this.fileHeaders
+    });
+
+    return this.httpClient.request(uploadReq);
   }
 
   update<T>(url: string, data: any): Observable<T> {

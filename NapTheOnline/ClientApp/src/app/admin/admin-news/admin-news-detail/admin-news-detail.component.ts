@@ -30,6 +30,7 @@ export class AdminNewsDetailComponent implements OnInit {
   listBase64s: any[] = [];
 
   isUploading: boolean;
+  isImageChange = false;
 
   // editor
   editorConfig: AngularEditorConfig = {
@@ -97,6 +98,16 @@ export class AdminNewsDetailComponent implements OnInit {
 
   async logoSelected(event: any) {
     this.selectedLogo = event.target.files[0];
+
+    if (!this.selectedLogo) {
+      return;
+    }
+
+    if (!this.selectedLogo.type || this.selectedLogo.type.split('/')[0] !== 'image') {
+      alert('Only accept image file!');
+      return;
+    }
+
     this.logoBase64 = await this.toBase64(this.selectedLogo);
   }
 
@@ -111,7 +122,7 @@ export class AdminNewsDetailComponent implements OnInit {
     const listBase64 = [];
     do {
       imgBase64 = regexImg.exec(source);
-      if (imgBase64) {
+      if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
         listBase64.push(imgBase64[1]);
       }
     } while (imgBase64);
@@ -122,14 +133,10 @@ export class AdminNewsDetailComponent implements OnInit {
   base64ToImage(base64s: any[]) {
     const images = [];
     base64s.forEach((base64, index) => {
+      //
       // Base64 url of image trimmed one without data:image/png;base64
       const shortBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, '');
-      // Naming the image
-      let text = '';
-      const possibleText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (let i = 0; i < 5; i++) {
-        text += possibleText.charAt(Math.floor(Math.random() * possibleText.length));
-      }
+      //
       // Replace extension according to your media type
       const imageName = index + '.jpg';
       // call method that creates a blob from dataUri
@@ -152,7 +159,7 @@ export class AdminNewsDetailComponent implements OnInit {
   }
 
   validateForm() {
-    if (!this.selectedNews.name || !this.selectedNews.name.trim() || this.selectedNews.name.length <= 0) {
+    if (!this.selectedNews.name || !this.selectedNews.name.trim() || this.selectedNews.name.trim().length <= 0) {
       this.message = 'Name is required';
       this.isValid = false;
     }
@@ -163,69 +170,87 @@ export class AdminNewsDetailComponent implements OnInit {
     while (str.indexOf('  ') !== -1) {
       str = str.replace(/ {2}/g, ' ');
     }
+
+    return str.trim();
   }
 
   createFormData() {
     const formData = new FormData();
     if (this.selectedLogo) {
+      this.isImageChange = true;
       formData.append('logo', this.selectedLogo, this.selectedLogo.name);
     }
 
     if (this.descImages && this.descImages.length > 0) {
-      this.descImages.forEach(img => {
-        formData.append('description', img, img.name);
+      this.isImageChange = true;
+      this.descImages.forEach((img, index) => {
+        formData.append(`description ${index}`, img, img.name);
       });
     }
 
     return formData;
   }
 
-  replaceImageUrl(news: NewsModel, data: ImagePathsModel) {
-    news.logo = data.pathLogo;
-
+  replaceBase64FromDescription(news: NewsModel) {
     const regex = /<img\ssrc="([^&]+)">/;
     this.listBase64s.forEach((base64, index) => {
-      news.description = this.selectedNews.description.replace(regex, `{${index}}`);
-    });
-
-    data.pathDescription.forEach((path, index) => {
-      news.description = news.description.replace(`{${index}}`, `<img src="${path}"/>`);
+      news.description = news.description.replace(regex, `{${index}}`);
     });
   }
 
   onSubmit() {
     if (this.validateForm()) {
+
+      this.isUploading = true;
+      const news = lodash.cloneDeep(this.selectedNews);
       //
-      // Get img from description
+      // name
+      news.name = this.replaceMoreSpace(news.name);
+      //
+      // date created
+      news.dateCreated = formatDate(new Date(), 'HH:MM MMM, dd yyyy', 'en');
+      //
+      // Get img from description and return list base64 to replace
       this.getImageFromDescription(this.selectedNews.description);
+      //
+      // description
+      this.replaceBase64FromDescription(news);
       //
       // create FormData to post API
       const formData = this.createFormData();
 
-      this.imageService.uploadNewsImages(formData).subscribe(res => {
-        const news = lodash.cloneDeep(this.selectedNews);
-
-        this.replaceImageUrl(news, res);
-
-        this.replaceMoreSpace(news.name);
-
-        news.dateCreated = formatDate(new Date(), 'MM/dd/yyyy, HH:MM:ss', 'en');
-
-        if (this.selectedNews.id) {
-          this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
-            .subscribe(() => {
-              alert('Updating Successfully');
+      if (this.selectedNews.id) {
+        this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
+          .subscribe(() => {
+            if (this.isImageChange) {
+              this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                this.isImageChange = false;
+                alert('Update Successfully');
+                this.router.navigate(['admin/news']);
+              });
+            } else {
+              alert('Update Successfully');
               this.router.navigate(['admin/news']);
-            });
-        } else {
-          this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
-            .subscribe(id => {
-              this.newsService.adminNews.id = id;
-              alert('Adding Successfully');
+            }
+          });
+      } else {
+        this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
+          .subscribe(id => {
+            this.newsService.adminNews.id = id;
+            news.id = id;
+
+            if (this.isImageChange) {
+              this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                this.isImageChange = false;
+                alert('Add Successfully');
+                this.router.navigate(['admin/news']);
+              });
+            } else {
+              alert('Add Successfully');
               this.router.navigate(['admin/news']);
-            });
-        }
-      });
+            }
+          });
+      }
     }
   }
 

@@ -24,7 +24,7 @@ namespace NapTheOnline.Helper
                 return "../../assets/uploads/" + fileName;
             }
 
-            return null;
+            return string.Empty;
         }
 
         public bool DeleteImage(string dirPath)
@@ -38,8 +38,12 @@ namespace NapTheOnline.Helper
                         File.Delete(dirPath);
                     return true;
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(ex.Message);
+                }
             }
+
             return false;
         }
     }

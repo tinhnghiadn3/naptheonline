@@ -87,21 +87,8 @@ namespace NapTheOnline.Controllers
             else
             {
                 var game = await _context.Game.FindAsync(input.Id);
-                FileUploads fileUploads = new FileUploads();
-                if (!String.IsNullOrEmpty(input.Logo))
-                {
-                    fileUploads.DeleteImage(game.Logo);
-                    game.Logo = input.Logo;
-                }
-                if (!String.IsNullOrEmpty(input.Banner))
-                {
-                    fileUploads.DeleteImage(game.Banner);
-                    game.Banner = input.Banner;
-                }
-
                 game.Name = input.Name;
                 game.Description = input.Description;
-                //_context.Entry(game).State = EntityState.Modified;
 
                 try
                 {
@@ -140,36 +127,80 @@ namespace NapTheOnline.Controllers
             }
         }
 
-        [HttpPost("upload/images")]
-        public ImagePathsModel UploadImages()
+        [HttpPost("{id}/upload/images")]
+        public async Task<bool> UploadImagesAsync([FromRoute]int id)
         {
-            FileUploads fileUploads = new FileUploads();
-            var result = new ImagePathsModel();
-
-            foreach (var file in Request.Form.Files)
+            var files = Request.Form.Files;
+            if (files.Count > 0)
             {
-                switch (file.Name)
+                var game = await _context.Game.FindAsync(id);
+                if (game == null)
                 {
-                    case "banner":
-                        {
-                            result.PathBanner = fileUploads.UploadImage(file, "Banner_");
-                            break;
-                        }
-                    case "logo":
-                        {
-                            result.PathLogo = fileUploads.UploadImage(file, "Logo_");
-                            break;
-                        }
-                    case "description":
-                        {
-                            result.PathDescription.Add(fileUploads.UploadImage(file, "Description_"));
-                            break;
-                        }
-                    default: break;
+                    throw new ApplicationException("Game is not existed");
                 }
+
+                var imageGames = await _context.ImageGame.Where(_ => _.GameId == id).ToListAsync();
+
+                FileUploads fileUploads = new FileUploads();
+                var result = new ImagePathsModel();
+
+                foreach (var file in files)
+                {
+                    switch (file.Name)
+                    {
+                        case "banner":
+                            {
+                                result.PathBanner = fileUploads.UploadImage(file, "Banner_");
+
+                                await DeleteOldPathImage(imageGames, file.Name, fileUploads);
+
+                                await AddGameImage(file.Name, result.PathBanner, id);
+
+                                break;
+                            }
+                        case "logo":
+                            {
+                                result.PathLogo = fileUploads.UploadImage(file, "Logo_");
+
+                                await DeleteOldPathImage(imageGames, file.Name, fileUploads);
+
+                                await AddGameImage(file.Name, result.PathLogo, id);
+
+                                break;
+                            }
+                        default: break;
+                    }
+
+                    if (file.Name.Contains("description"))
+                    {
+                        var pathDesc = fileUploads.UploadImage(file, "Description_");
+                        result.PathDescription.Add(pathDesc);
+
+                        await DeleteOldPathImage(imageGames, file.Name, fileUploads);
+
+                        await AddGameImage(file.Name, pathDesc, id);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(result.PathBanner))
+                {
+                    game.Banner = result.PathBanner;
+                }
+
+                if (!string.IsNullOrEmpty(result.PathLogo))
+                {
+                    game.Logo = result.PathLogo;
+                }
+
+                for (int i = 0; i < result.PathDescription.Count; i++)
+                {
+                    game.Description = game.Description.Replace("{" + i + "}", "<img src=" + result.PathDescription[i] + " />");
+                }
+
+                await _context.SaveChangesAsync();
             }
 
-            return result;
+            return true;
         }
 
         // POST: api/Games
@@ -185,12 +216,10 @@ namespace NapTheOnline.Controllers
                 var game = new Game
                 {
                     Name = input.Name,
-                    Logo = input.Logo,
-                    Banner = input.Banner,
+                    Logo = string.Empty,
+                    Banner = string.Empty,
                     Description = input.Description,
                 };
-
-                //_context.Entry(game).State = EntityState.Modified;
 
                 try
                 {
@@ -233,28 +262,37 @@ namespace NapTheOnline.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteGame([FromRoute]int id)
         {
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
-            {
-                return NotFound(new { Status = true, Msg = "Not found!!!" });
-            }
-
-            //
-            // Prices
-            var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
-            if (prices.Count > 0)
-            {
-                _context.Prices.RemoveRange(prices);
-                await _context.SaveChangesAsync();
-            }
-
-            FileUploads fileUploads = new FileUploads();
-            fileUploads.DeleteImage(game.Logo);
-            fileUploads.DeleteImage(game.Banner);
-            _context.Game.Remove(game);
-
             try
             {
+                var game = await _context.Game.FindAsync(id);
+                if (game == null)
+                {
+                    return NotFound(new { Status = true, Msg = "Not found!!!" });
+                }
+
+                //
+                // Prices
+                var prices = _context.Prices.Where(_ => _.GameId == game.Id).ToList();
+                if (prices.Count > 0)
+                {
+                    _context.Prices.RemoveRange(prices);
+                    await _context.SaveChangesAsync();
+                }
+
+                var imagePaths = _context.ImageGame.Where(_ => _.GameId == game.Id).ToList();
+                if (imagePaths.Count > 0)
+                {
+                    _context.ImageGame.RemoveRange(imagePaths);
+                    await _context.SaveChangesAsync();
+
+                    FileUploads fileUploads = new FileUploads();
+                    imagePaths.ForEach(path =>
+                    {
+                        fileUploads.DeleteImage(path.DirPath);
+                    });
+                }
+
+                _context.Game.Remove(game);
                 await _context.SaveChangesAsync();
                 return Ok(new { Status = true, Msg = "Success" });
             }
@@ -267,6 +305,36 @@ namespace NapTheOnline.Controllers
         private bool GameExists(int id)
         {
             return _context.Game.Any(e => e.Id == id);
+        }
+
+        private async Task AddGameImage(string name, string path, int gameId)
+        {
+            var logoPath = new ImageGame
+            {
+                Name = name,
+                DirPath = path,
+                GameId = gameId
+            };
+
+            await _context.ImageGame.AddAsync(logoPath);
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task DeleteOldPathImage(List<ImageGame> imagePaths, string fileName, FileUploads fileUploads)
+        {
+            //
+            // delete old path
+            if (imagePaths.Count > 0)
+            {
+                var descPath = imagePaths.Where(_ => _.Name == fileName).FirstOrDefault();
+                if (descPath != null && !string.IsNullOrEmpty(descPath.DirPath))
+                {
+                    fileUploads.DeleteImage(descPath.DirPath);
+                }
+
+                _context.ImageGame.Remove(descPath);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
