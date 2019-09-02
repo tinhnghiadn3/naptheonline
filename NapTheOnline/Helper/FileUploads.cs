@@ -29,7 +29,7 @@ namespace NapTheOnline.Helper
 
         public bool DeleteImage(string dirPath)
         {
-            if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 4)
+            if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 5)
             {
                 dirPath = Path.Combine("ClientApp", "src", "assets", "uploads", dirPath.Split('/')[4]);
                 try
