@@ -3,6 +3,7 @@ import {GameModel} from '../../../share/view-model/game.model';
 import {Router} from '@angular/router';
 import {GamesService} from '../../../service/games.service';
 import {Utility} from '../../../share/utility';
+import {GAMES, NEWS} from '../../../share/mock-data';
 
 @Component({
   selector: 'app-admin-games-list',
@@ -22,10 +23,12 @@ export class AdminGamesListComponent implements OnInit {
   }
 
   refreshList() {
-    this.gamesService.getGames().subscribe(res => {
-      this.games = res;
-      this.games = Utility.generateFriendlyName(this.games);
-    });
+    this.games = GAMES;
+
+    // this.gamesService.getGames().subscribe(res => {
+    //   this.games = res;
+    //   this.games = Utility.generateFriendlyName(this.games);
+    // });
   }
 
   openForEdit(game: GameModel) {

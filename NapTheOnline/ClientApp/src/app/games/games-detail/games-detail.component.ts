@@ -22,7 +22,7 @@ export class GamesDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPrices();
+    // this.getPrices();
   }
 
   getPrices() {

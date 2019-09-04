@@ -4,7 +4,6 @@ export class NewsModel {
   name: string;
   description: string;
   dateCreated: string;
-  imageNews: any[];
 
   // only UI
   friendlyName: string;

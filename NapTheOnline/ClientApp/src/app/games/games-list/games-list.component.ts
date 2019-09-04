@@ -3,6 +3,7 @@ import {GameModel} from '../../share/view-model/game.model';
 import {Router} from '@angular/router';
 import {GamesService} from '../../service/games.service';
 import {Utility} from '../../share/utility';
+import {GAMES} from '../../share/mock-data';
 
 @Component({
   selector: 'app-games-list',
@@ -22,10 +23,11 @@ export class GamesListComponent implements OnInit {
   }
 
   getGames() {
-    this.gameService.getGames().subscribe(res => {
-      this.games = res;
-      this.games = Utility.generateFriendlyName(this.games);
-    });
+    this.games = GAMES;
+    // this.gameService.getGames().subscribe(res => {
+    //   this.games = res;
+    //   this.games = Utility.generateFriendlyName(this.games);
+    // });
   }
 
   showDetail(game: GameModel) {

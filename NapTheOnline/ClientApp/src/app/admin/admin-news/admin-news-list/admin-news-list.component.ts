@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {Utility} from '../../../share/utility';
 import {NewsModel} from '../../../share/view-model/news.model';
 import {NewsService} from '../../../service/news.service';
+import {NEWS} from '../../../share/mock-data';
 
 @Component({
   selector: 'app-admin-news-list',
@@ -21,10 +22,12 @@ export class AdminNewsListComponent implements OnInit {
   }
 
   refreshList() {
-    this.newsService.getNews().subscribe(res => {
-      this.listNews = res;
-      this.listNews = Utility.generateFriendlyName(this.listNews);
-    });
+    this.listNews = NEWS;
+
+    // this.newsService.getNews().subscribe(res => {
+    //   this.listNews = res;
+    //   this.listNews = Utility.generateFriendlyName(this.listNews);
+    // });
   }
 
   openForEdit(news: NewsModel) {

@@ -5,6 +5,7 @@ import {GamesService} from '../../service/games.service';
 import {Utility} from '../../share/utility';
 import {NewsService} from '../../service/news.service';
 import {NewsModel} from '../../share/view-model/news.model';
+import {NEWS} from '../../share/mock-data';
 
 @Component({
   selector: 'app-news-list',
@@ -25,11 +26,14 @@ export class NewsListComponent implements OnInit {
   }
 
   getGames() {
-    this.newsService.getNews().subscribe(res => {
-      this.listNews = res;
-      this.listNews = Utility.generateFriendlyName(this.listNews);
-      this.getBestViewed();
-    });
+    this.listNews = NEWS;
+    this.getBestViewed();
+
+    // this.newsService.getNews().subscribe(res => {
+    //   this.listNews = res;
+    //   this.listNews = Utility.generateFriendlyName(this.listNews);
+    //   this.getBestViewed();
+    // });
   }
 
   getBestViewed() {

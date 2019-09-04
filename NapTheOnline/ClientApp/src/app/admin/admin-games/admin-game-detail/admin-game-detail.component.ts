@@ -94,7 +94,7 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPrices();
+    // this.getPrices();
   }
 
   getPrices() {
