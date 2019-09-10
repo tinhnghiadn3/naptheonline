@@ -19,38 +19,54 @@
                                     <input name="name" [(ngModel)]="game.name" class="form-control" [required]="true">
                                     <span style="color: red">{{message}}</span>
                                 </div>
-                                <div class="form-group">
-                                    <label>Logo</label>
-                                    <input style="display: none" accept="image/*" type="file" (change)="logoSelected($event)" name="logo" #logoInput/>
-                                    <img style="width: 150px; height: 150px" [attr.src]="logoBase64" *ngIf="logoBase64" />
-                                    <img style="width: 150px; height: 150px" [src]="game.logo" *ngIf="!logoBase64 && game.logo" />
-                                    <button type="button" (click)="logoInput.click()" class="fa fa-upload">Select file</button>
+
+                            </div>
+                            <div class="col-12 mt-2">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Logo</label>
+                                            <div class="img-logo">
+                                                <input style="display: none" accept="image/*" type="file" (change)="logoSelected($event)" name="logo" #logoInput/>
+                                                <img style="width: 98px; height: 98px" [attr.src]="logoBase64" *ngIf="logoBase64" />
+                                                <img style="width: 98px; height: 98px" [src]="game.logo" *ngIf="!logoBase64 && game.logo" />
+                                                <button type="button" (click)="logoInput.click()" class="button-upload"> <i class="fa fa-upload mr-2"></i> Select file</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Banner</label>
+                                            <div class="img-logo">
+                                                <input style="display: none" type="file" accept="image/*" (change)="bannerSelected($event)" name="logo" #bannerInput/>
+                                                <img class="img-logo-banner" style="height: 98px" [src]="bannerBase64" *ngIf="bannerBase64" />
+                                                <img class="img-logo-banner" style="height: 98px" [src]="game.banner" *ngIf="!bannerBase64 && game.banner" />
+                                                <button type="button" (click)="bannerInput.click()" class="button-upload"><i class="fa fa-upload mr-2"></i> Select file</button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-12 mt-2">
                                 <div class="form-group">
                                     <label>Description</label>
                                     <angular-editor name="description" [placeholder]="'Enter text here...'" [config]="editorConfig" [(ngModel)]="game.description"></angular-editor>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Banner</label>
-                                    <input style="display: none" type="file" accept="image/*" (change)="bannerSelected($event)" name="logo" #bannerInput/>
-                                    <img style="width: 300px; height: 200px" [src]="bannerBase64" *ngIf="bannerBase64" />
-                                    <img style="width: 300px; height: 200px" [src]="game.banner" *ngIf="!bannerBase64 && game.banner" />
-                                    <button type="button" (click)="bannerInput.click()">Select file</button>
-                                </div>
-                            </div>
+
                         </div>
                         <!-- order items table-->
-                        <table class="table table-borderless">
+                        <table class="table ">
                             <thead class="thead-light">
                                 <th>Price (VND)</th>
                                 <th>Quantity</th>
                                 <th>
-                                    <a class="btn btn-sm btn-success text-white" (click)="enablePriceAdding()"><i
-                        class="fa fa-plus"></i> Add Item</a>
+                                    <!-- <a class="btn btn-sm btn-success text-white" (click)="enablePriceAdding()"><i
+                        class="fa fa-plus"></i> Add Item</a> -->
+                                    <a class="d-flex align-items-center justify-content-end" (click)="enablePriceAdding()"><i class="fa fa-plus-circle mr-2"></i> Add item </a>
                                 </th>
                             </thead>
                             <tbody>
@@ -67,38 +83,38 @@
                                     <td *ngIf="!item.isUpdating">{{item.value}}</td>
                                     <td *ngIf="item.isUpdating"><input type="number" [(ngModel)]="item.value" name="priceValue"></td>
 
-                                    <td *ngIf="!item.isUpdating">
-                                        <a class="btn btn-sm btn-info text-white" (click)="enablePriceUpdating(item)"><i
-                          class="fas fa-pencil"></i></a>
-                                        <a class="btn btn-sm btn-danger text-white ml-1" (click)="deletePrice(i)"><i
-                          class="fa fa-trash"></i></a>
+                                    <td *ngIf="!item.isUpdating " class="text-right">
+                                        <a class="text-info text-white mr-3" (click)="enablePriceUpdating(item)">
+                                            <i class="far fa-edit"></i></a>
+                                        <a class="text-danger text-white ml-1" (click)="deletePrice(i)">
+                                            <i class="far fa-trash-alt"></i></a>
                                     </td>
-                                    <td *ngIf="item.isUpdating">
-                                        <a class="btn btn-sm btn-info text-white" (click)="editPrice(item)"><i
-                          class="fas fa-pencil"></i></a>
-                                        <a class="btn btn-sm btn-danger text-white ml-1" (click)="cancelUpdatingPrice(item)"><i
-                          class="fas fa-times"></i></a>
+                                    <td *ngIf="item.isUpdating" class="text-right">
+                                        <a class="text-info text-white mr-3" (click)="editPrice(item)">
+                                            <i class="far fa-edit"></i></a>
+                                        <a class="text-danger text-white ml-1 p-3" (click)="cancelUpdatingPrice(item)">
+                                            <i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
 
                                 <tr *ngIf="isPriceAdding">
                                     <td><input [(ngModel)]="addingPrice.name" name="addingPriceName"></td>
                                     <td><input [(ngModel)]="addingPrice.value" name="addingPriceValue"></td>
-                                    <td>
-                                        <a class="btn btn-sm btn-info text-white" (click)="addPrice()"><i
-                          class="fas fa-pencil"></i></a>
-                                        <a class="btn btn-sm btn-danger text-white ml-1" (click)="cancelAddingPrice()"><i
-                          class="fas fa-times"></i></a>
+                                    <td class="text-right">
+                                        <a class="text-info text-white" (click)="addPrice()">
+                                            <i class="far fa-edit"></i></a>
+                                        <a class="text-danger text-white ml-1 p-3" (click)="cancelAddingPrice()">
+                                            <i class="far fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
 
                             </tbody>
                         </table>
-                        <div class="form-group dx-flex justify-content-lg-start">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-database mr-1"></i>
+                        <div class="form-group d-flex justify-content-end action-edit">
+                            <button type="submit" class="btn btn-primary mr-3">
                       Save <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}}%</span></button>
-                            <button type="button" (click)="backClick()" class="btn btn-dark" [disabled]="isUploading">
-                      <i class="fa fa-database"></i>
+                            <button type="button" (click)="backClick()" class="btn btn-back" [disabled]="isUploading">
+                  
                       Back
                     </button>
                         </div>

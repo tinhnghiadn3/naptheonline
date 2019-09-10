@@ -1,0 +1,42 @@
+.game-new-manager {
+    .name-game {}
+    .img-logo {
+        padding: 45px 45px 60px;
+        text-align: center;
+        position: relative;
+        border: 1px dashed #f1f1f1;
+        .button-upload {
+            position: absolute;
+            background: none;
+            border: none;
+            bottom: 6px;
+            right: 6px;
+            color: #3D86BA;
+            transition: 0.3s;
+            &:hover {
+                color: #57A5E0
+            }
+        }
+        .img-logo-banner {
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+    color: #858796;
+    .action-edit {
+        button {
+            padding: 8px 24px;
+            border-radius: 2px;
+            transition: 0.2s;
+            &.btn-back {
+                border: 1px solid #434343;
+                color: #434343;
+                background: #Fff;
+                &:hover {
+                    background: #434343;
+                    color: #Fff;
+                }
+            }
+        }
+    }
+}
