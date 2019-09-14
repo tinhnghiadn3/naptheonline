@@ -16,6 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-news-detail.component';
 import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
 import { AdminNewsListComponent } from './admin-news/admin-news-list/admin-news-list.component';
+import { AdminNavHeaderComponent } from './admin-nav-header/admin-nav-header.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AdminNewsListComponent } from './admin-news/admin-news-list/admin-news-
     AdminGameDetailComponent,
     AdminNewsDetailComponent,
     AdminGamesListComponent,
-    AdminNewsListComponent],
+    AdminNewsListComponent,
+    AdminNavHeaderComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([

@@ -23,7 +23,9 @@ export class GamesListComponent implements OnInit {
   }
 
   getGames() {
+    // todo: this is for UI designer
     this.games = GAMES;
+
     // this.gameService.getGames().subscribe(res => {
     //   this.games = res;
     //   this.games = Utility.generateFriendlyName(this.games);

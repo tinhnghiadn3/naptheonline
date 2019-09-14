@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
+import {ViewportScroller} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,16 @@ export class AppComponent implements OnInit {
 
   isAdmin = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private viewportScroller: ViewportScroller) {
     router.events.subscribe(e => {
       if (e instanceof NavigationStart && e.url.includes('/admin')) {
         this.isAdmin = true;
+      }
+
+      if (event => event instanceof NavigationEnd) {
+        document.body.scrollTop = 0;
+        // viewportScroller.scrollToPosition([0, 0]);
       }
     });
   }
@@ -21,4 +28,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
+  onActivate() {
+    const scrollToTop = window.setInterval(() => {
+      const pos = window.pageYOffset;
+      if (pos > 0) {
+        window.scrollTo(0, pos - 20); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
+  }
 }

@@ -18,8 +18,8 @@ export class NewsService {
   constructor(private baseService: ApiService) {
   }
 
-  getNews(): Observable<NewsModel[]> {
-    return this.baseService.get(`${this.newUrl}`);
+  getNews(pageIndex: number): Observable<NewsModel[]> {
+    return this.baseService.get(`${this.newUrl}/${pageIndex}`);
   }
 
   addNews(news: NewsModel): Observable<number> {

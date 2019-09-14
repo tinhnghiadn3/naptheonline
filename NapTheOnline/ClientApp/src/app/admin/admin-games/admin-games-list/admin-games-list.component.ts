@@ -23,6 +23,7 @@ export class AdminGamesListComponent implements OnInit {
   }
 
   refreshList() {
+    // todo: this is for UI designer
     this.games = GAMES;
 
     // this.gamesService.getGames().subscribe(res => {

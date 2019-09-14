@@ -23,12 +23,18 @@ namespace NapTheOnline.Controllers
         }
 
         // GET: api/News
-        [HttpGet]
-        public async Task<IList<News>> GetNews()
+        [HttpGet("{pageIndex}")]
+        public async Task<List<News>> GetNews([FromRoute]int pageIndex)
         {
             try
             {
-                return await _context.News.ToListAsync();
+                var allNews = await _context.News.ToListAsync();
+                if (pageIndex == 0)
+                return allNews;
+
+                var take = 10;
+                var skip = pageIndex * 10;
+                return allNews.Skip(skip).Take(take).ToList();
             }
             catch (Exception ex)
             {

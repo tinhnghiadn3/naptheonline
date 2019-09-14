@@ -1,96 +1,76 @@
 <div class="game-manger">
     <div class="container-fluid">
-        <h1 class="h3 mb-2 text-gray-800">Game managerment</h1>
-        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget ante pulvinar augue blandit rutrum eget a purus. Aliquam rhoncus suscipit dolor eu hendrerit.</p>
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 text-primary">DataTables Games</h6>
-            </div>
-
             <div class="card-body">
                 <div class="table-responsive-res">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_filter">
-                                <label>Search:<input type="search" class="form-control form-control-sm" placeholder=""></label>
+                                <label>Search:
+                                    <input type="search" class="form-control form-control-sm" placeholder="">
+                                </label>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="create-game mb-3">
                                 <a class="d-flex align-items-center justify-content-end" (click)="createNews()">
-                                    <i class="fa fa-plus-circle mr-2"></i> Create News
+                                    <i class="fa fa-plus-circle mr-2"></i> Create
                                 </a>
                             </div>
                         </div>
                     </div>
                     <table class="table table-hover">
                         <thead class="thead-light">
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Logo</th>
-                            <th>Last Modified</th>
-                            <th>
-                            </th>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Logo</th>
+                        <th>Last Modified</th>
+                        <th>
+                        </th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of listNews, let i = index">
-                                <th>{{i + 1}}</th>
-                                <th>{{item.name}}</th>
-                                <td><img src="{{item.logo}}" alt="" border=3 height=48 width=48/></td>
-                                <td>{{item.dateCreated}}</td>
-                                <td>
-                                    <a class="btn text-info" (click)="openForEdit(item)" title="Edit"><i class="far fa-edit"></i></a>
-                                    <a class="btn text-danger" (click)="deleteNews(item.id)" title="Delete"><i class="far fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
+                        <tr *ngFor="let item of listNews, let i = index ">
+                            <th>{{i + 1}}</th>
+                            <th>{{item.name}}</th>
+                            <td><img src="{{item.logo}}" alt="" border=3 height=48 width=48/></td>
+                            <td>{{item.dateCreated}}</td>
+                            <td>
+                                <a class="btn text-info" (click)="openForEdit(item)" title="Edit"><i
+                                    class="far fa-edit"></i></a>
+                                <a class="btn text-danger" (click)="deleteNews(item.id)" title="Delete"><i
+                                    class="far fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-sm-12 col-md-5">
-                            <div class="dataTables_info pt-2" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                            <div class="dataTables_info pt-2" id="dataTable_info" role="status" aria-live="polite">
+                                Showing 1 to 10 of
+                                57 entries
+                            </div>
                         </div>
                         <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                            <div class="dataTables_paginate">
                                 <ul class="pagination">
-                                    <li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                                    <li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
-                                    <li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
+                                    <li class="paginate_button page-item previous disabled" id="dataTable_previous">
+                                        <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+                                           class="page-link">Previous</a>
+                                    </li>
+                                    <li *ngFor="let i of totalPage" class="paginate_button page-item"
+                                        [class.active]="pageIndex" (click)="changePage()">
+                                        <a href="#" aria-controls="dataTable" tabindex="0" class="page-link">{{i}}</a>
+                                    </li>
+                                    <li class="paginate_button page-item next" id="dataTable_next">
+                                        <a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+                                           class="page-link">Next</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-<!-- 
-<table class="table table-hover">
-    <thead class="thead-light">
-        <th>No.</th>
-        <th>Name</th>
-        <th>Logo</th>
-        <th>Last Modified</th>
-        <th>
-            <a class="btn btn-outline-success" (click)="createNews()"><i class="fa fa-plus-square"></i> Create</a>
-        </th>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of listNews, let i = index">
-            <th>{{i + 1}}</th>
-            <th>{{item.name}}</th>
-            <td><img src="{{item.logo}}" alt="" border=3 height=100 width=100/></td>
-            <td>{{item.dateCreated}}</td>
-            <td>
-                <a class="btn text-info" (click)="openForEdit(item)"><i class="fa fa-trash fa-lg"></i></a>
-                <a class="btn text-danger" (click)="deleteNews(item.id)"><i class="fa fa-trash fa-lg"></i></a>
-            </td>
-        </tr>
-    </tbody>
-</table> -->

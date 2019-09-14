@@ -170,7 +170,7 @@ export const NEWS: NewsModel[] = [
     friendlyName: 'news7'
   },
   {
-    id: 3,
+    id: 8,
     logo: '../../assets/uploads/Logo_2019_09_02_08_58_1156.jpg',
     name: 'Cuoi lien tay di ban eiiiii',
     description: 'asdsd&#160;&#160;<div>' +
@@ -181,7 +181,7 @@ export const NEWS: NewsModel[] = [
     friendlyName: 'news3'
   },
   {
-    id: 4,
+    id: 9,
     logo: '../../assets/uploads/Logo_2019_09_02_08_31_4460.jpg',
     name: 'Nguyen Thi Le Vi la ai vay man?',
     description: 'asdsd&#160;&#160;<div>' +
@@ -192,7 +192,7 @@ export const NEWS: NewsModel[] = [
     friendlyName: 'news4'
   },
   {
-    id: 5,
+    id: 10,
     logo: '../../assets/uploads/Logo_2019_09_02_08_26_3042.jpg',
     name: 'Tinh khi nao cuoi man?',
     description: 'asdsd&#160;&#160;<div>' +

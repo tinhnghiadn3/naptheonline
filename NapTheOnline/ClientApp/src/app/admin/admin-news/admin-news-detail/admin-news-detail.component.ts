@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AngularEditorConfig} from '@kolkov/angular-editor';
 import {ImagesService} from '../../../service/images.service';
 import {Router} from '@angular/router';
-import {ImagePathsModel} from '../../../share/view-model/image-paths.model';
 import {finalize} from 'rxjs/operators';
 import * as lodash from 'lodash';
 import {NewsService} from '../../../service/news.service';
@@ -255,6 +254,7 @@ export class AdminNewsDetailComponent implements OnInit {
   }
 
   backClick() {
+    // this.newsService.adminNews = null;
     this.router.navigate(['admin/news']);
   }
 }

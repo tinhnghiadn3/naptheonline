@@ -7,7 +7,6 @@ import {finalize} from 'rxjs/operators';
 import {ImagesService} from '../../../service/images.service';
 import {PriceModel} from '../../../share/view-model/price.model';
 import * as lodash from 'lodash';
-import {ImagePathsModel} from '../../../share/view-model/image-paths.model';
 
 @Component({
   selector: 'app-admin-game-detail',
@@ -16,6 +15,7 @@ import {ImagePathsModel} from '../../../share/view-model/image-paths.model';
 })
 export class AdminGameDetailComponent implements OnInit {
 
+  titleAction: string;
   game: GameModel;
 
   isValid = true;
