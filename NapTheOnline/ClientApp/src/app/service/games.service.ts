@@ -17,8 +17,8 @@ export class GamesService {
   constructor(private baseService: ApiService) {
   }
 
-  getGames(): Observable<GameModel[]> {
-    return this.baseService.get(`${this.gameUrl}`);
+  getGames(pageIndex: number): Observable<GameModel[]> {
+    return this.baseService.get(`${this.gameUrl}/${pageIndex}`);
   }
 
   getPricesGame(gameId: number): Observable<PriceModel[]> {

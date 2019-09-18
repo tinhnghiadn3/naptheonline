@@ -9,252 +9,252 @@ import {NewsModel} from '../../../share/view-model/news.model';
 import {formatDate} from '@angular/common';
 
 @Component({
-  selector: 'app-admin-news-detail',
-  templateUrl: './admin-news-detail.component.html',
-  styleUrls: ['./admin-news-detail.component.scss']
+    selector: 'app-admin-news-detail',
+    templateUrl: './admin-news-detail.component.html',
+    styleUrls: ['./admin-news-detail.component.scss']
 })
 export class AdminNewsDetailComponent implements OnInit {
 
-  selectedNews: NewsModel;
+    selectedNews: NewsModel;
 
-  isValid = true;
-  message: string;
+    isValid = true;
+    message: string;
 
-  // logo
-  selectedLogo: any;
-  logoBase64 = null;
+    // logo
+    selectedLogo: any;
+    logoBase64 = null;
 
-  // description
-  descImages = [];
-  listBase64s: any[] = [];
+    // description
+    descImages = [];
+    listBase64s: any[] = [];
 
-  isUploading: boolean;
-  isImageChange = false;
+    isUploading: boolean;
+    isImageChange = false;
 
-  // editor
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: 'auto',
-    minHeight: '200',
-    maxHeight: 'auto',
-    width: 'auto',
-    minWidth: '200',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: 'Enter text here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
-    fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: '',
-    sanitize: true,
-    toolbarPosition: 'top',
-  };
+    // editor
+    editorConfig: AngularEditorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: 'auto',
+        minHeight: '200',
+        maxHeight: 'auto',
+        width: 'auto',
+        minWidth: '200',
+        translate: 'yes',
+        enableToolbar: true,
+        showToolbar: true,
+        placeholder: 'Enter text here...',
+        defaultParagraphSeparator: '',
+        defaultFontName: '',
+        defaultFontSize: '',
+        fonts: [
+            {class: 'arial', name: 'Arial'},
+            {class: 'times-new-roman', name: 'Times New Roman'},
+            {class: 'calibri', name: 'Calibri'},
+            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+        ],
+        customClasses: [
+            {
+                name: 'quote',
+                class: 'quote',
+            },
+            {
+                name: 'redText',
+                class: 'redText'
+            },
+            {
+                name: 'titleText',
+                class: 'titleText',
+                tag: 'h1',
+            },
+        ],
+        uploadUrl: '',
+        sanitize: true,
+        toolbarPosition: 'top',
+    };
 
-  constructor(private newsService: NewsService,
-              private imageService: ImagesService,
-              private router: Router) {
-    if (this.newsService.adminNews) {
-      this.selectedNews = this.newsService.adminNews;
-    } else {
-      this.router.navigate(['/admin/news']);
-    }
-  }
-
-  ngOnInit() {
-  }
-
-  toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
-  async logoSelected(event: any) {
-    this.selectedLogo = event.target.files[0];
-
-    if (!this.selectedLogo) {
-      return;
+    constructor(private newsService: NewsService,
+                private imageService: ImagesService,
+                private router: Router) {
+        if (this.newsService.adminNews) {
+            this.selectedNews = this.newsService.adminNews;
+        } else {
+            this.router.navigate(['/admin/news']);
+        }
     }
 
-    if (!this.selectedLogo.type || this.selectedLogo.type.split('/')[0] !== 'image') {
-      alert('Only accept image file!');
-      return;
+    ngOnInit() {
     }
 
-    this.logoBase64 = await this.toBase64(this.selectedLogo);
-  }
-
-  getImageFromDescription(source) {
-    this.listBase64s = this.getBase64(source);
-    this.descImages = this.base64ToImage(this.listBase64s);
-  }
-
-  getBase64(source) {
-    const regexImg = /src="([^"]+)"/g;
-    let imgBase64 = null;
-    const listBase64 = [];
-    do {
-      imgBase64 = regexImg.exec(source);
-      if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
-        listBase64.push(imgBase64[1]);
-      }
-    } while (imgBase64);
-
-    return listBase64;
-  }
-
-  base64ToImage(base64s: any[]) {
-    const images = [];
-    base64s.forEach((base64, index) => {
-      //
-      // Base64 url of image trimmed one without data:image/png;base64
-      const shortBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, '');
-      //
-      // Replace extension according to your media type
-      const imageName = index + '.jpg';
-      // call method that creates a blob from dataUri
-      const imageBlob = this.dataURItoBlob(shortBase64);
-      const imageFile = new File([imageBlob], imageName, {type: 'image/jpg'});
-      images.push(imageFile);
-    });
-
-    return images;
-  }
-
-  dataURItoBlob(dataURI) {
-    const byteString = window.atob(dataURI);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([int8Array], {type: 'image/jpeg'});
-  }
-
-  validateForm() {
-    if (!this.selectedNews.name || !this.selectedNews.name.trim() || this.selectedNews.name.trim().length <= 0) {
-      this.message = 'Name is required';
-      this.isValid = false;
-    }
-    return this.isValid;
-  }
-
-  replaceMoreSpace(str) {
-    while (str.indexOf('  ') !== -1) {
-      str = str.replace(/ {2}/g, ' ');
+    toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     }
 
-    return str.trim();
-  }
+    async logoSelected(event: any) {
+        this.selectedLogo = event.target.files[0];
 
-  createFormData() {
-    const formData = new FormData();
-    if (this.selectedLogo) {
-      this.isImageChange = true;
-      formData.append('logo', this.selectedLogo, this.selectedLogo.name);
+        if (!this.selectedLogo) {
+            return;
+        }
+
+        if (!this.selectedLogo.type || this.selectedLogo.type.split('/')[0] !== 'image') {
+            alert('Only accept image file!');
+            return;
+        }
+
+        this.logoBase64 = await this.toBase64(this.selectedLogo);
     }
 
-    if (this.descImages && this.descImages.length > 0) {
-      this.isImageChange = true;
-      this.descImages.forEach((img, index) => {
-        formData.append(`description ${index}`, img, img.name);
-      });
+    getImageFromDescription(source) {
+        this.listBase64s = this.getBase64(source);
+        this.descImages = this.base64ToImage(this.listBase64s);
     }
 
-    return formData;
-  }
-
-  replaceBase64FromDescription(news: NewsModel) {
-    const regex = /<img\ssrc="([^&]+)">/;
-    this.listBase64s.forEach((base64, index) => {
-      news.description = news.description.replace(regex, `{${index}}`);
-    });
-  }
-
-  onSubmit() {
-    if (this.validateForm()) {
-
-      this.isUploading = true;
-      const news = lodash.cloneDeep(this.selectedNews);
-      //
-      // name
-      news.name = this.replaceMoreSpace(news.name);
-      //
-      // date created
-      news.dateCreated = formatDate(new Date(), 'HH:MM MMM, dd yyyy', 'en');
-      //
-      // Get img from description and return list base64 to replace
-      this.getImageFromDescription(this.selectedNews.description);
-      //
-      // description
-      this.replaceBase64FromDescription(news);
-      //
-      // create FormData to post API
-      const formData = this.createFormData();
-
-      if (this.selectedNews.id) {
-        this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
-          .subscribe(() => {
-            if (this.isImageChange) {
-              this.imageService.uploadNewsImages(formData, news.id).then(() => {
-                this.isImageChange = false;
-                alert('Update Successfully');
-                this.router.navigate(['admin/news']);
-              });
-            } else {
-              alert('Update Successfully');
-              this.router.navigate(['admin/news']);
+    getBase64(source) {
+        const regexImg = /src="([^"]+)"/g;
+        let imgBase64 = null;
+        const listBase64 = [];
+        do {
+            imgBase64 = regexImg.exec(source);
+            if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
+                listBase64.push(imgBase64[1]);
             }
-          });
-      } else {
-        this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
-          .subscribe(id => {
-            this.newsService.adminNews.id = id;
-            news.id = id;
+        } while (imgBase64);
 
-            if (this.isImageChange) {
-              this.imageService.uploadNewsImages(formData, news.id).then(() => {
-                this.isImageChange = false;
-                alert('Add Successfully');
-                this.router.navigate(['admin/news']);
-              });
-            } else {
-              alert('Add Successfully');
-              this.router.navigate(['admin/news']);
-            }
-          });
-      }
+        return listBase64;
     }
-  }
 
-  backClick() {
-    // this.newsService.adminNews = null;
-    this.router.navigate(['admin/news']);
-  }
+    base64ToImage(base64s: any[]) {
+        const images = [];
+        base64s.forEach((base64, index) => {
+            //
+            // Base64 url of image trimmed one without data:image/png;base64
+            const shortBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, '');
+            //
+            // Replace extension according to your media type
+            const imageName = index + '.jpg';
+            // call method that creates a blob from dataUri
+            const imageBlob = this.dataURItoBlob(shortBase64);
+            const imageFile = new File([imageBlob], imageName, {type: 'image/jpg'});
+            images.push(imageFile);
+        });
+
+        return images;
+    }
+
+    dataURItoBlob(dataURI) {
+        const byteString = window.atob(dataURI);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const int8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+            int8Array[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([int8Array], {type: 'image/jpeg'});
+    }
+
+    validateForm() {
+        if (!this.selectedNews.name || !this.selectedNews.name.trim() || this.selectedNews.name.trim().length <= 0) {
+            this.message = 'Name is required';
+            this.isValid = false;
+        }
+        return this.isValid;
+    }
+
+    replaceMoreSpace(str) {
+        while (str.indexOf('  ') !== -1) {
+            str = str.replace(/ {2}/g, ' ');
+        }
+
+        return str.trim();
+    }
+
+    createFormData() {
+        const formData = new FormData();
+        if (this.selectedLogo) {
+            this.isImageChange = true;
+            formData.append('logo', this.selectedLogo, this.selectedLogo.name);
+        }
+
+        if (this.descImages && this.descImages.length > 0) {
+            this.isImageChange = true;
+            this.descImages.forEach((img, index) => {
+                formData.append(`description ${index}`, img, img.name);
+            });
+        }
+
+        return formData;
+    }
+
+    replaceBase64FromDescription(news: NewsModel) {
+        const regex = /<img\ssrc="([^&]+)">/;
+        this.listBase64s.forEach((base64, index) => {
+            news.description = news.description.replace(regex, `{${index}}`);
+        });
+    }
+
+    onSubmit() {
+        if (this.validateForm()) {
+
+            this.isUploading = true;
+            const news = lodash.cloneDeep(this.selectedNews);
+            //
+            // name
+            news.name = this.replaceMoreSpace(news.name);
+            //
+            // date created
+            news.dateCreated = formatDate(new Date(), 'HH:MM MMM, dd yyyy', 'en');
+            //
+            // Get img from description and return list base64 to replace
+            this.getImageFromDescription(this.selectedNews.description);
+            //
+            // description
+            this.replaceBase64FromDescription(news);
+            //
+            // create FormData to post API
+            const formData = this.createFormData();
+
+            if (this.selectedNews.id) {
+                this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
+                    .subscribe(() => {
+                        if (this.isImageChange) {
+                            this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                                this.isImageChange = false;
+                                alert('Update Successfully');
+                                this.router.navigate(['admin/news']);
+                            });
+                        } else {
+                            alert('Update Successfully');
+                            this.router.navigate(['admin/news']);
+                        }
+                    });
+            } else {
+                this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
+                    .subscribe(id => {
+                        this.newsService.adminNews.id = id;
+                        news.id = id;
+
+                        if (this.isImageChange) {
+                            this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                                this.isImageChange = false;
+                                alert('Add Successfully');
+                                this.router.navigate(['admin/news']);
+                            });
+                        } else {
+                            alert('Add Successfully');
+                            this.router.navigate(['admin/news']);
+                        }
+                    });
+            }
+        }
+    }
+
+    backClick() {
+        // this.newsService.adminNews = null;
+        this.router.navigate(['admin/news']);
+    }
 }

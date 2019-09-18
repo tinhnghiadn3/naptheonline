@@ -32,8 +32,8 @@ namespace NapTheOnline.Controllers
                 if (pageIndex == 0)
                 return allNews;
 
-                var take = 10;
-                var skip = pageIndex * 10;
+                var take = 5;
+                var skip = (pageIndex -1) * 5;
                 return allNews.Skip(skip).Take(take).ToList();
             }
             catch (Exception ex)

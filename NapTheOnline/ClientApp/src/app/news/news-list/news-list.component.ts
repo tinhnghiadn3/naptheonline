@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {Utility} from '../../share/utility';
 import {NewsService} from '../../service/news.service';
 import {NewsModel} from '../../share/view-model/news.model';
+import {NEWS} from '../../share/mock-data';
 
 @Component({
     selector: 'app-news-list',
@@ -24,14 +24,14 @@ export class NewsListComponent implements OnInit {
 
     getGames() {
         // todo: this is for UI designer
-        // this.listNews = NEWS;
-        // this.getBestViewed();
+        this.listNews = NEWS;
+        this.getBestViewed();
 
-        this.newsService.getNews(0).subscribe(res => {
-            this.listNews = res;
-            this.listNews = Utility.generateFriendlyName(this.listNews);
-            this.getBestViewed();
-        });
+        // this.newsService.getNews(0).subscribe(res => {
+        //     this.listNews = res;
+        //     this.listNews = Utility.generateFriendlyName(this.listNews);
+        //     this.getBestViewed();
+        // });
     }
 
     getBestViewed() {

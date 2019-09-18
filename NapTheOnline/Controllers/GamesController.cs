@@ -27,12 +27,18 @@ namespace NapTheOnline.Controllers
         /// GET: api/Games
         /// </summary>
         /// <returns>All game</returns>
-        [HttpGet]
-        public async Task<List<Game>> GetGame()
+        [HttpGet("{pageIndex}")]
+        public async Task<List<Game>> GetGames([FromRoute]int pageIndex)
         {
             try
             {
-                return await _context.Game.ToListAsync();
+                var allGames = await _context.Game.ToListAsync();
+                if (pageIndex == 0)
+                    return allGames;
+
+                var take = 5;
+                var skip = (pageIndex - 1) * take;
+                return allGames.Skip(skip).Take(take).ToList();
             }
             catch (Exception ex)
             {

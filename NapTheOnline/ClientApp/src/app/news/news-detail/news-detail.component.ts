@@ -1,7 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NewsModel} from '../../share/view-model/news.model';
-import {GameModel} from '../../share/view-model/game.model';
-import {GamesService} from '../../service/games.service';
 import {Router} from '@angular/router';
 import {NewsService} from '../../service/news.service';
 

@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NewsModel} from '../../../share/view-model/news.model';
 import {NewsService} from '../../../service/news.service';
+import {Utility} from '../../../share/utility';
+import {GameModel} from '../../../share/view-model/game.model';
+import * as lodash from 'lodash';
 import {NEWS} from '../../../share/mock-data';
 
 @Component({
@@ -11,8 +14,11 @@ import {NEWS} from '../../../share/mock-data';
 })
 export class AdminNewsListComponent implements OnInit {
     listNews: NewsModel[];
-    pageIndex: 1;
-    pageSize: 5;
+    listNewsClone: NewsModel[];
+    searchExp: string;
+
+    pageIndex = 1;
+    maxPage: number;
     totalPage = [];
 
     constructor(private router: Router,
@@ -26,17 +32,29 @@ export class AdminNewsListComponent implements OnInit {
     refreshList() {
         // todo: this is for UI designer
         this.listNews = NEWS;
-        this.getListPagination();
-        // this.newsService.getNews(pageIndex).subscribe(res => {
-        //     this.listNews = res;
-        //     this.listNews = Utility.generateFriendlyName(this.listNews);
-        // });
+        this.listNewsClone = lodash.cloneDeep(this.listNews);
+
+        // this.changePage(1);
     }
 
-    changePage() {
+    search() {
+        if (this.searchExp && this.searchExp.trim().length > 0) {
+            this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
+            this.pageIndex = 1;
+            this.getListPagination();
+        }
+    }
+
+    changePage(pageIndex) {
+        if (this.pageIndex === pageIndex || pageIndex <= 0 || pageIndex > this.maxPage) {
+            return;
+        }
+
         // this.newsService.getNews(pageIndex).subscribe(res => {
         //     this.listNews = res;
         //     this.listNews = Utility.generateFriendlyName(this.listNews);
+        //     this.listNewsClone = lodash.cloneDeep(this.listNews);
+        //     this.getListPagination();
         // });
     }
 
@@ -45,10 +63,11 @@ export class AdminNewsListComponent implements OnInit {
             const listPagination = [];
             const length = this.listNews.length;
             if (length <= 5) {
+                this.maxPage = 1;
                 listPagination.push(1);
             } else {
-                const totalPage = Math.floor(length / 5);
-                for (let i = 1; i <= totalPage; i++) {
+                this.maxPage = Math.floor(length / 5);
+                for (let i = 1; i <= this.maxPage; i++) {
                     listPagination.push(i);
                 }
             }
@@ -60,17 +79,17 @@ export class AdminNewsListComponent implements OnInit {
 
     openForEdit(news: NewsModel) {
         this.newsService.adminNews = news;
-        this.router.navigate([`admin/news/${news.friendlyName}`]);
+        this.router.navigate([`admin/news/${news.friendlyName}`]).then();
     }
 
     createNews() {
         this.newsService.adminNews = new NewsModel();
-        this.router.navigate([`admin/news/creating`]);
+        this.router.navigate([`admin/news/creating`]).then();
     }
 
     deleteNews(id: number) {
         if (confirm('Are you sure to delete this record?')) {
-            this.newsService.deleteNews(id).subscribe(res => {
+            this.newsService.deleteNews(id).subscribe(() => {
                     const index = this.listNews.findIndex(_ => _.id === id);
                     if (index > -1) {
                         this.listNews.splice(index, 1);
@@ -78,7 +97,7 @@ export class AdminNewsListComponent implements OnInit {
                     // this.refreshList();
                     alert('Deleted Successfully');
                 },
-                error => {
+                () => {
                     alert('Deleted Failed');
                 }
             );
