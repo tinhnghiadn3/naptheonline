@@ -42,6 +42,8 @@ export class AdminGamesListComponent implements OnInit {
             this.games = this.gamesClone.filter(_ => _.name.includes(this.searchExp));
             this.pageIndex = 1;
             this.getListPagination();
+        } else {
+            this.games = this.gamesClone;
         }
     }
 

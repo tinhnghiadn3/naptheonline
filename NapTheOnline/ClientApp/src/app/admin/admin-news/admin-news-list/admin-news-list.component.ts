@@ -42,6 +42,8 @@ export class AdminNewsListComponent implements OnInit {
             this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
             this.pageIndex = 1;
             this.getListPagination();
+        } else {
+            this.listNews = this.listNewsClone;
         }
     }
 
