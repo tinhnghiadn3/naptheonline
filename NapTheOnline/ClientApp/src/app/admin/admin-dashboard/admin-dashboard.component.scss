@@ -4,6 +4,18 @@
     overflow-x: hidden;
 }
 
+.flex-one {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+}
+
+.content {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+}
+
 :host {
     background-color: #f8f9fc;
     width: 100%;
@@ -116,7 +128,6 @@
 //        }
 //    }
 //}
-
 //@media (min-width: 576px) {
 //    .topbar {
 //        .dropdown {
@@ -207,7 +218,6 @@
 //    -webkit-box-shadow: none !important;
 //    box-shadow: none !important;
 //}
-
 .bg-gray-100 {
     background-color: #f8f9fc !important;
 }
@@ -383,4 +393,14 @@
 .rotate-n-15 {
     -webkit-transform: rotate(-15deg);
     transform: rotate(-15deg);
+}
+
+:host {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }

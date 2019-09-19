@@ -1,3 +1,9 @@
+:host {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+}
+
 .game-manger {
     color: #858796;
     table {

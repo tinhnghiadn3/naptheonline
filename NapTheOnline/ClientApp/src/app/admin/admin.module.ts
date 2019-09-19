@@ -17,6 +17,7 @@ import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-n
 import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
 import { AdminNewsListComponent } from './admin-news/admin-news-list/admin-news-list.component';
 import { AdminNavHeaderComponent } from './admin-nav-header/admin-nav-header.component';
+import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AdminNavHeaderComponent } from './admin-nav-header/admin-nav-header.com
     AdminNewsDetailComponent,
     AdminGamesListComponent,
     AdminNewsListComponent,
-    AdminNavHeaderComponent],
+    AdminNavHeaderComponent,
+    AdminFooterComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([

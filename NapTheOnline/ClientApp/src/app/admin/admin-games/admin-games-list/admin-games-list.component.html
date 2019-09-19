@@ -22,49 +22,41 @@
                     </div>
                     <table class="table table-hover">
                         <thead class="thead-light">
-                        <th>No.</th>
-                        <th>Name</th>
-                        <th>Logo</th>
-                        <th>Banner</th>
-                        <th>
-                        </th>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Logo</th>
+                            <th>Banner</th>
+                            <th>
+                            </th>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let item of games, let i = index">
-                            <th>{{i + 1}}</th>
-                            <th class="name">{{item.name}}</th>
-                            <td><img src="{{item.logo}}" class="logo-list" alt="" height=48 width=48/></td>
-                            <td><img src="{{item.banner}}" class="banner-list" alt="" height=50 width=300/>
-                            </td>
-                            <td class="text-right action-controls">
-                                <a class="btn text-info" (click)="openForEdit(item)" title="Edit"><i
+                            <tr *ngFor="let item of games, let i = index">
+                                <th>{{i + 1}}</th>
+                                <th class="name">{{item.name}}</th>
+                                <td><img src="{{item.logo}}" class="logo-list" alt="" height=48 width=48/></td>
+                                <td><img src="{{item.banner}}" class="banner-list" alt="" height=50 width=300/>
+                                </td>
+                                <td class="text-right action-controls">
+                                    <a class="btn text-info" (click)="openForEdit(item)" title="Edit"><i
                                     class="far fa-edit"></i></a>
-                                <a class="btn text-danger" (click)="deleteGame(item.id)" title="Delete"><i
+                                    <a class="btn text-danger" (click)="deleteGame(item.id)" title="Delete"><i
                                     class="far fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="row">
                         <div class="col-sm-12 col-md-7">
                             <div class="dataTables_paginate">
                                 <ul class="pagination">
-                                    <li class="paginate_button page-item previous"
-                                        [ngClass]="{disabled: pageIndex === 1}" (click)="changePage(pageIndex - 1)">
-                                        <a aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-                                           class="page-link">Previous</a>
+                                    <li class="paginate_button page-item previous" [ngClass]="{disabled: pageIndex === 1}" (click)="changePage(pageIndex - 1)">
+                                        <a aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                     </li>
-                                    <li *ngFor="let i of totalPage" class="paginate_button page-item"
-                                        [ngClass]="{active: i == pageIndex}"
-                                        (click)="changePage(i)">
-                                        <a aria-controls="dataTable" tabindex="0"
-                                           class="page-link">{{i}}</a>
+                                    <li *ngFor="let i of totalPage" class="paginate_button page-item" [ngClass]="{active: i == pageIndex}" (click)="changePage(i)">
+                                        <a aria-controls="dataTable" tabindex="0" class="page-link">{{i}}</a>
                                     </li>
-                                    <li class="paginate_button page-item next"
-                                        [ngClass]="{disabled: pageIndex === maxPage}"
-                                        (click)="changePage(pageIndex + 1)">
-                                        <a aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-                                           class="page-link">Next</a>
+                                    <li class="paginate_button page-item next" [ngClass]="{disabled: pageIndex === maxPage}" (click)="changePage(pageIndex + 1)">
+                                        <a aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
                                     </li>
                                 </ul>
                             </div>
