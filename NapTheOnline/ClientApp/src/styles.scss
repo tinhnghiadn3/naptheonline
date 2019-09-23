@@ -142,13 +142,18 @@ body {
     text-align: center;
     padding: 45px 15px;
     background: #fff;
-    border-radius: 15px;
+    border-radius: 6px;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
 .game-product-list .content-game:hover {
     box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.1);
     transition: 0.3s;
+}
+
+.game-product-list .content-game:hover h3 {
+    color: #3D86BA;
 }
 
 .game-product-list .content-game .image-game {
@@ -327,6 +332,7 @@ a {
 
 .news-247 .card {
     background: transparent;
+    border: none;
 }
 
 .news-247 img {
@@ -334,6 +340,7 @@ a {
     padding: 0;
     max-width: 100%;
     height: auto;
+    border-radius: 3px;
 }
 
 .news-247 .new-thumb .title-thumb {
@@ -619,4 +626,24 @@ a:hover {
     .btn_register {
         text-align: center !important;
     }
+}
+
+.container-medium {
+    max-width: 992px;
+}
+
+@media (min-width: 1200px) {
+    col-lg-15 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+.bg-white {
+    background-color: #Fff!important;
+}
+
+.btn-primary-main {
+    background: #3b649f;
+    color: #Fff;
 }

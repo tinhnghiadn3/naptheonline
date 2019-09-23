@@ -1,21 +1,21 @@
-<nav class="navbar navbar-expand-lg  border-nav zi-3">
+<nav class="navbar navbar-expand-lg  border-nav zi-3 bg-white">
     <div class="container">
         <div class="row">
-            <div class="col-4 col-sm-3 col-md-2 mr-auto">
+            <div class="col-4 col-sm-3 col-md-3 mr-auto">
                 <a class="navbar-brand logo" href="#">
                     <img src="../../../assets/images/247.png" alt="Wicodus" class="logo-light mx-auto">
                 </a>
             </div>
             <div class="col-4 d-none d-lg-block mx-auto">
-                <!--        <form class="input-group border-0 bg-transparent">-->
-                <!--          <input class="form-control" type="search" placeholder="Search" aria-label="Search">-->
-                <!--          <div class="input-group-append">-->
-                <!--            <button class="btn btn-sm btn-warning text-secondary my-0 mx-0" type="submit"><i class="fas fa-search"></i>-->
-                <!--            </button>-->
-                <!--          </div>-->
-                <!--        </form>-->
+                <form class="input-group border-0 bg-transparent">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sm btn-primary-main text-light my-0 mx-0" type="submit"><i class="fas fa-search"></i>
+                           </button>
+                    </div>
+                </form>
             </div>
-            <div class="col-8 col-sm-8 col-md-8 col-lg-6 col-xl-4 ml-auto text-right">
+            <div class="col-8 col-sm-8 col-md-8 col-lg-6 col-xl-3 ml-auto text-right">
                 <a class="btn btn-sm btn-warning text-secondary mr-2" href="#" data-toggle="modal" data-target="#userLogin">Sign
           in</a>
                 <a class="btn btn-sm text-dark d-none d-sm-inline-block" href="#">Sign up</a>
@@ -37,7 +37,7 @@
         </div>
     </div>
 </nav>
-<nav class="navbar navbar-expand-lg mb-4 box-menu">
+<nav class="navbar navbar-expand-lg mb-4 box-menu bg-white">
     <div class="container">
         <button class="navbar-toggler navbar-toggler-fixed" type="button" data-toggle="collapse" data-target="#collapsingNavbar" aria-controls="collapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">☰
     </button>
@@ -49,21 +49,36 @@
                 <!--          </a>-->
                 <!--        </li>-->
                 <li class="nav-item">
+                    <a class="nav-link pl-lg-0" href="/">
+                        <span>Dịch vụ game</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
-                        <span>Tin tức</span>
+                        <span>Tin tức game</span>
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
+                        <span>Thông tin game</span>
+                    </a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
+                        <span>Mẹo chơi game</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
-                        <span>Thông tin game</span>
+                        <span>Công nghệ</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/about']">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/support']">Support</a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
