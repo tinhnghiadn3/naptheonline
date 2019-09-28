@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header-top-info">
             <a href="tel:0964277992">
-                Hotline: 
+                Hotline:
                 <span> +84 964 277 992</span>
             </a>
             <a href="">
@@ -30,10 +30,12 @@
             </div>
             <div class="col-4 d-none d-lg-block mx-auto">
                 <form class="input-group border-0 bg-transparent">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control" [(ngModel)]="searchExp" type="search"
+                        placeholder="Tìm kiếm tin tức" aria-label="Search" name="searchExp">
                     <div class="input-group-append">
-                        <button class="btn btn-sm btn-primary-main text-light my-0 mx-0" type="submit"><i class="fas fa-search"></i>
-                           </button>
+                        <button (click)="search()" class="btn btn-sm btn-primary-main text-light my-0 mx-0" type="submit"><i
+                                class="fas fa-search"></i>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -43,96 +45,39 @@
                     <span>Hotline</span>
                     <p><a href="tel:+84766735279">0766.735.279</a></p>
                 </div>
-
-                <!-- <a class="btn btn-sm btn-warning text-secondary mr-2" href="#" data-toggle="modal" data-target="#userLogin">Sign
-          in</a>
-                <a class="btn btn-sm text-dark d-none d-sm-inline-block" href="#">Sign up</a>
-                <ul class="nav navbar-nav d-none d-sm-inline-flex flex-row">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle small" href="#" id="dropdownGaming" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="mr-2 fas fa-globe"></i>EN </a>
-                        <div class="dropdown-menu position-absolute" aria-labelledby="dropdownGaming">
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Deutsch</a>
-                            <a class="dropdown-item" href="#">Español</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link small" href="" data-toggle="offcanvas" data-target="#offcanvas-cart"><i
-              class="fas fa-shopping-cart"></i></a>
-                    </li>
-                </ul> -->
             </div>
         </div>
     </div>
 </nav>
 <nav class="navbar navbar-expand-lg mb-4 box-menu bg-white">
     <div class="container">
-        <button class="navbar-toggler navbar-toggler-fixed" type="button" data-toggle="collapse" data-target="#collapsingNavbar" aria-controls="collapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">☰
-    </button>
+        <button class="navbar-toggler navbar-toggler-fixed" type="button" data-toggle="collapse"
+            data-target="#collapsingNavbar" aria-controls="collapsingNavbar" aria-expanded="false"
+            aria-label="Toggle navigation">☰
+        </button>
         <div class="collapse navbar-collapse" id="collapsingNavbar">
             <ul class="navbar-nav">
-                <!--        <li class="nav-item">-->
-                <!--          <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/pay']">-->
-                <!--            <span>Nạp game</span>-->
-                <!--          </a>-->
-                <!--        </li>-->
                 <li class="nav-item">
-                    <a class="nav-link pl-lg-0" href="/">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
                         <span>Dịch vụ game</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" (click)="changeNewType(1)">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
                         <span>Tin tức game</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
-                        <span>Thông tin game</span>
-                    </a>
-                </li> -->
-                <li class="nav-item">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
+                <li class="nav-item" (click)="changeNewType(2)">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
                         <span>Mẹo chơi game</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
+                <li class="nav-item" (click)="changeNewType(3)">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
                         <span>Công nghệ</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/about']">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/support']">Support</a>
-                </li> -->
             </ul>
         </div>
     </div>
 </nav>
-
-<!--<header>-->
-<!--  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3'>-->
-<!--    <div class="container">-->
-<!--      <a class="navbar-brand" [routerLink]='["/"]'>NapTheOnline</a>-->
-<!--      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"-->
-<!--              [attr.aria-expanded]="isExpanded" (click)="toggle()">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--      </button>-->
-<!--      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]='{"show": isExpanded}'>-->
-<!--        <ul class="navbar-nav flex-grow">-->
-<!--          <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>-->
-<!--            <a class="nav-link text-dark" [routerLink]='["/"]'>Home</a>-->
-<!--          </li>-->
-<!--          <li class="nav-item" [routerLinkActive]='["link-active"]'>-->
-<!--            <a class="nav-link text-dark" [routerLink]='["/counter"]'>Counter</a>-->
-<!--          </li>-->
-<!--          <li class="nav-item" [routerLinkActive]='["link-active"]'>-->
-<!--            <a class="nav-link text-dark" [routerLink]='["/fetch-data"]'>Fetch data</a>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </nav>-->
-<!--</header>-->

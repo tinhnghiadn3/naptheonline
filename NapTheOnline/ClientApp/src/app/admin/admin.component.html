@@ -1,6 +1,6 @@
-<app-admin-login *ngIf="isLoggedIn" (loggedIn)="loggedIn()"></app-admin-login>
+<!-- <app-admin-login *ngIf="isLoggedIn" (loggedIn)="loggedIn()"></app-admin-login> -->
 <!-- Page Wrapper -->
-<div id="wrapper" *ngIf="!isLoggedIn">
+<div id="wrapper">
     <app-admin-nav-menu></app-admin-nav-menu>
     <router-outlet></router-outlet>
 </div>

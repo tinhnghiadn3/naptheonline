@@ -38,4 +38,11 @@ export const CARD_PRICE = [
   {value: PRICE_VALUE['1.000. 000'], text: '1.000.000 VND'},
 ];
 
+
+export const NEW_TYPES = [
+    {value: 1, text: 'Tin tức game'},
+    {value: 2, text: 'Mẹo chơi game'},
+    {value: 3, text: 'Công nghệ'},
+  ];
+
 export const ALLOWED_FILE_TYPES = '.jpg,.jpeg,.png,.gif';

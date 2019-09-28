@@ -13,14 +13,14 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router,
               private viewportScroller: ViewportScroller) {
-    router.events.subscribe(e => {
+    this.router.events.subscribe(e => {
       if (e instanceof NavigationStart && e.url.includes('/admin')) {
         this.isAdmin = true;
       }
 
       if (event => event instanceof NavigationEnd) {
         document.body.scrollTop = 0;
-        // viewportScroller.scrollToPosition([0, 0]);
+        viewportScroller.scrollToPosition([0, 0]);
       }
     });
   }

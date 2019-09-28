@@ -32,10 +32,16 @@
                                               [required]="true"></textarea>
                                     <span style="color: red">{{message}}</span>
                                 </div>
-                            </div>
-                            <div class="col-12 mt-2">
-                                <div class="row">
-
+                                <div class="form-group mt-2">
+                                    <label>Type</label>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          {{typeName}}
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <a *ngFor="let item of newTypes" (click)="typeChange(item.value)" class="dropdown-item">{{item.text}}</a>
+                                        </div>
+                                      </div>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">

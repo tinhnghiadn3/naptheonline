@@ -24,15 +24,7 @@ const routes: Routes = [
       {
         path: 'pay',
         loadChildren: './pay-game/pay-game.module#PayGameModule'
-      },
-      {
-        path: 'about',
-        loadChildren: './about/about.module#AboutModule'
-      },
-      {
-        path: 'support',
-        loadChildren: './support/support.module#SupportModule'
-      },
+      }
     ]
   },
 ];

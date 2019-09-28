@@ -258,7 +258,7 @@ export class AdminGameDetailComponent implements OnInit {
       // create FormData to post API
       const formData = this.createFormData();
 
-      if (this.game.id) {
+      if (!this.game.id) {
         this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
           .subscribe(() => {
             if (this.isImageChange) {

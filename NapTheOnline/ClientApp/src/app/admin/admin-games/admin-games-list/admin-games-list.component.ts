@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {GameModel} from '../../../share/view-model/game.model';
-import {Router} from '@angular/router';
-import {GamesService} from '../../../service/games.service';
-import {GAMES} from '../../../share/mock-data';
+import { Component, OnInit } from '@angular/core';
+import { GameModel } from '../../../share/view-model/game.model';
+import { Router } from '@angular/router';
+import { GamesService } from '../../../service/games.service';
+import { GAMES } from '../../../share/mock-data';
 import * as lodash from 'lodash';
-import {Utility} from '../../../share/utility';
+import { Utility } from '../../../share/utility';
 
 @Component({
     selector: 'app-admin-games-list',
@@ -60,13 +60,13 @@ export class AdminGamesListComponent implements OnInit {
     deleteGame(id: number) {
         if (confirm('Are you sure to delete this record?')) {
             this.gamesService.deleteGame(id).subscribe(res => {
-                    const index = this.games.findIndex(_ => _.id === id);
-                    if (index > -1) {
-                        this.games.splice(index, 1);
-                    }
-                    // this.refreshList();
-                    alert('Deleted Successfully');
-                },
+                const index = this.games.findIndex(_ => _.id === id);
+                if (index > -1) {
+                    this.games.splice(index, 1);
+                }
+                // this.refreshList();
+                alert('Deleted Successfully');
+            },
                 error => {
                     alert('Deleted Failed');
                 }
@@ -75,16 +75,21 @@ export class AdminGamesListComponent implements OnInit {
     }
 
     changePage(pageIndex) {
-        if (this.pageIndex === pageIndex || pageIndex <= 0 || pageIndex > this.maxPage) {
+        if ((this.pageIndex === pageIndex && this.pageIndex > 1) || pageIndex <= 0 || pageIndex > this.maxPage) {
             return;
         }
 
-        // this.gamesService.getGames(pageIndex).subscribe(res => {
-        //     this.games = res;
-        //     this.games = Utility.generateFriendlyName(this.games);
-        // this.gamesClone = lodash.cloneDeep(this.games);
-        //     this.getListPagination();
-        // });
+        this.gamesService.getGames(pageIndex).subscribe(res => {
+            this.games = res;
+            this.games = Utility.generateFriendlyName(this.games);
+
+            // if (this.games.length === 0) {
+                this.games = GAMES;
+            // }    
+
+            this.gamesClone = lodash.cloneDeep(this.games);
+            this.getListPagination();
+        });
     }
 
     getListPagination() {

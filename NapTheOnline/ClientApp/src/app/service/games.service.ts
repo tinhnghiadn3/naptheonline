@@ -18,7 +18,7 @@ export class GamesService {
   }
 
   getGames(pageIndex: number): Observable<GameModel[]> {
-    return this.baseService.get(`${this.gameUrl}/${pageIndex}`);
+    return this.baseService.get(`${this.gameUrl}/page/${pageIndex}`);
   }
 
   getPricesGame(gameId: number): Observable<PriceModel[]> {

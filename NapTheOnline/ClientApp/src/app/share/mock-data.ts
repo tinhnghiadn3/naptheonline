@@ -8,11 +8,11 @@ export const GAMES: GameModel[] = [
     name: 'Lord Mobile',
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'description',
-    prices: [{name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}],
+    prices: [{name: '50.000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}],
     friendlyName: 'lord-mobible'
   },
   {
@@ -22,11 +22,11 @@ export const GAMES: GameModel[] = [
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'lien quan is the best game in mobile',
     prices: [
-      {name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}
+      {name: '50000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}
     ],
     friendlyName: 'lien-quan'
   },
@@ -37,11 +37,11 @@ export const GAMES: GameModel[] = [
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'description',
     prices: [
-      {name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}
+      {name: '50000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}
     ],
     friendlyName: 'vo-lam-truyen-ky'
   },
@@ -51,11 +51,11 @@ export const GAMES: GameModel[] = [
     name: 'Gunny Mobile',
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'description',
-    prices: [{name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}],
+    prices: [{name: '50.000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}],
     friendlyName: 'gunny-mobible'
   },
   {
@@ -65,11 +65,11 @@ export const GAMES: GameModel[] = [
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'lien quan is the best game in mobile',
     prices: [
-      {name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}
+      {name: '50000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}
     ],
     friendlyName: 'auto-chess'
   },
@@ -80,11 +80,11 @@ export const GAMES: GameModel[] = [
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'description',
     prices: [
-      {name: '50.000 VNĐ', value: 600, isUpdating: false},
-      {name: '100000 VNĐ', value: 1300, isUpdating: false},
-      {name: '200.000 VNĐ', value: 2800, isUpdating: false},
-      {name: '500.000 VNĐ', value: 6000, isUpdating: false},
-      {name: '1.000.000 VNĐ', value: 15000, isUpdating: false}
+      {name: '50000', value: 600, isUpdating: false},
+      {name: '100000', value: 1300, isUpdating: false},
+      {name: '200000', value: 2800, isUpdating: false},
+      {name: '500000', value: 6000, isUpdating: false},
+      {name: '1000000', value: 15000, isUpdating: false}
     ],
     friendlyName: 'audition-mobile'
   },
@@ -101,7 +101,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news1'
+    friendlyName: 'news1',
+    typeId: 1
   },
   {
     id: 2,
@@ -112,7 +113,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news2'
+    friendlyName: 'news2',
+    typeId: 1
   },
   {
     id: 3,
@@ -123,7 +125,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news3'
+    friendlyName: 'news3',
+    typeId: 1
   },
   {
     id: 4,
@@ -134,7 +137,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news4'
+    friendlyName: 'news4',
+    typeId: 1
   },
   {
     id: 5,
@@ -145,7 +149,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news5'
+    friendlyName: 'news5',
+    typeId: 1
   },
   {
     id: 6,
@@ -156,7 +161,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news6'
+    friendlyName: 'news6',
+    typeId: 1
   },
   {
     id: 7,
@@ -167,7 +173,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news7'
+    friendlyName: 'news7',
+    typeId: 1
   },
   {
     id: 8,
@@ -178,7 +185,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news3'
+    friendlyName: 'news3',
+    typeId: 1
   },
   {
     id: 9,
@@ -189,7 +197,8 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news4'
+    friendlyName: 'news4',
+    typeId: 1
   },
   {
     id: 10,
@@ -200,6 +209,7 @@ export const NEWS: NewsModel[] = [
       '</div><div><br></div><div>test test test&#160;</div>' +
       '<div><img src=../../assets/uploads/Description_2019_09_02_09_00_4841.jpg /><br><div><br></div></div>',
     dateCreated: '21:09 Sep, 02 2019',
-    friendlyName: 'news5'
+    friendlyName: 'news5',
+    typeId: 1
   },
 ];

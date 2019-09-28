@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {AngularEditorConfig} from '@kolkov/angular-editor';
-import {ImagesService} from '../../../service/images.service';
-import {Router} from '@angular/router';
-import {finalize} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ImagesService } from '../../../service/images.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import * as lodash from 'lodash';
-import {NewsService} from '../../../service/news.service';
-import {NewsModel} from '../../../share/view-model/news.model';
-import {formatDate} from '@angular/common';
+import { NewsService } from '../../../service/news.service';
+import { NewsModel } from '../../../share/view-model/news.model';
+import { formatDate } from '@angular/common';
+import { NEW_TYPES } from 'src/app/share/constant';
 
 @Component({
     selector: 'app-admin-news-detail',
@@ -16,9 +17,13 @@ import {formatDate} from '@angular/common';
 export class AdminNewsDetailComponent implements OnInit {
 
     selectedNews: NewsModel;
-
     isValid = true;
     message: string;
+
+    // type
+    newTypes = NEW_TYPES;
+    typeName = 'Tin tức game';
+    typeId = 1;
 
     // logo
     selectedLogo: any;
@@ -48,10 +53,10 @@ export class AdminNewsDetailComponent implements OnInit {
         defaultFontName: '',
         defaultFontSize: '',
         fonts: [
-            {class: 'arial', name: 'Arial'},
-            {class: 'times-new-roman', name: 'Times New Roman'},
-            {class: 'calibri', name: 'Calibri'},
-            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+            { class: 'arial', name: 'Arial' },
+            { class: 'times-new-roman', name: 'Times New Roman' },
+            { class: 'calibri', name: 'Calibri' },
+            { class: 'comic-sans-ms', name: 'Comic Sans MS' }
         ],
         customClasses: [
             {
@@ -140,7 +145,7 @@ export class AdminNewsDetailComponent implements OnInit {
             const imageName = index + '.jpg';
             // call method that creates a blob from dataUri
             const imageBlob = this.dataURItoBlob(shortBase64);
-            const imageFile = new File([imageBlob], imageName, {type: 'image/jpg'});
+            const imageFile = new File([imageBlob], imageName, { type: 'image/jpg' });
             images.push(imageFile);
         });
 
@@ -154,7 +159,7 @@ export class AdminNewsDetailComponent implements OnInit {
         for (let i = 0; i < byteString.length; i++) {
             int8Array[i] = byteString.charCodeAt(i);
         }
-        return new Blob([int8Array], {type: 'image/jpeg'});
+        return new Blob([int8Array], { type: 'image/jpeg' });
     }
 
     validateForm() {
@@ -162,7 +167,7 @@ export class AdminNewsDetailComponent implements OnInit {
             this.message = 'Name is required';
             this.isValid = false;
         }
-        return this.isValid;
+        return this.isValid = true;
     }
 
     replaceMoreSpace(str) {
@@ -256,5 +261,10 @@ export class AdminNewsDetailComponent implements OnInit {
     backClick() {
         // this.newsService.adminNews = null;
         this.router.navigate(['admin/news']);
+    }
+
+    typeChange(value: number) {
+        this.selectedNews.typeId = value;
+        this.typeName = this.newTypes.find(_ => _.value === value).text;
     }
 }

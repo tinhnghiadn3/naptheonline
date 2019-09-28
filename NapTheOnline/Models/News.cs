@@ -15,6 +15,7 @@ namespace NapTheOnline.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string DateCreated { get; set; }
+        public int TypeId { get; set; }
 
         public virtual ICollection<ImageNews> ImageNews { get; set; }
     }

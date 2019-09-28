@@ -52,12 +52,12 @@ export class AdminNewsListComponent implements OnInit {
             return;
         }
 
-        // this.newsService.getNews(pageIndex).subscribe(res => {
-        //     this.listNews = res;
-        //     this.listNews = Utility.generateFriendlyName(this.listNews);
-        //     this.listNewsClone = lodash.cloneDeep(this.listNews);
-        //     this.getListPagination();
-        // });
+        this.newsService.getNews(pageIndex, 0).subscribe(res => {
+            this.listNews = res;
+            this.listNews = Utility.generateFriendlyName(this.listNews);
+            this.listNewsClone = lodash.cloneDeep(this.listNews);
+            this.getListPagination();
+        });
     }
 
     getListPagination() {

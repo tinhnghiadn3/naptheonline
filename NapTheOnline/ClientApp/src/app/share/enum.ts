@@ -9,6 +9,4 @@ export class Menus {
   'Nạp game': 1;
   'Tin tức': 2;
   'Thông tin game': 3;
-  'About us': 4;
-  'Support': 5;
 }

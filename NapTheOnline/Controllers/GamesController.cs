@@ -27,7 +27,7 @@ namespace NapTheOnline.Controllers
         /// GET: api/Games
         /// </summary>
         /// <returns>All game</returns>
-        [HttpGet("{pageIndex}")]
+        [HttpGet("page/{pageIndex}")]
         public async Task<List<Game>> GetGames([FromRoute]int pageIndex)
         {
             try
