@@ -1,35 +1,59 @@
 <section id="wrapper" class="new-login-register">
-  <div class="new-login-box">
-    <div class="white-box">
-      <h3 class="box-title m-b-0">Sign In to Admin</h3>
-      <form class="form-horizontal new-lg-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <div class="form-group  m-t-20">
-          <div class="col-xs-12">
-            <label>Email Address</label>
-            <input formControlName="emailAddress" class="form-control" type="text" [required]="true" placeholder="Email Address">
-          </div>
+    <div class="new-login-box">
+        <div class="login100-pic js-tilt d-none d-md-block" data-tilt="" style="will-change: transform; transform: perspective(300px) rotateX(0deg) rotateY(0deg);">
+            <img src="../../assets/images/pikachu.png" alt="IMG">
         </div>
-        <div class="form-group">
-          <div class="col-xs-12">
-            <label>Password</label>
-            <input formControlName="password" class="form-control" type="password" [required]="true" placeholder="Password">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-md-12">
-            <div class="checkbox checkbox-info pull-left p-t-0">
-              <input formControlName="isKeepSignedIn" id="checkbox-signup" type="checkbox">
-              <label for="checkbox-signup"> Remember me </label>
-            </div>
-          </div>
-        </div>
-        <div class="form-group text-center m-t-20">
-          <div class="col-xs-12">
-            <button class="btn btn-info btn-lg btn-block btn-rounded text-uppercase waves-effect waves-light" type="submit" [disabled]="!loginForm.valid">Log In
+        <div class="white-box">
+            <span class="login100-form-title">
+                Hello, Welcome Back
+                </span>
+            <form class="form-horizontal new-lg-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                <div class="form-group  m-t-20">
+                    <div class="row">
+                        <div class="col-12">
+                            <input formControlName="emailAddress" class="form-control input100" type="text" [required]="true" placeholder="Email Address">
+                            <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- <label>Password</label> -->
+                            <input formControlName="password" class="form-control input100" type="password" [required]="true" placeholder="Password">
+                            <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="checkbox checkbox-info pull-left p-t-0">
+                            <input formControlName="isKeepSignedIn" id="checkbox-signup" type="checkbox">
+                            <label for="checkbox-signup"> Remember me </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center m-t-20">
+                    <div class="col-xs-12">
+                        <button class="btn login100-form-btn" type="submit" [disabled]="!loginForm.valid">Log In
             </button>
-          </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-center p-t-136">
+                <a class="txt2" href="#">
+                napgameonline247.com
+                <i class="fas fa-gamepad ml-2" aria-hidden="true"></i>
+                </a>
+            </div>
+
+
         </div>
-      </form>
     </div>
-  </div>
 </section>
