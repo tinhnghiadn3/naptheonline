@@ -28,17 +28,18 @@ namespace NapTheOnline.Controllers
         /// </summary>
         /// <returns>All game</returns>
         [HttpGet("page/{pageIndex}")]
-        public async Task<List<Game>> GetGames([FromRoute]int pageIndex)
+        public async Task<ListResultModel<List<Game>>> GetGames([FromRoute]int pageIndex)
         {
             try
             {
                 var allGames = await _context.Game.ToListAsync();
                 if (pageIndex == 0)
-                    return allGames;
+                    return new ListResultModel<List<Game>>(allGames, allGames.Count);
 
                 var take = 5;
                 var skip = (pageIndex - 1) * take;
-                return allGames.Skip(skip).Take(take).ToList();
+                var result = allGames.Skip(skip).Take(take).ToList();
+                return new ListResultModel<List<Game>>(result, allGames.Count);
             }
             catch (Exception ex)
             {
@@ -336,9 +337,9 @@ namespace NapTheOnline.Controllers
                 if (descPath != null && !string.IsNullOrEmpty(descPath.DirPath))
                 {
                     fileUploads.DeleteImage(descPath.DirPath);
+                    _context.ImageGame.Remove(descPath);
                 }
 
-                _context.ImageGame.Remove(descPath);
                 await _context.SaveChangesAsync();
             }
         }

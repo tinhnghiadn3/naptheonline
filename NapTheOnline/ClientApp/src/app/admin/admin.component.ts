@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ShareService } from '../service/share.service';
 import { Router } from '@angular/router';
+import { AdminService } from '../service/admin.service';
+import { AccountLoginInputModel } from '../share/view-model/account-login-input.model';
 
 @Component({
     selector: 'app-admin',
@@ -9,16 +11,11 @@ import { Router } from '@angular/router';
 })
 
 export class AdminComponent implements OnInit {
+    currentUser: AccountLoginInputModel;
 
-    constructor(private shareService: ShareService,
+    constructor(private adminService: AdminService,
                 private router: Router) {
-        this.shareService.subscribeLogIn(value => {
-            if (value) {
-                this.router.navigate(['/admin/dashboard']);
-            } else {
-                this.router.navigate(['/admin/login']);
-            }
-        });
+        this.adminService.currentUser.subscribe(x => this.currentUser = x);
     }
 
     ngOnInit() {
