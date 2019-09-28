@@ -34,14 +34,17 @@ export class AdminLoginComponent implements OnInit {
             isKeepSignedIn: this.loginForm.value.isKeepSignedIn
         });
 
-        this.adminService.login(this.account).subscribe(
-            res => {
+
                 this.shareService.setLogIn(true);
                 this.router.navigate(['/admin/dashboard']);
-            },
-            error => {
-                alert('Wrong email or password.');
-            });
+        // this.adminService.login(this.account).subscribe(
+        //     res => {
+        //         // this.shareService.setLogIn(true);
+        //         // this.router.navigate(['/admin/dashboard']);
+        //     },
+        //     error => {
+        //         alert('Wrong email or password.');
+        //     });
     }
 
     forgotPass() {
