@@ -123,7 +123,7 @@ export class AdminNewsDetailComponent implements OnInit {
     getBase64(source) {
         const regexImg = /src="([^"]+)"/g;
         let imgBase64 = null;
-        const listBase64 = [];
+        let listBase64 = [];
         do {
             imgBase64 = regexImg.exec(source);
             if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
@@ -131,6 +131,7 @@ export class AdminNewsDetailComponent implements OnInit {
             }
         } while (imgBase64);
 
+        listBase64 = listBase64.filter(_ => _.match(/^data:image\/[a-z]+;base64,/));
         return listBase64;
     }
 
@@ -223,7 +224,7 @@ export class AdminNewsDetailComponent implements OnInit {
             // create FormData to post API
             const formData = this.createFormData();
 
-            if (this.selectedNews.id) {
+            if (!this.selectedNews.id) {
                 this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
                     .subscribe(() => {
                         if (this.isImageChange) {
