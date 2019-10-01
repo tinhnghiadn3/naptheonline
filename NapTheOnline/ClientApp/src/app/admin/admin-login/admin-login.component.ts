@@ -14,7 +14,6 @@ import { map, finalize, first } from 'rxjs/operators';
 export class AdminLoginComponent implements OnInit {
     isLoading: boolean;
     account: AccountLoginInputModel;
-    returnUrl: string;
 
     loginForm = new FormGroup({
         emailAddress: new FormControl('', Validators.required),
@@ -27,17 +26,16 @@ export class AdminLoginComponent implements OnInit {
                 private shareService: ShareService,
                 private router: Router) {
         if (this.adminService.currentUserValue) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/admin']);
         }
     }
 
     ngOnInit() {
-        this.returnUrl = this.route.snapshot.queryParams['admin/dashboard'] || '/';
     }
 
     onLogin() {
         this.account = new AccountLoginInputModel({
-            emailAddress: this.loginForm.value.emailAddress,
+            userName: this.loginForm.value.emailAddress,
             password: this.loginForm.value.password,
             isKeepSignedIn: this.loginForm.value.isKeepSignedIn
         });
@@ -54,7 +52,7 @@ export class AdminLoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    this.router.navigate(['/admin/dashboard']);
                 },
                 error => {
                     this.isLoading = false;
