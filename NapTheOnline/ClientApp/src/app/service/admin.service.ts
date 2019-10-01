@@ -25,13 +25,13 @@ export class AdminService {
 
   login(loginData: AccountLoginInputModel) {
     return this.baseService.post<any>(`${this.authenticationUrl}/login`, loginData)
-        .pipe(map(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this.currentUserSubject.next(user);
-            return user;
-        }));
-}
+      .pipe(map(user => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+        return user;
+      }));
+  }
 
   logout() {
     localStorage.removeItem('currentUser');

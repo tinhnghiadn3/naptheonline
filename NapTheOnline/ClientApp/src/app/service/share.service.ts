@@ -41,18 +41,4 @@ export class ShareService {
 
         this.newTypeSubject.next(newType);
     }
-
-    subscribeLogIn(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-        return this.logOutSubject.subscribe(next, error, complete);
-    }
-
-    setLogIn(value: boolean) {
-        const currentSection = this.logOutSubject.getValue();
-
-        if (value === currentSection) {
-            return;
-        }
-
-        this.logOutSubject.next(value);
-    }
 }
