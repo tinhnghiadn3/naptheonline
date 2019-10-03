@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using NapTheOnline.Service;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Controllers
 {
@@ -11,15 +10,22 @@ namespace NapTheOnline.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        public AuthenticationController()
+        private List<UserModel> _users = new List<UserModel>
         {
+            new UserModel { Id = 1, Username = "test", Password = "test" }
+        };
 
+        private UserService _userService;
+
+        public AuthenticationController(UserService userService)
+        {
+            _userService = userService;
         }
 
         [HttpPost("login")]
-        public bool Login()
+        public UserModel Login([FromBody]UserModel user)
         {
-            return true;
+            return _userService.Authenticate(user.Username, user.Password);
         }
     }
 }

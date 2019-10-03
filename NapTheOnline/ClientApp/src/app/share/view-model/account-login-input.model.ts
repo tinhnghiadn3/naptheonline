@@ -1,10 +1,10 @@
 export class AccountLoginInputModel {
-  emailAddress: string;
+  userName: string;
   password: string;
   isKeepSignedIn: boolean;
   token?: string;
 
   public constructor(init?: Partial<AccountLoginInputModel>) {
-    Object.assign(init, this);
+    Object.assign(this, init);
   }
 }

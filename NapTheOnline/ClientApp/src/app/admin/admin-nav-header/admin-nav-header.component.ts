@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ShareService } from 'src/app/service/share.service';
 import { Router } from '@angular/router';
+import { AdminService } from '../../service/admin.service';
+import { AccountLoginInputModel } from '../../share/view-model/account-login-input.model';
 
 @Component({
     selector: 'app-admin-nav-header',
@@ -10,16 +12,18 @@ import { Router } from '@angular/router';
 export class AdminNavHeaderComponent implements OnInit {
 
     @Input() nameComponent: string;
+    user: AccountLoginInputModel;
 
-    constructor(private shareService: ShareService,
+    constructor(private adminService: AdminService,
                 private router: Router) {
+        this.user = this.adminService.currentUserValue;
     }
 
     ngOnInit() {
     }
 
     logOut() {
-        this.shareService.setLogIn(false);
+        this.adminService.logout();
         this.router.navigate(['/admin/login']);
     }
 

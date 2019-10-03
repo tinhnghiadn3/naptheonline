@@ -49,6 +49,7 @@ export class NewsListComponent implements OnInit {
         // todo: this is for UI designer
         this.listNews = NEWS;
         this.getBestViewed();
+        this.filterList();
 
         // const that = this;
         // const newType = this.newType || 0;
