@@ -56,7 +56,7 @@
                                     <li class="paginate_button page-item previous" [ngClass]="{disabled: pageIndex === 1}" (click)="changePage(pageIndex - 1)">
                                         <a aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                     </li>
-                                    <li *ngFor="let i of totalPage" class="paginate_button page-item" [ngClass]="{active: i == pageIndex}" (click)="changePage(i)">
+                                    <li *ngFor="let i of totalPage" class="paginate_button page-item" (click)="changePage(i)" [class.active]="i === pageIndex">
                                         <a aria-controls="dataTable" tabindex="0" class="page-link">{{i}}</a>
                                     </li>
                                     <li class="paginate_button page-item next" [ngClass]="{disabled: pageIndex === maxPage}" (click)="changePage(pageIndex + 1)">

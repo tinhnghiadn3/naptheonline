@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {NewsModel} from '../share/view-model/news.model';
 import {GameModel} from '../share/view-model/game.model';
 import {PriceModel} from '../share/view-model/price.model';
+import { ListResult } from '../share/view-model/list-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class NewsService {
   constructor(private baseService: ApiService) {
   }
 
-  getNews(pageIndex: number, typeId: number): Observable<NewsModel[]> {
+  getNews(pageIndex: number, typeId: number): Observable<ListResult<NewsModel[]>> {
     return this.baseService.get(`${this.newUrl}/${typeId}/${pageIndex}`);
   }
 

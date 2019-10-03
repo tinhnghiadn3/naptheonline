@@ -51,7 +51,7 @@ export const GAMES: GameModel[] = [
     name: 'Gunny Mobile',
     banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
     description: 'description',
-    prices: [{name: '50.000', value: 600, isUpdating: false},
+    prices: [{name: '50000', value: 600, isUpdating: false},
       {name: '100000', value: 1300, isUpdating: false},
       {name: '200000', value: 2800, isUpdating: false},
       {name: '500000', value: 6000, isUpdating: false},

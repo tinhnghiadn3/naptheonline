@@ -13,6 +13,7 @@ import { Utility } from '../../../share/utility';
 })
 export class AdminGamesListComponent implements OnInit {
 
+    total: number;
     games: GameModel[];
     gamesClone: GameModel[];
     searchExp: string;
@@ -31,10 +32,10 @@ export class AdminGamesListComponent implements OnInit {
 
     refreshList() {
         // todo: this is for UI designer
-        this.games = GAMES;
-        this.gamesClone = lodash.cloneDeep(this.games);
+        // this.games = GAMES;
+        // this.gamesClone = lodash.cloneDeep(this.games);
 
-        // this.changePage(1);
+        this.changePage(1);
     }
 
     search() {
@@ -79,12 +80,14 @@ export class AdminGamesListComponent implements OnInit {
             return;
         }
 
+        this.pageIndex = pageIndex;
         this.gamesService.getGames(pageIndex).subscribe(res => {
-            this.games = res;
+            this.total = res.total;
+            this.games = res.result;
             this.games = Utility.generateFriendlyName(this.games);
 
             // if (this.games.length === 0) {
-                this.games = GAMES;
+                // this.games = GAMES;
             // }    
 
             this.gamesClone = lodash.cloneDeep(this.games);
@@ -93,14 +96,17 @@ export class AdminGamesListComponent implements OnInit {
     }
 
     getListPagination() {
-        if (this.games && this.games.length > 0) {
+        if (this.total > 0) {
             const listPagination = [];
-            const length = this.games.length;
-            if (length <= 5) {
+            if (this.total <= 5) {
                 this.maxPage = 1;
                 listPagination.push(1);
             } else {
-                this.maxPage = Math.floor(length / 5);
+                this.maxPage = Math.floor(this.total / 5);
+                if((this.total % 5) >= 1) {
+                    this.maxPage += 1;
+                }
+
                 for (let i = 1; i <= this.maxPage; i++) {
                     listPagination.push(i);
                 }
@@ -108,6 +114,5 @@ export class AdminGamesListComponent implements OnInit {
 
             this.totalPage = listPagination;
         }
-
     }
 }

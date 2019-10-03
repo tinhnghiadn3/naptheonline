@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginInputModel } from '../../share/view-model/account-login-input.model';
 import { AdminService } from '../../service/admin.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ShareService } from 'src/app/service/share.service';
+import { map, finalize, first } from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin-login',
@@ -11,20 +12,27 @@ import { ShareService } from 'src/app/service/share.service';
     styleUrls: ['./admin-login.component.scss']
 })
 export class AdminLoginComponent implements OnInit {
-
+    isLoading: boolean;
     account: AccountLoginInputModel;
+    returnUrl: string;
+
     loginForm = new FormGroup({
-        emailAddress: new FormControl(''),
-        password: new FormControl(''),
+        emailAddress: new FormControl('', Validators.required),
+        password: new FormControl('', Validators.required),
         isKeepSignedIn: new FormControl('false'),
     });
 
     constructor(private adminService: AdminService,
-                private shareService: ShareService,
-                private router: Router) {
+        private route: ActivatedRoute,
+        private shareService: ShareService,
+        private router: Router) {
+        if (this.adminService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
     }
 
     ngOnInit() {
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     onLogin() {
@@ -34,21 +42,22 @@ export class AdminLoginComponent implements OnInit {
             isKeepSignedIn: this.loginForm.value.isKeepSignedIn
         });
 
+        // this.submitted = true;
 
-                this.shareService.setLogIn(true);
-                this.router.navigate(['/admin/dashboard']);
-        // this.adminService.login(this.account).subscribe(
-        //     res => {
-        //         // this.shareService.setLogIn(true);
-        //         // this.router.navigate(['/admin/dashboard']);
-        //     },
-        //     error => {
-        //         alert('Wrong email or password.');
-        //     });
+        // stop here if form is invalid
+        if (this.loginForm.invalid) {
+            return;
+        }
+
+        this.isLoading = true;
+        this.adminService.login(this.account)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                    this.isLoading = false;
+                });
     }
-
-    forgotPass() {
-        this.router.navigate(['/admin/forgot']);
-    }
-
 }

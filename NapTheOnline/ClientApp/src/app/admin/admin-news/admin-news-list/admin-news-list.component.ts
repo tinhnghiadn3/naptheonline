@@ -13,6 +13,7 @@ import {NEWS} from '../../../share/mock-data';
     styleUrls: ['./admin-news-list.component.scss']
 })
 export class AdminNewsListComponent implements OnInit {
+    total: number;
     listNews: NewsModel[];
     listNewsClone: NewsModel[];
     searchExp: string;
@@ -52,8 +53,10 @@ export class AdminNewsListComponent implements OnInit {
             return;
         }
 
+        this.pageIndex = pageIndex;
         this.newsService.getNews(pageIndex, 0).subscribe(res => {
-            this.listNews = res;
+            this.total = res.total;
+            this.listNews = res.result;
             this.listNews = Utility.generateFriendlyName(this.listNews);
             this.listNewsClone = lodash.cloneDeep(this.listNews);
             this.getListPagination();
@@ -61,14 +64,17 @@ export class AdminNewsListComponent implements OnInit {
     }
 
     getListPagination() {
-        if (this.listNews && this.listNews.length > 0) {
+        if (this.total > 0) {
             const listPagination = [];
-            const length = this.listNews.length;
-            if (length <= 5) {
+            if (this.total <= 5) {
                 this.maxPage = 1;
                 listPagination.push(1);
             } else {
-                this.maxPage = Math.floor(length / 5);
+                this.maxPage = Math.floor(this.total / 5);
+                if((this.total % 5) >= 1) {
+                    this.maxPage += 1;
+                }
+
                 for (let i = 1; i <= this.maxPage; i++) {
                     listPagination.push(i);
                 }

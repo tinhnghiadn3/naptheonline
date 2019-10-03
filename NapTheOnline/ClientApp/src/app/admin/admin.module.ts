@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminComponent } from './admin.component';
 import { AdminNewsComponent } from './admin-news/admin-news.component';
@@ -12,13 +12,16 @@ import { AdminNavMenuComponent } from './admin-nav-menu/admin-nav-menu.component
 import { AdminGameDetailComponent } from './admin-games/admin-game-detail/admin-game-detail.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AdminNewsDetailComponent } from './admin-news/admin-news-detail/admin-news-detail.component';
 import { AdminGamesListComponent } from './admin-games/admin-games-list/admin-games-list.component';
 import { AdminNewsListComponent } from './admin-news/admin-news-list/admin-news-list.component';
 import { AdminNavHeaderComponent } from './admin-nav-header/admin-nav-header.component';
 import { AdminFooterComponent } from './admin-footer/admin-footer.component';
 import { AdminChangePassComponent } from './admin-change-pass/admin-change-pass.component';
+import { JwtInterceptor } from '../share/jwt.interceptor';
+import { ErrorInterceptor } from '../share/error.interceptor';
+import { AuthGuard } from '../share/auth.guard';
 
 @NgModule({
     declarations: [
@@ -39,10 +42,9 @@ import { AdminChangePassComponent } from './admin-change-pass/admin-change-pass.
     imports: [
         CommonModule,
         RouterModule.forChild([
-            { path: '', redirectTo: 'login', pathMatch: 'full' },
             {
                 path: '',
-                component: AdminComponent,
+                component: AdminComponent, canActivate: [AuthGuard],
                 children: [
                     {
                         path: '', redirectTo: 'dashboard', pathMatch: 'full'
@@ -52,8 +54,8 @@ import { AdminChangePassComponent } from './admin-change-pass/admin-change-pass.
                         component: AdminDashboardComponent,
                     },
                     {
-                        path: 'forgot',
-                        component: AdminForgotPassComponent
+                        path: 'change-pass',
+                        component: AdminChangePassComponent
                     },
                     {
                         path: 'games',
@@ -89,11 +91,24 @@ import { AdminChangePassComponent } from './admin-change-pass/admin-change-pass.
                 path: 'login',
                 component: AdminLoginComponent,
             },
+            { path: '**', redirectTo: '' }
         ]),
         SharedModule,
         AngularEditorModule,
         FormsModule
-    ]
+    ],
+    providers: [
+        {
+            provide:  forwardRef(() => { HTTP_INTERCEPTORS }),
+            useExisting: JwtInterceptor,
+            multi: true
+        },
+        {
+            provide: forwardRef(() => { HTTP_INTERCEPTORS }),
+            useExisting: ErrorInterceptor,
+            multi: true
+        },
+    ],
 })
 export class AdminModule {
 }
