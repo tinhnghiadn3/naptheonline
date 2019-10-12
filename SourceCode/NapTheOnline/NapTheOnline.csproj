@@ -1,0 +1,227 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ClientApp\browserslist" />
+    <None Include="ClientApp\.DS_Store" />
+    <None Include="ClientApp\tsconfig.app.json" />
+    <None Include="ClientApp\.editorconfig" />
+    <None Include="ClientApp\README.md" />
+    <None Include="ClientApp\angular.json" />
+    <None Include="ClientApp\.gitignore" />
+    <None Include="ClientApp\package-lock.json" />
+    <None Include="ClientApp\package.json" />
+    <None Include="ClientApp\tslint.json" />
+    <None Include="ClientApp\karma.conf.js" />
+    <None Include="ClientApp\tsconfig.json" />
+    <None Include="ClientApp\tsconfig.spec.json" />
+    <None Include="ClientApp\e2e\tsconfig.e2e.json" />
+    <None Include="ClientApp\e2e\protractor.conf.js" />
+    <None Include="ClientApp\e2e\tsconfig.json" />
+    <None Include="ClientApp\src\browserslist" />
+    <None Include="ClientApp\src\favicon.ico" />
+    <None Include="ClientApp\src\index.html" />
+    <None Include="ClientApp\src\.DS_Store" />
+    <None Include="ClientApp\src\tsconfig.app.json" />
+    <None Include="ClientApp\src\styles.scss" />
+    <None Include="ClientApp\src\tslint.json" />
+    <None Include="ClientApp\src\karma.conf.js" />
+    <None Include="ClientApp\src\tsconfig.server.json" />
+    <None Include="ClientApp\src\tsconfig.spec.json" />
+    <None Include="ClientApp\src\app\app.component.html" />
+    <None Include="ClientApp\src\app\app.component.scss" />
+    <None Include="ClientApp\src\app\pay-game\pay-game.component.scss" />
+    <None Include="ClientApp\src\app\pay-game\pay-game.component.html" />
+    <None Include="ClientApp\src\app\admin\admin.component.html" />
+    <None Include="ClientApp\src\app\admin\admin.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-change-pass\admin-change-pass.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-change-pass\admin-change-pass.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-footer\admin-footer.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-footer\admin-footer.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-dashboard\admin-dashboard.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-dashboard\admin-dashboard.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-forgot-pass\admin-forgot-pass.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-forgot-pass\admin-forgot-pass.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-login\admin-login.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-login\admin-login.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news-list\admin-news-list.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news-list\admin-news-list.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news-detail\admin-news-detail.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-news\admin-news-detail\admin-news-detail.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-nav-menu\admin-nav-menu.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-nav-menu\admin-nav-menu.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-games.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-games.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-game-detail\admin-game-detail.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-game-detail\admin-game-detail.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-games-list\admin-games-list.component.html" />
+    <None Include="ClientApp\src\app\admin\admin-games\admin-games-list\admin-games-list.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-nav-header\admin-nav-header.component.scss" />
+    <None Include="ClientApp\src\app\admin\admin-nav-header\admin-nav-header.component.html" />
+    <None Include="ClientApp\src\app\news\news.component.scss" />
+    <None Include="ClientApp\src\app\news\news.component.html" />
+    <None Include="ClientApp\src\app\news\news-list\news-list.component.scss" />
+    <None Include="ClientApp\src\app\news\news-list\news-list.component.html" />
+    <None Include="ClientApp\src\app\news\news-detail\news-detail.component.scss" />
+    <None Include="ClientApp\src\app\news\news-detail\news-detail.component.html" />
+    <None Include="ClientApp\src\app\support\support.component.scss" />
+    <None Include="ClientApp\src\app\support\support.component.html" />
+    <None Include="ClientApp\src\app\games\games.component.html" />
+    <None Include="ClientApp\src\app\games\games.component.scss" />
+    <None Include="ClientApp\src\app\games\games-list\games-list.component.scss" />
+    <None Include="ClientApp\src\app\games\games-list\games-list.component.html" />
+    <None Include="ClientApp\src\app\games\games-detail\games-detail.component.scss" />
+    <None Include="ClientApp\src\app\games\games-detail\games-detail.component.html" />
+    <None Include="ClientApp\src\app\share\footer\footer.component.scss" />
+    <None Include="ClientApp\src\app\share\footer\footer.component.html" />
+    <None Include="ClientApp\src\app\share\nav-menu\nav-menu.component.html" />
+    <None Include="ClientApp\src\app\share\nav-menu\nav-menu.component.scss" />
+    <None Include="ClientApp\src\app\share\main\main.component.scss" />
+    <None Include="ClientApp\src\app\share\main\main.component.html" />
+    <None Include="ClientApp\src\assets\.DS_Store" />
+    <None Include="ClientApp\src\assets\.gitkeep" />
+    <None Include="ClientApp\src\assets\images\footer_bottom.png" />
+    <None Include="ClientApp\src\assets\images\lords.jpg" />
+    <None Include="ClientApp\src\assets\images\fbd.png" />
+    <None Include="ClientApp\src\assets\images\img_01.jpg" />
+    <None Include="ClientApp\src\assets\images\pikachu.png" />
+    <None Include="ClientApp\src\assets\images\banner.png" />
+    <None Include="ClientApp\src\assets\images\loading.gif" />
+    <None Include="ClientApp\src\assets\images\admin-logo.png" />
+    <None Include="ClientApp\src\assets\images\refresh.gif" />
+    <None Include="ClientApp\src\assets\images\logo.png" />
+    <None Include="ClientApp\src\assets\images\247.png" />
+    <None Include="ClientApp\src\assets\images\ftbd.png" />
+    <None Include="ClientApp\src\assets\images\dota-poster.jpg" />
+    <None Include="ClientApp\src\assets\images\battle.png" />
+    <None Include="ClientApp\src\assets\uploads\.DS_Store" />
+    <None Include="ClientApp\src\assets\uploads\Sample.txt" />
+    <None Include="ClientApp\src\assets\styles\style.min.scss" />
+    <None Include="ClientApp\src\assets\styles\sb-admin-2.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\e2e\src\app.e2e-spec.ts" />
+    <TypeScriptCompile Include="ClientApp\e2e\src\app.po.ts" />
+    <TypeScriptCompile Include="ClientApp\src\main.ts" />
+    <TypeScriptCompile Include="ClientApp\src\test.ts" />
+    <TypeScriptCompile Include="ClientApp\src\polyfills.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\app.server.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\app.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\app.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\pay-game\pay-game.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\pay-game\pay-game.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-change-pass\admin-change-pass.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-footer\admin-footer.component.spec.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-footer\admin-footer.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-dashboard\admin-dashboard.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-forgot-pass\admin-forgot-pass.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-login\admin-login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-news\admin-news.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-news\admin-news-list\admin-news-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-news\admin-news-detail\admin-news-detail.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-nav-menu\admin-nav-menu.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-games\admin-games.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-games\admin-game-detail\admin-game-detail.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-games\admin-games-list\admin-games-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\admin\admin-nav-header\admin-nav-header.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\news\news.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\news\news.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\news\news-list\news-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\news\news-detail\news-detail.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\support\support.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\support\support.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\api.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\pay-card.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\news.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\images.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\games.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\admin.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\share.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\games\games.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\games\games.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\games\games-list\games-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\games\games-detail\games-detail.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\enum.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\share.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\constant.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\jwt.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\utility.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\error.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\mock-data.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\string-helper.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\footer\footer.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\nav-menu\nav-menu.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\directive\auto-focus.directive.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\main\main.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\game.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\account-login-input.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\price.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\image-paths.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\list-result.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\share\view-model\news.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="ClientApp\src\environments\environment.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

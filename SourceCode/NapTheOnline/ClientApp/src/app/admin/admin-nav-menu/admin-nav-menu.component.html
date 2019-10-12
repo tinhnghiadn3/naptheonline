@@ -1,0 +1,46 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">N.C Admin <sup>24/7</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" [routerLink]="'/admin'" routerLinkActive="active">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        GAME MANAGER
+    </div>
+    <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/admin/games'">
+            <i class="fas fa-gamepad mr-2"></i>
+            <span>List games</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">
+        NEWS MANAGER
+    </div>
+    <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/admin/news'">
+            <i class="far fa-newspaper mr-2"></i>
+            <span>List news</span>
+        </a>
+    </li>
+
+</ul>
+<!-- End of Sidebar -->

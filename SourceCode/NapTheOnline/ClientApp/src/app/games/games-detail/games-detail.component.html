@@ -1,0 +1,77 @@
+<section class="game-detail">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a [routerLink]="'/games'">Trang chủ</a></li>
+            <li class="active">{{selectedGame.name}}</li>
+        </ul>
+        <div class="banner">
+            <img src="{{selectedGame.banner}}" alt="banner">
+        </div>
+
+        <div class="main-content">
+            <div class="main-title">
+                <img [src]="selectedGame.logo" class="attachment-full size-full wp-post-image" alt="">
+                <h1>{{selectedGame.name}}</h1>
+            </div>
+        </div>
+
+        <div class="main-payment">
+            <div class="main-paymtent-title">
+                <span class="main-section__title-channel-icon"></span>
+                <div class="main-section__title-txt main-section__title-channel"> Nạp thẻ</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-thanh-toan">
+
+                    <p class="text-center">
+                        <a [routerLink]="'/pay'"><img src="http://napcard.net/wp-content/uploads/2019/04/nap_ngay_the_game.gif"></a>
+                    </p>
+
+                </div>
+            </div>
+            <div class="col-md-offset-1 col-md-5">
+                <h2 class="table-title">Bảng giá</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr style="height: 24px;">
+                            <th class="text-danger">Mệnh giá</th>
+                            <th class="text-danger">Diamonds</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let price of selectedGame.prices" style="height: 24px;">
+                            <td>{{price.name}}</td>
+                            <td>{{price.value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <article class="chu-thich">
+            <div [innerHTML]="selectedGame.description"></div>
+            <p>
+                <img class="alignnone size-full wp-image-1541" src="http://napcard.net/wp-content/uploads/2019/07/nạp-lords-mobile-giá-rẻ.jpg" alt="" width="984" height="1088" srcset="https://napcard.net/wp-content/uploads/2019/07/nạp-lords-mobile-giá-rẻ.jpg 984w,
+              https://napcard.net/wp-content/uploads/2019/07/nạp-lords-mobile-giá-rẻ-768x849.jpg 768w" sizes="(max-width: 984px) 100vw, 984px"></p>
+            <blockquote>
+                <p><span class="_5mfr"><span class="_6qdm"><img draggable="false" class="emoji" alt="🔥"
+                                                        src="https://s.w.org/images/core/emoji/11/svg/1f525.svg"></span></span>&nbsp;<span class="_5mfr"><span class="_6qdm"><img draggable="false" class="emoji" alt="🔥"
+                                                 src="https://s.w.org/images/core/emoji/11/svg/1f525.svg"></span></span>&nbsp;
+                    <span class="_5mfr"><span class="_6qdm"><img draggable="false" class="emoji" alt="🔥"
+                                                       src="https://s.w.org/images/core/emoji/11/svg/1f525.svg"></span></span>&nbsp;<span style="color: #0000ff;"><strong>Xem thêm</strong></span> :</p>
+                <ul>
+                    <li><span style="font-size: 12pt;"><strong>Cách huấn luyện lính nhanh trong lord mobile</strong></span></li>
+                    <li><span style="font-size: 12pt;"><strong>Các tướng mạnh nhất trong lord mobile</strong></span></li>
+                    <li><span style="font-size: 12pt;"><strong>Cách lên lực chiến nhanh trong lords mobile</strong></span></li>
+                    <li><strong style="font-size: 12pt;">Đội hình săn quái lords mobile</strong></li>
+                </ul>
+            </blockquote>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        </article>
+
+    </div>
+</section>
