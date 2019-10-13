@@ -19,8 +19,8 @@ namespace NapTheOnline.Controllers
             _gameService = gameService;
         }
         // GET: api/games
-        [HttpGet]
-        public ActionResult<List<Game>> Get() => _gameService.Get();
+        [HttpGet("page/{pageIndex}")]
+        public ActionResult<List<Game>> Get(int pageIndex) => _gameService.GetGame(pageIndex);
 
         // GET api/games/5
         [HttpGet("{id:length(24)}", Name = "GetGame")]
