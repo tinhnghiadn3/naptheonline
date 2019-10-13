@@ -9,12 +9,12 @@ namespace NapTheOnline.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public string Logo { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Banner { get; set; }
-        public List<Image> Images { get; set; }
-        public List<Price> Prices { get; set; }
+        public string id { get; set; }
+        public string logo { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public string banner { get; set; }
+        public List<Image> images { get; set; }
+        public List<Price> prices { get; set; }
     }
 }

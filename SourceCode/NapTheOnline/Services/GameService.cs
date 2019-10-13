@@ -17,19 +17,22 @@ namespace NapTheOnline.Services
             _games = database.GetCollection<Game>("Game");
         }
 
-        public List<Game> GetGame(int pageIndex)
+        public ListResult<List<Game>> GetGame(int pageIndex)
         {
-            if(pageIndex == 0)
-                return _games.Find(game => true).ToList();
+            int pageCount = (int)_games.CountDocuments(game => true);
+            if (pageIndex == 0)
+            {
+                return new ListResult<List<Game>>(_games.Find(game => true).ToList(), pageCount);
+            }
             else
             {
                 var take = 5;
                 var skip = (pageIndex - 1) * take;
-                return _games.Find(game => true).Skip(skip).Limit(take).ToList();
+                return new ListResult<List<Game>>(_games.Find(game => true).Skip(skip).Limit(take).ToList(), pageCount);
             }
         }
 
-        public Game Get(string id) => _games.Find<Game>(game => game.Id == id).FirstOrDefault();
+        public Game Get(string id) => _games.Find<Game>(game => game.id == id).FirstOrDefault();
 
         public Game Create(Game game)
         {
@@ -37,10 +40,10 @@ namespace NapTheOnline.Services
             return game;
         }
 
-        public void Update(string id, Game gameIn) => _games.ReplaceOne(game => game.Id == id, gameIn);
+        public void Update(string id, Game gameIn) => _games.ReplaceOne(game => game.id == id, gameIn);
 
-        public void Remove(Game gameIn) => _games.DeleteOne(game => game.Id == gameIn.Id);
+        public void Remove(Game gameIn) => _games.DeleteOne(game => game.id == gameIn.id);
 
-        public void Remove(string id) => _games.DeleteOne(game => game.Id == id);
+        public void Remove(string id) => _games.DeleteOne(game => game.id == id);
     }
 }

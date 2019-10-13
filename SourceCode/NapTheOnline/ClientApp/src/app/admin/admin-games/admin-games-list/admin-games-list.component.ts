@@ -32,8 +32,8 @@ export class AdminGamesListComponent implements OnInit {
 
     refreshList() {
         // todo: this is for UI designer
-        this.games = GAMES;
-        this.gamesClone = lodash.cloneDeep(this.games);
+        //this.games = GAMES;
+        //this.gamesClone = lodash.cloneDeep(this.games);
 
         this.changePage(1);
     }
@@ -58,7 +58,7 @@ export class AdminGamesListComponent implements OnInit {
         this.router.navigate([`admin/games/creating`]);
     }
 
-    deleteGame(id: number) {
+    deleteGame(id: string) {
         if (confirm('Are you sure to delete this record?')) {
             this.gamesService.deleteGame(id).subscribe(res => {
                 const index = this.games.findIndex(_ => _.id === id);
@@ -81,18 +81,18 @@ export class AdminGamesListComponent implements OnInit {
         }
 
         this.pageIndex = pageIndex;
-        // this.gamesService.getGames(pageIndex).subscribe(res => {
-        //     this.total = res.total;
-        //     this.games = res.result;
-        //     this.games = Utility.generateFriendlyName(this.games);
+         this.gamesService.getGames(pageIndex).subscribe(res => {
+             this.total = res.total;
+             this.games = res.result;
+             this.games = Utility.generateFriendlyName(this.games);
 
-        //     // if (this.games.length === 0) {
-        //         // this.games = GAMES;
-        //     // }    
+             // if (this.games.length === 0) {
+                 // this.games = GAMES;
+             // }    
 
-        //     this.gamesClone = lodash.cloneDeep(this.games);
-        //     this.getListPagination();
-        // });
+             this.gamesClone = lodash.cloneDeep(this.games);
+             this.getListPagination();
+         });
     }
 
     getListPagination() {
