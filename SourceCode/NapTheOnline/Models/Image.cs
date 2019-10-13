@@ -7,11 +7,16 @@ namespace NapTheOnline.Models
     {
         public string id { get; set; }
         public string dirPath { get; set; }
+        public Image(string id, string dirPath)
+        {
+            this.id = id;
+            this.dirPath = dirPath;
+        }
     }
     public class ImagePath
     {
         public string pathLogo { get; set; }
-        public string pathbanner { get; set; }
+        public string pathBanner { get; set; }
         public List<string> pathDescription { get; set; }
 
         public ImagePath()

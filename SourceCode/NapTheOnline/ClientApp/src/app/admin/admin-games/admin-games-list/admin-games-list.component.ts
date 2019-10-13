@@ -23,7 +23,7 @@ export class AdminGamesListComponent implements OnInit {
     totalPage = [];
 
     constructor(private router: Router,
-                private gamesService: GamesService) {
+        private gamesService: GamesService) {
     }
 
     ngOnInit() {
@@ -81,18 +81,18 @@ export class AdminGamesListComponent implements OnInit {
         }
 
         this.pageIndex = pageIndex;
-         this.gamesService.getGames(pageIndex).subscribe(res => {
-             this.total = res.total;
-             this.games = res.result;
-             this.games = Utility.generateFriendlyName(this.games);
+        this.gamesService.getGames(pageIndex).subscribe(res => {
+            this.total = res.total;
+            this.games = res.result;
+            this.games = Utility.generateFriendlyName(this.games);
 
-             // if (this.games.length === 0) {
-                 // this.games = GAMES;
-             // }    
+            // if (this.games.length === 0) {
+            // this.games = GAMES;
+            // }    
 
-             this.gamesClone = lodash.cloneDeep(this.games);
-             this.getListPagination();
-         });
+            this.gamesClone = lodash.cloneDeep(this.games);
+            this.getListPagination();
+        });
     }
 
     getListPagination() {
@@ -103,7 +103,7 @@ export class AdminGamesListComponent implements OnInit {
                 listPagination.push(1);
             } else {
                 this.maxPage = Math.floor(this.total / 5);
-                if((this.total % 5) >= 1) {
+                if ((this.total % 5) >= 1) {
                     this.maxPage += 1;
                 }
 

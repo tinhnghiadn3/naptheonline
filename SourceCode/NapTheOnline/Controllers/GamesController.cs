@@ -21,7 +21,7 @@ namespace NapTheOnline.Controllers
         }
         // GET: api/games
         [HttpGet("page/{pageIndex}")]
-        public ActionResult<ListResult<List<Game>>> Get(int pageIndex) => _gameService.GetGame(pageIndex);
+        public ListResult<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
 
         // GET api/games/5
         [HttpGet("{id:length(24)}", Name = "GetGame")]
@@ -47,19 +47,19 @@ namespace NapTheOnline.Controllers
         }
 
         // PUT api/games/5
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Game gameIn)
+        [HttpPut]
+        public bool Update([FromBody]Game gameIn)
         {
-            var game = _gameService.Get(id);
+            var game = _gameService.Get(gameIn.id);
 
             if (game == null)
             {
-                return NotFound();
+                throw new ApplicationException("Not Found");
             }
 
-            _gameService.Update(id, gameIn);
+            _gameService.Update(gameIn.id, gameIn);
 
-            return NoContent();
+            return true;
         }
 
         // DELETE api/games/5
@@ -72,10 +72,20 @@ namespace NapTheOnline.Controllers
             {
                 return NotFound();
             }
+            FileUpload fileUpload = new FileUpload();
+            fileUpload.DeleteImage(game.logo);
+            fileUpload.DeleteImage(game.banner);
+            if (game.images != null)
+            {
+                foreach (Image image in game.images)
+                {
+                    fileUpload.DeleteImage(image.dirPath);
+                }
+            }
 
             _gameService.Remove(game.id);
 
-            return NoContent();
+            return Ok();
         }
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
@@ -88,32 +98,39 @@ namespace NapTheOnline.Controllers
                 {
                     FileUpload fileUpload = new FileUpload();
                     var result = new ImagePath();
+                    List<Image> listImage = new List<Image>();
+                    Image image;
                     foreach (var file in files)
                     {
                         switch (file.Name)
                         {
                             case "banner":
                                 {
-                                    result.pathbanner = fileUpload.UploadImage(file, "Banner_");
+                                    result.pathBanner = fileUpload.UploadImage(file, "Banner_");
+                                    fileUpload.DeleteImage(game.banner);
                                     break;
                                 }
                             case "logo":
                                 {
                                     result.pathLogo = fileUpload.UploadImage(file, "Logo_");
+                                    fileUpload.DeleteImage(game.logo);
                                     break;
                                 }
                             default: break;
                         }
-
+                        
                         if (file.Name.Contains("description"))
                         {
                             var pathDesc = fileUpload.UploadImage(file, "Description_");
                             result.pathDescription.Add(pathDesc);
+                            image = new Image(Guid.NewGuid().ToString(), pathDesc);
+                            listImage.Add(image);
                         }
                     }
-                    if (!string.IsNullOrEmpty(result.pathbanner))
+                    game.images = listImage;
+                    if (!string.IsNullOrEmpty(result.pathBanner))
                     {
-                        game.banner = result.pathbanner;
+                        game.banner = result.pathBanner;
                     }
 
                     if (!string.IsNullOrEmpty(result.pathLogo))

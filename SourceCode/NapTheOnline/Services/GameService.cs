@@ -28,7 +28,8 @@ namespace NapTheOnline.Services
             {
                 var take = 5;
                 var skip = (pageIndex - 1) * take;
-                return new ListResult<List<Game>>(_games.Find(game => true).Skip(skip).Limit(take).ToList(), pageCount);
+                var data = _games.Find(game => true).Skip(skip).Limit(take).ToList();
+                return new ListResult<List<Game>>(data, pageCount);
             }
         }
 
