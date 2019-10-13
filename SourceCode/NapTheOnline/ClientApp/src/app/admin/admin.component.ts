@@ -15,6 +15,10 @@ export class AdminComponent implements OnInit {
 
     constructor(private adminService: AdminService,
                 private router: Router) {
+        if(this.adminService.isTokenExpired()){
+            this.adminService.logout();
+        }
+        
         this.adminService.currentUser.subscribe(x => this.currentUser = x);
     }
 
