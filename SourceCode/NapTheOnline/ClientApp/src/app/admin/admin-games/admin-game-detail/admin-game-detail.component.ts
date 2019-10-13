@@ -274,10 +274,10 @@ export class AdminGameDetailComponent implements OnInit {
           });
       } else {
         this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
-          .subscribe(id => {
-            this.gameService.adminGame.id = id;
-            newGame.id = id;
-
+            .subscribe(res => {
+                this.gameService.adminGame.id = res.id;
+                newGame.id = res.id;
+           
             if (this.isImageChange) {
               this.imageService.uploadGameImages(formData, newGame.id).then(() => {
                 this.isImageChange = false;

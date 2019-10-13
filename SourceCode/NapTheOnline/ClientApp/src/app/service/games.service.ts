@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { GameModel } from '../share/view-model/game.model';
 import { PriceModel } from '../share/view-model/price.model';
 import { ListResult } from '../share/view-model/list-result.model';
+import { IdModel } from '../share/view-model/IdModel';
 
 @Injectable({
   providedIn: 'root'
@@ -22,19 +23,19 @@ export class GamesService {
     return this.baseService.get(`${this.gameUrl}/page/${pageIndex}`);
   }
 
-  getPricesGame(gameId: number): Observable<PriceModel[]> {
+    getPricesGame(gameId: string): Observable<PriceModel[]> {
     return this.baseService.get(`${this.gameUrl}/${gameId}`);
   }
 
-  addGame(game: GameModel): Observable<number> {
+    addGame(game: GameModel): Observable<IdModel> {
     return this.baseService.post(`${this.gameUrl}`, game);
   }
 
-  updateGame(game: GameModel): Observable<boolean> {
+    updateGame(game: GameModel): Observable<boolean> {
     return this.baseService.update(`${this.gameUrl}`, game);
   }
 
-  deleteGame(gameId: number): Observable<boolean> {
+    deleteGame(gameId: string): Observable<boolean> {
     return this.baseService.delete(`${this.gameUrl}/${gameId}`);
   }
 }

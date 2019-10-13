@@ -2,92 +2,92 @@ import {GameModel} from './view-model/game.model';
 import {NewsModel} from './view-model/news.model';
 
 export const GAMES: GameModel[] = [
-  {
-    id: 1,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Lord Mobile',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'description',
-    prices: [{name: '50.000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}],
-    friendlyName: 'lord-mobible'
-  },
-  {
-    id: 2,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Liên Quân',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'lien quan is the best game in mobile',
-    prices: [
-      {name: '50000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}
-    ],
-    friendlyName: 'lien-quan'
-  },
-  {
-    id: 3,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Võ Lâm Truyền Kỳ',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'description',
-    prices: [
-      {name: '50000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}
-    ],
-    friendlyName: 'vo-lam-truyen-ky'
-  },
-  {
-    id: 4,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Gunny Mobile',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'description',
-    prices: [{name: '50000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}],
-    friendlyName: 'gunny-mobible'
-  },
-  {
-    id: 5,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Auto Chess',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'lien quan is the best game in mobile',
-    prices: [
-      {name: '50000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}
-    ],
-    friendlyName: 'auto-chess'
-  },
-  {
-    id: 6,
-    logo: '../../assets/images/lords.jpg',
-    name: 'Audition Mobile',
-    banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
-    description: 'description',
-    prices: [
-      {name: '50000', value: 600, isUpdating: false},
-      {name: '100000', value: 1300, isUpdating: false},
-      {name: '200000', value: 2800, isUpdating: false},
-      {name: '500000', value: 6000, isUpdating: false},
-      {name: '1000000', value: 15000, isUpdating: false}
-    ],
-    friendlyName: 'audition-mobile'
-  },
+  //{
+  //  id: 1,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Lord Mobile',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'description',
+  //  prices: [{name: '50.000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}],
+  //  friendlyName: 'lord-mobible'
+  //},
+  //{
+  //  id: 2,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Liên Quân',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'lien quan is the best game in mobile',
+  //  prices: [
+  //    {name: '50000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}
+  //  ],
+  //  friendlyName: 'lien-quan'
+  //},
+  //{
+  //  id: 3,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Võ Lâm Truyền Kỳ',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'description',
+  //  prices: [
+  //    {name: '50000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}
+  //  ],
+  //  friendlyName: 'vo-lam-truyen-ky'
+  //},
+  //{
+  //  id: 4,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Gunny Mobile',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'description',
+  //  prices: [{name: '50000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}],
+  //  friendlyName: 'gunny-mobible'
+  //},
+  //{
+  //  id: 5,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Auto Chess',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'lien quan is the best game in mobile',
+  //  prices: [
+  //    {name: '50000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}
+  //  ],
+  //  friendlyName: 'auto-chess'
+  //},
+  //{
+  //  id: 6,
+  //  logo: '../../assets/images/lords.jpg',
+  //  name: 'Audition Mobile',
+  //  banner: '../../assets/uploads/Description_2019_09_02_09_00_4875.jpg',
+  //  description: 'description',
+  //  prices: [
+  //    {name: '50000', value: 600, isUpdating: false},
+  //    {name: '100000', value: 1300, isUpdating: false},
+  //    {name: '200000', value: 2800, isUpdating: false},
+  //    {name: '500000', value: 6000, isUpdating: false},
+  //    {name: '1000000', value: 15000, isUpdating: false}
+  //  ],
+  //  friendlyName: 'audition-mobile'
+  //},
 ];
 //
 

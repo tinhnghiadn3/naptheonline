@@ -1,7 +1,7 @@
 import {PriceModel} from './price.model';
 
 export class GameModel {
-  id: number;
+  id: string;
   name: string;
   logo: string;
   description: string;
