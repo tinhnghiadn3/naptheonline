@@ -14,7 +14,7 @@ import { map, finalize, first } from 'rxjs/operators';
 export class AdminLoginComponent implements OnInit {
     isLoading: boolean;
     account: AccountLoginInputModel;
-    error: string;
+
     loginForm = new FormGroup({
         emailAddress: new FormControl('', Validators.required),
         password: new FormControl('', Validators.required),
@@ -52,12 +52,7 @@ export class AdminLoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    if(data) {
-                        this.router.navigate(['/admin/dashboard']);
-                    } else {
-                        this.error = "Email or Password is wrong.";
-                        alert("Email or Password is wrong.")
-                    }
+                    this.router.navigate(['/admin/dashboard']);
                 },
                 error => {
                     this.isLoading = false;
