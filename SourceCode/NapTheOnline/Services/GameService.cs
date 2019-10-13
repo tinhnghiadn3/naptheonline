@@ -17,7 +17,17 @@ namespace NapTheOnline.Services
             _games = database.GetCollection<Game>("Game");
         }
 
-        public List<Game> Get() => _games.Find(game => true).ToList();
+        public List<Game> GetGame(int pageIndex)
+        {
+            if(pageIndex == 0)
+                return _games.Find(game => true).ToList();
+            else
+            {
+                var take = 5;
+                var skip = (pageIndex - 1) * take;
+                return _games.Find(game => true).Skip(skip).Limit(take).ToList();
+            }
+        }
 
         public Game Get(string id) => _games.Find<Game>(game => game.Id == id).FirstOrDefault();
 
