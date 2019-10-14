@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {GameModel} from '../../share/view-model/game.model';
-import {Router} from '@angular/router';
-import {GamesService} from '../../service/games.service';
-import {Utility} from '../../share/utility';
-import {GAMES} from '../../share/mock-data';
+import { Component, OnInit } from '@angular/core';
+import { GameModel } from '../../share/view-model/game.model';
+import { Router } from '@angular/router';
+import { GamesService } from '../../service/games.service';
+import { Utility } from '../../share/utility';
+import { GAMES } from '../../share/mock-data';
 
 @Component({
   selector: 'app-games-list',
@@ -15,7 +15,7 @@ export class GamesListComponent implements OnInit {
   games: GameModel[];
 
   constructor(private router: Router,
-              private gameService: GamesService) {
+    private gameService: GamesService) {
   }
 
   ngOnInit() {

@@ -79,8 +79,8 @@ export class AdminNewsDetailComponent implements OnInit {
     };
 
     constructor(private newsService: NewsService,
-                private imageService: ImagesService,
-                private router: Router) {
+        private imageService: ImagesService,
+        private router: Router) {
         if (this.newsService.adminNews) {
             this.selectedNews = this.newsService.adminNews;
         } else {
@@ -224,7 +224,7 @@ export class AdminNewsDetailComponent implements OnInit {
             // create FormData to post API
             const formData = this.createFormData();
 
-            if (!this.selectedNews.id) {
+            if (this.selectedNews.id) {
                 this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
                     .subscribe(() => {
                         if (this.isImageChange) {
@@ -240,9 +240,9 @@ export class AdminNewsDetailComponent implements OnInit {
                     });
             } else {
                 this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
-                    .subscribe(id => {
-                        this.newsService.adminNews.id = id;
-                        news.id = id;
+                    .subscribe(res => {
+                        this.newsService.adminNews.id = res.id;
+                        news.id = res.id;
 
                         if (this.isImageChange) {
                             this.imageService.uploadNewsImages(formData, news.id).then(() => {

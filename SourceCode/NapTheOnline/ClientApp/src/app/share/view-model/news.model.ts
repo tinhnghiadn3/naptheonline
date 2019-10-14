@@ -1,5 +1,5 @@
 export class NewsModel {
-    id: number;
+    id: string;
     logo: string;
     name: string;
     description: string;

@@ -17,9 +17,30 @@ namespace NapTheOnline.Services
             _news = database.GetCollection<News>("News");
         }
 
-        public List<News> Get() => _news.Find(news => true).ToList();
+        public ListResult<List<News>> Get(int typeId, int pageIndex)
+        {
+            int pageCount = (int)_news.CountDocuments(news => true);
+            if (pageIndex == 0)
+            {
+                if(typeId == 0)
+                    return new ListResult<List<News>>(_news.Find(news => true).ToList(), pageCount);
+                else
+                    return new ListResult<List<News>>(_news.Find(news => true && news.typeid == typeId).ToList(), pageCount);
+            }
+            else
+            {
+                var take = 5;
+                var skip = (pageIndex - 1) * take;
+                if(typeId == 0)
+                    return new ListResult<List<News>>(_news.Find(news => true).Skip(skip).Limit(take).ToList(), pageCount);
+                else
+                    return new ListResult<List<News>>(_news.Find(news => true && news.typeid == typeId).Skip(skip).Limit(take).ToList(), pageCount);
 
-        public News Get(string id) => _news.Find<News>(news => news.Id == id).FirstOrDefault();
+                
+            }
+        }
+
+        public News Get(string id) => _news.Find<News>(news => news.id == id).FirstOrDefault();
 
         public News Create(News news)
         {
@@ -27,10 +48,10 @@ namespace NapTheOnline.Services
             return news;
         }
 
-        public void Update(string id, News newsIn) => _news.ReplaceOne(news => news.Id == id, newsIn);
+        public void Update(string id, News newsIn) => _news.ReplaceOne(news => news.id == id, newsIn);
 
-        public void Remove(News newsIn) => _news.DeleteOne(news => news.Id == newsIn.Id);
+        public void Remove(News newsIn) => _news.DeleteOne(news => news.id == newsIn.id);
 
-        public void Remove(string id) => _news.DeleteOne(news => news.Id == id);
+        public void Remove(string id) => _news.DeleteOne(news => news.id == id);
     }
 }

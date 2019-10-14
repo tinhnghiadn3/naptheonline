@@ -22,8 +22,8 @@ export class NewsListComponent implements OnInit {
     listBestViewed: NewsModel[] = [];
 
     constructor(private router: Router,
-                private newsService: NewsService,
-                private shareService: ShareService) {
+        private newsService: NewsService,
+        private shareService: ShareService) {
         this.shareService.subscribeProject(searchExp => {
             this.searchExp = searchExp;
         });
@@ -47,20 +47,20 @@ export class NewsListComponent implements OnInit {
 
     getNews() {
         // todo: this is for UI designer
-        this.listNews = NEWS;
-        this.getBestViewed();
-        this.filterList();
+        // this.listNews = NEWS;
+        // this.getBestViewed();
+        // this.filterList();
 
-        // const that = this;
-        // const newType = this.newType || 0;
-        // this.newsService.getNews(0, newType).pipe(
-        //     finalize(() => that.filterList())
-        // ).subscribe(res => {
-        //     this.listNews = res;
-        //     this.listNewsClone = lodash.cloneDeep(this.listNews);
-        //     this.listNews = Utility.generateFriendlyName(this.listNews);
-        //     this.getBestViewed();
-        // });
+        const that = this;
+        const newType = this.newType || 0;
+        this.newsService.getNews(0, newType).pipe(
+            finalize(() => that.filterList())
+        ).subscribe(res => {
+            this.listNews = res.result;
+            this.listNewsClone = lodash.cloneDeep(this.listNews);
+            this.listNews = Utility.generateFriendlyName(this.listNews);
+            this.getBestViewed();
+        });
     }
 
     getBestViewed() {

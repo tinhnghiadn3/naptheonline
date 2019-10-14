@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {NewsModel} from '../../../share/view-model/news.model';
-import {NewsService} from '../../../service/news.service';
-import {Utility} from '../../../share/utility';
-import {GameModel} from '../../../share/view-model/game.model';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NewsModel } from '../../../share/view-model/news.model';
+import { NewsService } from '../../../service/news.service';
+import { Utility } from '../../../share/utility';
+import { GameModel } from '../../../share/view-model/game.model';
 import * as lodash from 'lodash';
-import {NEWS} from '../../../share/mock-data';
+import { NEWS } from '../../../share/mock-data';
 
 @Component({
     selector: 'app-admin-news-list',
@@ -23,7 +23,7 @@ export class AdminNewsListComponent implements OnInit {
     totalPage = [];
 
     constructor(private router: Router,
-                private newsService: NewsService) {
+        private newsService: NewsService) {
     }
 
     ngOnInit() {
@@ -32,10 +32,10 @@ export class AdminNewsListComponent implements OnInit {
 
     refreshList() {
         // todo: this is for UI designer
-        this.listNews = NEWS;
-        this.listNewsClone = lodash.cloneDeep(this.listNews);
+        //this.listNews = NEWS;
+        //this.listNewsClone = lodash.cloneDeep(this.listNews);
 
-        // this.changePage(1);
+        this.changePage(1);
     }
 
     search() {
@@ -49,7 +49,7 @@ export class AdminNewsListComponent implements OnInit {
     }
 
     changePage(pageIndex) {
-        if (this.pageIndex === pageIndex || pageIndex <= 0 || pageIndex > this.maxPage) {
+        if ((this.pageIndex === pageIndex && this.pageIndex > 1) || pageIndex <= 0 || pageIndex > this.maxPage) {
             return;
         }
 
@@ -71,7 +71,7 @@ export class AdminNewsListComponent implements OnInit {
                 listPagination.push(1);
             } else {
                 this.maxPage = Math.floor(this.total / 5);
-                if((this.total % 5) >= 1) {
+                if ((this.total % 5) >= 1) {
                     this.maxPage += 1;
                 }
 
@@ -95,16 +95,16 @@ export class AdminNewsListComponent implements OnInit {
         this.router.navigate([`admin/news/creating`]).then();
     }
 
-    deleteNews(id: number) {
+    deleteNews(id: string) {
         if (confirm('Are you sure to delete this record?')) {
             this.newsService.deleteNews(id).subscribe(() => {
-                    const index = this.listNews.findIndex(_ => _.id === id);
-                    if (index > -1) {
-                        this.listNews.splice(index, 1);
-                    }
-                    // this.refreshList();
-                    alert('Deleted Successfully');
-                },
+                const index = this.listNews.findIndex(_ => _.id === id);
+                if (index > -1) {
+                    this.listNews.splice(index, 1);
+                }
+                // this.refreshList();
+                alert('Deleted Successfully');
+            },
                 () => {
                     alert('Deleted Failed');
                 }
