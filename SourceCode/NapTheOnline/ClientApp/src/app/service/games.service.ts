@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { GameModel } from '../share/view-model/game.model';
 import { PriceModel } from '../share/view-model/price.model';
 import { ListResult } from '../share/view-model/list-result.model';
-import { IdModel } from '../share/view-model/IdModel';
+import { IdModel } from '../share/view-model/id.model';
 
 @Injectable({
   providedIn: 'root'

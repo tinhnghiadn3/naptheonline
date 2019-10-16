@@ -197,9 +197,9 @@ export class AdminNewsDetailComponent implements OnInit {
     }
 
     replaceBase64FromDescription(news: NewsModel) {
-        const regex = /<img\ssrc="([^&]+)">/;
+        // const regex = /<img\ssrc="([^&]+)">/;
         this.listBase64s.forEach((base64, index) => {
-            news.description = news.description.replace(regex, `{${index}}`);
+            news.description = news.description.replace(base64, `{${index}}`);
         });
     }
 

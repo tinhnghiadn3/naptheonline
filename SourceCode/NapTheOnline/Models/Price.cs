@@ -6,5 +6,6 @@ namespace NapTheOnline.Models
         public string id { get; set; }
         public string name { get; set; }
         public string value { get; set; }
+        public string currency { get; set; }
     }
 }

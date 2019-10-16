@@ -202,6 +202,10 @@ export class AdminGameDetailComponent implements OnInit {
       this.message = 'Name is required';
       this.isValid = false;
     }
+    if (!this.game.currency || !this.game.currency.trim() || this.game.currency.trim().length <= 0) {
+      this.message = 'Currency is required';
+      this.isValid = false;
+    }
     return this.isValid;
   }
 

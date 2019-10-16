@@ -123,7 +123,7 @@ namespace NapTheOnline.Controllers
 
                     for (int i = 0; i < result.pathDescription.Count; i++)
                     {
-                        news.description = news.description.Replace("{" + i + "}", "<img src=" + result.pathDescription[i] + " />");
+                        news.description = news.description.Replace("{" + i + "}", result.pathDescription[i]);
                     }
                     _newsService.Update(id, news);
                 }

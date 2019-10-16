@@ -7,6 +7,7 @@ export class GameModel {
   description: string;
   prices: PriceModel[] = [];
   banner: string;
+  currency: string;
 
   // only UI
   friendlyName: string;

@@ -24,12 +24,12 @@ export class GamesListComponent implements OnInit {
 
   getGames() {
     // todo: this is for UI designer
-    this.games = GAMES;
+    // this.games = GAMES;
 
-    // this.gameService.getGames(0).subscribe(res => {
-    //   this.games = res.result;
-    //   this.games = Utility.generateFriendlyName(this.games);
-    // });
+    this.gameService.getGames(0).subscribe(res => {
+      this.games = res.result;
+      this.games = Utility.generateFriendlyName(this.games);
+    });
   }
 
   showDetail(game: GameModel) {

@@ -1,13 +1,17 @@
+using System;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -91,12 +95,44 @@ namespace NapTheOnline
                 app.UseHsts();
             }
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseCookiePolicy();
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
+
+            var cachePeriod = env.IsDevelopment() ? "600" : "604800";
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    // Requires the following import:
+                    // using Microsoft.AspNetCore.Http;
+                    ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
+                },
+
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "src", "assets")),
+                RequestPath = new PathString("/assets")
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "ClientApp", "src", "assets")),
+                RequestPath = new PathString("/assets")
+            });
 
             app.UseRouting();
 
@@ -109,11 +145,8 @@ namespace NapTheOnline
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
                 spa.Options.SourcePath = "ClientApp";
-
+                spa.Options.StartupTimeout = new TimeSpan(0, 5, 0);
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
