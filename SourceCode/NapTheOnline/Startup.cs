@@ -129,13 +129,13 @@ namespace NapTheOnline
                 },
 
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images")),
-                RequestPath = new PathString("/Images")
+                RequestPath = new PathString("/Uploads/Images")
             });
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images")),
-                RequestPath = new PathString("/Images")
+                RequestPath = new PathString("/Uploads/Images")
             });
 
             app.UseRouting();
