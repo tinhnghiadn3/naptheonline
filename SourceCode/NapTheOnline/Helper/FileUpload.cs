@@ -12,13 +12,13 @@ namespace NapTheOnline.Helper
             {
                 Random random = new Random();
                 fileName += DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss") + random.Next(0, 100).ToString() + ".jpg";
-                var folderPath = Path.Combine("ClientApp", "src", "assets", "uploads", fileName);
+                var folderPath = Path.Combine("Uploads", "Images", fileName);
                 using (var stream = new FileStream(folderPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
 
-                return "../../assets/uploads/" + fileName;
+                return "/Uploads/Images/" + fileName;
             }
 
             return string.Empty;
@@ -26,9 +26,9 @@ namespace NapTheOnline.Helper
 
         public bool DeleteImage(string dirPath)
         {
-            if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 5)
+            if (!String.IsNullOrEmpty(dirPath) && dirPath.Split('/').Length == 4)
             {
-                dirPath = Path.Combine("ClientApp", "src", "assets", "uploads", dirPath.Split('/')[4]);
+                dirPath = Path.Combine("Uploads", "Images", dirPath.Split('/')[3]);
                 try
                 {
                     if (File.Exists(dirPath))
