@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
 using NapTheOnline.Models;
@@ -12,13 +13,15 @@ using NapTheOnline.Services;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
-    public class NewsController : Controller
+    public class NewsController : BaseController
     {
         private readonly NewsService _newsService;
-        public NewsController(NewsService newsService)
+
+        public NewsController(IHostingEnvironment env, NewsService newsService) : base(env)
         {
             _newsService = newsService;
         }
+
         // GET: api/news
         [HttpGet("{typeId}/{pageIndex}")]
         public ListResult<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
@@ -92,6 +95,8 @@ namespace NapTheOnline.Controllers
             var files = Request.Form.Files;
             if (files.Count > 0)
             {
+                AddFolderStoringImage();
+
                 var news = _newsService.Get(id);
                 if (news != null)
                 {

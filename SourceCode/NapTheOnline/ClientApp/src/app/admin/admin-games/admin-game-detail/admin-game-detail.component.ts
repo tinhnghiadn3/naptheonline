@@ -238,9 +238,9 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   replaceBase64FromDescription(game: GameModel) {
-    const regex = /<img\ssrc="([^&]+)">/;
+    // const regex = /<img\ssrc="([^&]+)">/;
     this.listBase64s.forEach((base64, index) => {
-      game.description = game.description.replace(regex, `{${index}}`);
+      game.description = game.description.replace(base64, `{${index}}`);
     });
   }
 
