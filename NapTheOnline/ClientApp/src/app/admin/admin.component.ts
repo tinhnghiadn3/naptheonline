@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
 
     constructor(private adminService: AdminService,
                 private router: Router) {
-        this.adminService.currentUser.subscribe(x => this.currentUser = x);
+        // this.adminService.currentUser.subscribe(x => this.currentUser = x);
     }
 
     ngOnInit() {

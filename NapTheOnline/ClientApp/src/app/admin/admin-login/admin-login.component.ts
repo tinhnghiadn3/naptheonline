@@ -25,9 +25,9 @@ export class AdminLoginComponent implements OnInit {
         private route: ActivatedRoute,
         private shareService: ShareService,
         private router: Router) {
-        if (this.adminService.currentUserValue) {
-            this.router.navigate(['/admin']);
-        }
+        // if (this.adminService.currentUserValue) {
+        //     this.router.navigate(['/admin']);
+        // }
     }
 
     ngOnInit() {
@@ -46,21 +46,21 @@ export class AdminLoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             return;
         }
-
-        this.isLoading = true;
-        this.adminService.login(this.account)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    if(data) {
-                        this.router.navigate(['/admin/dashboard']);
-                    } else {
-                        this.error = "Email or Password is wrong.";
-                        alert("Email or Password is wrong.")
-                    }
-                },
-                error => {
-                    this.isLoading = false;
-                });
+        this.router.navigate(['/admin/dashboard']);
+        // this.isLoading = true;
+        // this.adminService.login(this.account)
+        //     .pipe(first())
+        //     .subscribe(
+        //         data => {
+        //             if(data) {
+        //                 this.router.navigate(['/admin/dashboard']);
+        //             } else {
+        //                 this.error = "Email or Password is wrong.";
+        //                 alert("Email or Password is wrong.")
+        //             }
+        //         },
+        //         error => {
+        //             this.isLoading = false;
+        //         });
     }
 }
