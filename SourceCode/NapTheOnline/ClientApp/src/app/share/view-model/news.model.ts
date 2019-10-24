@@ -3,7 +3,7 @@ export class NewsModel {
     logo: string;
     name: string;
     description: string;
-    dateCreated: string;
+    datecreated: string;
     typeId: number;
 
     // only UI

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
 using NapTheOnline.Models;
@@ -12,13 +11,15 @@ using NapTheOnline.Services;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
-    public class GamesController : Controller
+    public class GamesController : BaseController
     {
         private readonly GameService _gameService;
-        public GamesController(GameService gameService)
+
+        public GamesController(IHostingEnvironment env, GameService gameService) : base(env)
         {
             _gameService = gameService;
         }
+
         // GET: api/games
         [HttpGet("page/{pageIndex}")]
         public ListResult<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
@@ -93,6 +94,8 @@ namespace NapTheOnline.Controllers
             var files = Request.Form.Files;
             if (files.Count > 0)
             {
+                AddFolderStoringImage();
+
                 var game = _gameService.Get(id);
                 if (game != null)
                 {
@@ -140,7 +143,7 @@ namespace NapTheOnline.Controllers
 
                     for (int i = 0; i < result.pathDescription.Count; i++)
                     {
-                        game.description = game.description.Replace("{" + i + "}", "<img src=" + result.pathDescription[i] + " />");
+                        game.description = game.description.Replace("{" + i + "}", result.pathDescription[i]);
                     }
                     _gameService.Update(id, game);
                 }

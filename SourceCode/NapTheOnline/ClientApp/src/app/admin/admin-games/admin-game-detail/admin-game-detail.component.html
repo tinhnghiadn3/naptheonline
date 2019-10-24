@@ -15,7 +15,13 @@
                                     <input name="name" [(ngModel)]="game.name" class="form-control" [required]="true">
                                     <span style="color: red">{{message}}</span>
                                 </div>
-
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group name-game">
+                                    <label>Currency</label>
+                                    <input name="currency" [(ngModel)]="game.currency" class="form-control" [required]="true">
+                                    <span style="color: red">{{message}}</span>
+                                </div>
                             </div>
                             <div class="col-12 mt-2">
                                 <div class="row">
