@@ -44,7 +44,8 @@ import { AuthGuard } from '../share/auth.guard';
         RouterModule.forChild([
             {
                 path: '',
-                component: AdminComponent, canActivate: [AuthGuard],
+                component: AdminComponent,
+                //  canActivate: [AuthGuard],
                 children: [
                     {
                         path: '', redirectTo: 'dashboard', pathMatch: 'full'
@@ -97,18 +98,18 @@ import { AuthGuard } from '../share/auth.guard';
         AngularEditorModule,
         FormsModule
     ],
-    providers: [
-        {
-            provide:  forwardRef(() => { HTTP_INTERCEPTORS }),
-            useExisting: JwtInterceptor,
-            multi: true
-        },
-        {
-            provide: forwardRef(() => { HTTP_INTERCEPTORS }),
-            useExisting: ErrorInterceptor,
-            multi: true
-        },
-    ],
+    // providers: [
+    //     {
+    //         provide:  forwardRef(() => { HTTP_INTERCEPTORS }),
+    //         useExisting: JwtInterceptor,
+    //         multi: true
+    //     },
+    //     {
+    //         provide: forwardRef(() => { HTTP_INTERCEPTORS }),
+    //         useExisting: ErrorInterceptor,
+    //         multi: true
+    //     },
+    // ],
 })
 export class AdminModule {
 }
