@@ -48,6 +48,12 @@ export class AdminService {
     }
 
     getTokenExpirationDate(token: string): Date {
+        if(!token) {
+            localStorage.removeItem('currentUser');
+            this.currentUserSubject.next(null);
+            return null;
+        }
+
         const decoded = jwt_decode(token);
 
         if (decoded.exp === undefined) return null;

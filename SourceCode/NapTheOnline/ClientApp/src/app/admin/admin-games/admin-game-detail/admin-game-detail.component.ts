@@ -198,6 +198,7 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   validateForm() {
+    this.isValid = true;
     if (!this.game.name || !this.game.name.trim() || this.game.name.trim().length <= 0) {
       this.message = 'Name is required';
       this.isValid = false;

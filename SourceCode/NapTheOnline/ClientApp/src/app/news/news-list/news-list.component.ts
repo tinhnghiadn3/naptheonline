@@ -7,6 +7,7 @@ import { ShareService } from 'src/app/service/share.service';
 import * as lodash from 'lodash';
 import { Utility } from 'src/app/share/utility';
 import { finalize } from 'rxjs/operators';
+import { NEW_TYPES } from '../../share/constant';
 
 @Component({
     selector: 'app-news-list',
@@ -16,10 +17,12 @@ import { finalize } from 'rxjs/operators';
 export class NewsListComponent implements OnInit {
 
     searchExp: string;
-    newType: number = null;
+    newType: number = 1;
     listNews: NewsModel[] = [];
     listNewsClone: NewsModel[] = [];
     listBestViewed: NewsModel[] = [];
+    title: string;
+    NEW_TYPES = NEW_TYPES;
 
     constructor(private router: Router,
         private newsService: NewsService,
@@ -28,8 +31,12 @@ export class NewsListComponent implements OnInit {
             this.searchExp = searchExp;
         });
 
-        this.shareService.subscribeNewType(type => {
-            this.newType = type;
+        this.shareService.subscribeNewType(value => {
+            this.newType = value;
+            const type = NEW_TYPES.find(_ => _.value === value);
+            if(type) {
+                this.title = type.text;
+            }
         });
     }
 

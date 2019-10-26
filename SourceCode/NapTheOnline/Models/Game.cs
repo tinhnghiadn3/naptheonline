@@ -16,5 +16,6 @@ namespace NapTheOnline.Models
         public string banner { get; set; }
         public List<Image> images { get; set; }
         public List<Price> prices { get; set; }
+        public string currency { get; set; }
     }
 }

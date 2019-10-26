@@ -8,7 +8,7 @@ export class ShareService {
 
     private searchExpSubject = new BehaviorSubject<string>(null);
 
-    private newTypeSubject = new BehaviorSubject<number>(null);
+    private newTypeSubject = new BehaviorSubject<number>(1);
 
     private logOutSubject = new BehaviorSubject<boolean>(null);
 

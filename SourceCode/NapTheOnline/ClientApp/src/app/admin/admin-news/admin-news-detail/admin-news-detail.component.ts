@@ -164,9 +164,10 @@ export class AdminNewsDetailComponent implements OnInit {
     }
 
     validateForm() {
+        this.isValid = true;
         if (!this.selectedNews.name || !this.selectedNews.name.trim() || this.selectedNews.name.trim().length <= 0) {
             this.message = 'Name is required';
-            this.isValid = false;
+            return this.isValid = false;
         }
         return this.isValid = true;
     }

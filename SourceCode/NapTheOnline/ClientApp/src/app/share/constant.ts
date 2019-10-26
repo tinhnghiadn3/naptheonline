@@ -45,4 +45,5 @@ export const NEW_TYPES = [
     {value: 3, text: 'Công nghệ'},
   ];
 
+
 export const ALLOWED_FILE_TYPES = '.jpg,.jpeg,.png,.gif';
