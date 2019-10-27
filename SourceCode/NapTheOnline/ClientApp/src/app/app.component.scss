@@ -12,3 +12,36 @@ img {
 body {
     background: #f9fbfc;
 }
+
+// 3b649f
+.loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    svg {
+        width: 120px;
+        height: 120px;
+        padding: 32px;
+        border-radius: 10px;
+        background: #Fff;
+        -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.13);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.13);
+    }
+}
+
+svg path,
+svg rect {
+    fill: #3b649f;
+}
