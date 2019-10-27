@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountLoginInputModel } from '../../share/view-model/account-login-input.model';
 import { AdminService } from '../../service/admin.service';
@@ -11,7 +11,7 @@ import { map, finalize, first } from 'rxjs/operators';
     templateUrl: './admin-login.component.html',
     styleUrls: ['./admin-login.component.scss']
 })
-export class AdminLoginComponent implements OnInit {
+export class AdminLoginComponent implements OnInit, AfterViewInit {
     isLoading: boolean;
     account: AccountLoginInputModel;
 
@@ -33,6 +33,10 @@ export class AdminLoginComponent implements OnInit {
     ngOnInit() {
     }
 
+    ngAfterViewInit() {
+        this.shareService.setLoading(false);
+    }
+
     onLogin() {
         this.account = new AccountLoginInputModel({
             userName: this.loginForm.value.emailAddress,
@@ -47,7 +51,7 @@ export class AdminLoginComponent implements OnInit {
             return;
         }
 
-        this.isLoading = true;
+        this.shareService.setLoading(true);
         this.adminService.login(this.account)
             .pipe(first())
             .subscribe(
@@ -55,7 +59,7 @@ export class AdminLoginComponent implements OnInit {
                     this.router.navigate(['/admin/dashboard']);
                 },
                 error => {
-                    this.isLoading = false;
+                    this.shareService.setLoading(false);
                 });
     }
 }

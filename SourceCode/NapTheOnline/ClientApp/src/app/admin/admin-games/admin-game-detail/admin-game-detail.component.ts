@@ -7,6 +7,7 @@ import {finalize} from 'rxjs/operators';
 import {ImagesService} from '../../../service/images.service';
 import {PriceModel} from '../../../share/view-model/price.model';
 import * as lodash from 'lodash';
+import { Utility } from '../../../share/utility';
 
 @Component({
   selector: 'app-admin-game-detail',
@@ -210,14 +211,6 @@ export class AdminGameDetailComponent implements OnInit {
     return this.isValid;
   }
 
-  replaceMoreSpace(str) {
-    while (str.indexOf('  ') !== -1) {
-      str = str.replace(/ {2}/g, ' ');
-    }
-
-    return str.trim();
-  }
-
   createFormData() {
     const formData = new FormData();
     if (this.selectedLogo) {
@@ -252,7 +245,7 @@ export class AdminGameDetailComponent implements OnInit {
       const newGame = lodash.cloneDeep(this.game);
       //
       // name
-      newGame.name = this.replaceMoreSpace(newGame.name);
+      newGame.name = Utility.replaceMoreSpace(newGame.name);
       //
       // Get img from description and return list base64 to replace
       this.getImageFromDescription(this.game.description);

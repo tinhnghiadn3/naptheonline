@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {ViewportScroller} from '@angular/common';
+import { ShareService } from './service/share.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,11 @@ import {ViewportScroller} from '@angular/common';
 export class AppComponent implements OnInit {
 
   isAdmin = false;
+  isLoading = false;
 
   constructor(private router: Router,
-              private viewportScroller: ViewportScroller) {
+              private viewportScroller: ViewportScroller,
+              private shareService: ShareService) {
     this.router.events.subscribe(e => {
       if (e instanceof NavigationStart && e.url.includes('/admin')) {
         this.isAdmin = true;
@@ -23,6 +26,8 @@ export class AppComponent implements OnInit {
         viewportScroller.scrollToPosition([0, 0]);
       }
     });
+
+    this.shareService.subscribeLoading(value => this.isLoading = value);
   }
 
   ngOnInit() {
