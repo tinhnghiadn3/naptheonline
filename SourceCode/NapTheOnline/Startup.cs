@@ -22,13 +22,9 @@ namespace NapTheOnline
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
-        {
-            var contentRoot = env.ContentRootPath;
+        public Startup(IConfiguration configuration)
+        {   
             Configuration = configuration;
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
