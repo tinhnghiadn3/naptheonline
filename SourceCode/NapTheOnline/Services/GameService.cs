@@ -17,19 +17,19 @@ namespace NapTheOnline.Services
             _games = database.GetCollection<Game>("Game");
         }
 
-        public ListResult<List<Game>> GetGame(int pageIndex)
+        public ListResultViewModel<List<Game>> GetGame(int pageIndex)
         {
             int pageCount = (int)_games.CountDocuments(game => true);
             if (pageIndex == 0)
             {
-                return new ListResult<List<Game>>(_games.Find(game => true).ToList(), pageCount);
+                return new ListResultViewModel<List<Game>>(_games.Find(game => true).ToList(), pageCount);
             }
             else
             {
                 var take = 5;
                 var skip = (pageIndex - 1) * take;
                 var data = _games.Find(game => true).Skip(skip).Limit(take).ToList();
-                return new ListResult<List<Game>>(data, pageCount);
+                return new ListResultViewModel<List<Game>>(data, pageCount);
             }
         }
 

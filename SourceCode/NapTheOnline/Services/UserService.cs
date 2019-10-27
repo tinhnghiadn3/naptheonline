@@ -56,15 +56,5 @@ namespace NapTheOnline.Services
 
             return user;
         }
-
-        public static implicit operator AuthenticationService(UserService v)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class AppSettings
-    {
-        public string Secret { get; set; }
     }
 }

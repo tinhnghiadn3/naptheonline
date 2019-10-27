@@ -37,7 +37,7 @@ namespace NapTheOnline
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0).AddNewtonsoftJson(); ;
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
@@ -45,8 +45,13 @@ namespace NapTheOnline
             services.AddSingleton<NewsService>();
 
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
+
             // configure DI for application services
             services.AddScoped<UserService>();
+            services.AddScoped<GameService>();
+            services.AddScoped<NewsService>();
+            services.AddScoped<CardChargeService>();
+
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = int.MaxValue;

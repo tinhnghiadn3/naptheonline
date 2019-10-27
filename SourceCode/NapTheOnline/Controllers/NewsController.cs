@@ -24,7 +24,7 @@ namespace NapTheOnline.Controllers
 
         // GET: api/news
         [HttpGet("{typeId}/{pageIndex}")]
-        public ListResult<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
+        public ListResultViewModel<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
 
         // GET api/news/5
         [HttpGet("{id:length(24)}", Name = "GetNews")]
