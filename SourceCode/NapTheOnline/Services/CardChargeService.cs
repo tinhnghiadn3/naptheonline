@@ -15,12 +15,10 @@ namespace NapTheOnline.Services
         private const string secretkey = "3eb4ecf5cc106b9e4c5afd733f7b8cfe";
         private const string merchantId = "4155";
         private const string apiMail = "danh.nguyen.6620@gmail.com";
-        private readonly AppSettings _appSettings;
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public CardChargeService(IOptions<AppSettings> appSettings, IDatabaseSettings settings)
         {
-            _appSettings = appSettings.Value;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.Database);
             _transaction = database.GetCollection<Transaction>("Transaction");
@@ -34,7 +32,7 @@ namespace NapTheOnline.Services
 
                 var transId = GenerateTransId();
                 //Dia chi mail dang ky tai khoan tren napthengay.com
-                var plaintText = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}", _appSettings.PartnerId, apiMail, transId, param.CardId, param.CardValue, param.PinField, param.SeriField, "md5", secretkey);
+                var plaintText = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}", merchantId, apiMail, transId, param.CardId, param.CardValue, param.PinField, param.SeriField, "md5", secretkey);
                 string key = GetMD5Hash(plaintText);
 
                 var respone = string.Empty;
@@ -47,6 +45,7 @@ namespace NapTheOnline.Services
                 var result = JsonConvert.DeserializeObject<CardChargeResponseViewModel>(respone);
                 StoreTransaction(param, result);
                 // remove transId before respone FE
+                result.trans_id = string.Empty;
                 return result;
             }
             catch (Exception ex)
