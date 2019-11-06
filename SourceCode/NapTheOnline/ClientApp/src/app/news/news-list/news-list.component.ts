@@ -16,7 +16,7 @@ import { NEW_TYPES } from '../../share/constant';
 })
 export class NewsListComponent implements OnInit {
 
-    searchExp: string;
+    // searchExp: string;
     newType: number = 1;
     listNews: NewsModel[] = [];
     listNewsClone: NewsModel[] = [];
@@ -27,15 +27,16 @@ export class NewsListComponent implements OnInit {
     constructor(private router: Router,
         private newsService: NewsService,
         private shareService: ShareService) {
-        this.shareService.subscribeProject(searchExp => {
-            this.searchExp = searchExp;
-        });
+        // this.shareService.subscribeProject(searchExp => {
+        //     this.searchExp = searchExp;
+        // });
 
         this.shareService.subscribeNewType(value => {
             this.newType = value;
             const type = NEW_TYPES.find(_ => _.value === value);
             if(type) {
                 this.title = type.text;
+                this.getNews();
             }
         });
     }
@@ -44,13 +45,13 @@ export class NewsListComponent implements OnInit {
         this.getNews();
     }
 
-    filterList() {
-        if (!this.searchExp || !this.searchExp.trim()) {
-            return;
-        }
+    // filterList() {
+    //     if (!this.searchExp || !this.searchExp.trim()) {
+    //         return;
+    //     }
 
-        this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
-    }
+    //     this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
+    // }
 
     getNews() {
         // todo: this is for UI designer
@@ -61,7 +62,10 @@ export class NewsListComponent implements OnInit {
         const that = this;
         const newType = this.newType || 0;
         this.newsService.getNews(0, newType).pipe(
-            finalize(() => that.filterList())
+            finalize(() => {
+                // that.filterList();
+                that.shareService.setLoading(false);
+            })
         ).subscribe(res => {
             this.listNews = res.result;
             this.listNewsClone = lodash.cloneDeep(this.listNews);
@@ -88,6 +92,7 @@ export class NewsListComponent implements OnInit {
 
     showDetail(news: NewsModel) {
         this.newsService.selectedNews = news;
+        this.shareService.setLoading(true);
         this.router.navigate([`/news/${news.friendlyName}`]);
     }
 }

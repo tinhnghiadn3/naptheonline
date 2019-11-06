@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
@@ -14,15 +15,17 @@ namespace NapTheOnline.Controllers
     public class GamesController : BaseController
     {
         private readonly GameService _gameService;
+        private CardChargeService _cardChargeService;
 
-        public GamesController(IHostingEnvironment env, GameService gameService) : base(env)
+        public GamesController(IHostingEnvironment env, GameService gameService, CardChargeService cardChargeService) : base(env)
         {
             _gameService = gameService;
+            _cardChargeService = cardChargeService;
         }
 
         // GET: api/games
         [HttpGet("page/{pageIndex}")]
-        public ListResult<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
+        public ListResultViewModel<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
 
         // GET api/games/5
         [HttpGet("{id:length(24)}", Name = "GetGame")]
@@ -149,6 +152,12 @@ namespace NapTheOnline.Controllers
                 }
             }
             return true;
+        }
+
+        [HttpPost("charge")]
+        public async Task<CardChargeResponseViewModel> ChargeAsync([FromBody]ChargeInfoViewModel param)
+        {
+            return await _cardChargeService.Charge(param);
         }
     }
 }

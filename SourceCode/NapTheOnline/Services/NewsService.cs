@@ -17,24 +17,24 @@ namespace NapTheOnline.Services
             _news = database.GetCollection<News>("News");
         }
 
-        public ListResult<List<News>> Get(int typeId, int pageIndex)
+        public ListResultViewModel<List<News>> Get(int typeId, int pageIndex)
         {
             int pageCount = (int)_news.CountDocuments(news => true);
             if (pageIndex == 0)
             {
                 if(typeId == 0)
-                    return new ListResult<List<News>>(_news.Find(news => true).ToList(), pageCount);
+                    return new ListResultViewModel<List<News>>(_news.Find(news => true).ToList(), pageCount);
                 else
-                    return new ListResult<List<News>>(_news.Find(news => true && news.typeid == typeId).ToList(), pageCount);
+                    return new ListResultViewModel<List<News>>(_news.Find(news => true && news.typeid == typeId).ToList(), pageCount);
             }
             else
             {
                 var take = 5;
                 var skip = (pageIndex - 1) * take;
                 if(typeId == 0)
-                    return new ListResult<List<News>>(_news.Find(news => true).Skip(skip).Limit(take).ToList(), pageCount);
+                    return new ListResultViewModel<List<News>>(_news.Find(news => true).Skip(skip).Limit(take).ToList(), pageCount);
                 else
-                    return new ListResult<List<News>>(_news.Find(news => true && news.typeid == typeId).Skip(skip).Limit(take).ToList(), pageCount);
+                    return new ListResultViewModel<List<News>>(_news.Find(news => true && news.typeid == typeId).Skip(skip).Limit(take).ToList(), pageCount);
 
                 
             }

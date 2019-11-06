@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ShareService } from '../../service/share.service';
 
 @Component({
   selector: 'app-admin-nav-menu',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminNavMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private shareService: ShareService) { }
 
   ngOnInit() {
   }
 
+  changeMenu() {
+    this.shareService.setLoading(true);
+  }
 }

@@ -5,6 +5,8 @@ import { GamesService } from '../../../service/games.service';
 import { GAMES } from '../../../share/mock-data';
 import * as lodash from 'lodash';
 import { Utility } from '../../../share/utility';
+import { ShareService } from '../../../service/share.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin-games-list',
@@ -23,7 +25,8 @@ export class AdminGamesListComponent implements OnInit {
     totalPage = [];
 
     constructor(private router: Router,
-        private gamesService: GamesService) {
+        private gamesService: GamesService,
+        private shareService: ShareService) {
     }
 
     ngOnInit() {
@@ -81,15 +84,12 @@ export class AdminGamesListComponent implements OnInit {
         }
 
         this.pageIndex = pageIndex;
-        this.gamesService.getGames(pageIndex).subscribe(res => {
+        this.gamesService.getGames(pageIndex).pipe(
+            finalize(() => this.shareService.setLoading(false))
+        ).subscribe(res => {
             this.total = res.total;
             this.games = res.result;
             this.games = Utility.generateFriendlyName(this.games);
-
-            // if (this.games.length === 0) {
-            // this.games = GAMES;
-            // }    
-
             this.gamesClone = lodash.cloneDeep(this.games);
             this.getListPagination();
         });

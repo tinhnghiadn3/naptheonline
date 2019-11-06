@@ -8,6 +8,7 @@ import { NewsService } from '../../../service/news.service';
 import { NewsModel } from '../../../share/view-model/news.model';
 import { formatDate } from '@angular/common';
 import { NEW_TYPES } from 'src/app/share/constant';
+import { Utility } from '../../../share/utility';
 
 @Component({
     selector: 'app-admin-news-detail',
@@ -172,14 +173,6 @@ export class AdminNewsDetailComponent implements OnInit {
         return this.isValid = true;
     }
 
-    replaceMoreSpace(str) {
-        while (str.indexOf('  ') !== -1) {
-            str = str.replace(/ {2}/g, ' ');
-        }
-
-        return str.trim();
-    }
-
     createFormData() {
         const formData = new FormData();
         if (this.selectedLogo) {
@@ -211,7 +204,7 @@ export class AdminNewsDetailComponent implements OnInit {
             const news = lodash.cloneDeep(this.selectedNews);
             //
             // name
-            news.name = this.replaceMoreSpace(news.name);
+            news.name = Utility.replaceMoreSpace(news.name);
             //
             // date created
             news.dateCreated = formatDate(new Date(), 'HH:MM MMM, dd yyyy', 'en');

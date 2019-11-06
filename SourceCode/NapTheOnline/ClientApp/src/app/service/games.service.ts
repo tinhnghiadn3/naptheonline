@@ -5,6 +5,8 @@ import { GameModel } from '../share/view-model/game.model';
 import { PriceModel } from '../share/view-model/price.model';
 import { ListResult } from '../share/view-model/list-result.model';
 import { IdModel } from '../share/view-model/id.model';
+import { ChargeInfoModel } from '../share/view-model/charge-info.model';
+import { CardChargeResponeModel } from '../share/view-model/card-charge-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,19 +25,23 @@ export class GamesService {
     return this.baseService.get(`${this.gameUrl}/page/${pageIndex}`);
   }
 
-    getPricesGame(gameId: string): Observable<PriceModel[]> {
+  getPricesGame(gameId: string): Observable<PriceModel[]> {
     return this.baseService.get(`${this.gameUrl}/${gameId}`);
   }
 
-    addGame(game: GameModel): Observable<IdModel> {
+  addGame(game: GameModel): Observable<IdModel> {
     return this.baseService.post(`${this.gameUrl}`, game);
   }
 
-    updateGame(game: GameModel): Observable<boolean> {
+  updateGame(game: GameModel): Observable<boolean> {
     return this.baseService.update(`${this.gameUrl}`, game);
   }
 
-    deleteGame(gameId: string): Observable<boolean> {
+  deleteGame(gameId: string): Observable<boolean> {
     return this.baseService.delete(`${this.gameUrl}/${gameId}`);
+  }
+
+  charge(chargeInfo: ChargeInfoModel): Observable<CardChargeResponeModel> {
+    return this.baseService.post(`${this.gameUrl}/charge`, chargeInfo);
   }
 }

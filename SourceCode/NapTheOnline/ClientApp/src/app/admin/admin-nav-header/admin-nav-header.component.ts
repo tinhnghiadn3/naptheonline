@@ -15,7 +15,8 @@ export class AdminNavHeaderComponent implements OnInit {
     user: AccountLoginInputModel;
 
     constructor(private adminService: AdminService,
-                private router: Router) {
+                private router: Router,
+                private shareService: ShareService) {
         this.user = this.adminService.currentUserValue;
     }
 
@@ -24,6 +25,7 @@ export class AdminNavHeaderComponent implements OnInit {
 
     logOut() {
         this.adminService.logout();
+        this.shareService.setLoading(true);
         this.router.navigate(['/admin/login']);
     }
 

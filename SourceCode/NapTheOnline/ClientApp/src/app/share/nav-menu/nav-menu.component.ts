@@ -22,11 +22,21 @@ export class NavMenuComponent implements OnInit {
     search() {
         if (this.searchExp && this.searchExp.trim().length > 0) {
             this.shareService.setSearchExp(this.searchExp);
-            this.router.navigate(['/news']);
+            if(this.router.url !== '/games') {
+                this.router.navigate(['/games']);
+            }
+            // this.router.navigate(['/news']);
         }
     }
 
-    changeNewType(type: number) {
+    cancelSearch() {
+        if (!this.searchExp || this.searchExp.trim().length <= 0) {
+            this.shareService.setSearchExp(null);
+        }
+    }
+    
+    changeMenu(type: number) {
+        this.shareService.setLoading(true);
         if (type && type > 0) {
             this.shareService.setNewType(type);
         }

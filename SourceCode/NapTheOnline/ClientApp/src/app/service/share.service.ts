@@ -12,6 +12,8 @@ export class ShareService {
 
     private logOutSubject = new BehaviorSubject<boolean>(null);
 
+    private loadingSubject = new BehaviorSubject<boolean>(false);
+
     constructor() { }
 
     subscribeProject(next?: (value: string) => void, error?: (error: any) => void, complete?: () => void): Subscription {
@@ -40,5 +42,19 @@ export class ShareService {
         }
 
         this.newTypeSubject.next(newType);
+    }
+
+    subscribeLoading(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+        return this.loadingSubject.subscribe(next, error, complete);
+    }
+
+    setLoading(isLoading: boolean) {
+        const selectedType = this.loadingSubject.getValue();
+
+        if (isLoading === selectedType) {
+            return;
+        }
+
+        this.loadingSubject.next(isLoading);
     }
 }
