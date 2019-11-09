@@ -37,9 +37,6 @@ export class GamesListComponent implements OnInit {
   }
 
   getGames() {
-    // todo: this is for UI designer
-    // this.games = GAMES;
-
     const that = this;
     this.gameService.getGames(0).pipe(
       finalize(() => {
@@ -62,7 +59,7 @@ export class GamesListComponent implements OnInit {
 
   showDetail(game: GameModel) {
     this.gameService.selectedGame = game;
-    this.shareService.setLoading(true);
+    // this.shareService.setLoading(true);
     this.router.navigate([`/games/${game.friendlyName}`]);
   }
 }

@@ -47,12 +47,12 @@ import { AuthGuard } from '../share/auth.guard';
                 component: AdminComponent, canActivate: [AuthGuard],
                 children: [
                     {
-                        path: '', redirectTo: 'dashboard', pathMatch: 'full'
+                        path: '', redirectTo: 'games', pathMatch: 'full'
                     },
-                    {
-                        path: 'dashboard',
-                        component: AdminDashboardComponent,
-                    },
+                    // {
+                    //     path: 'dashboard',
+                    //     component: AdminDashboardComponent,
+                    // },
                     {
                         path: 'change-pass',
                         component: AdminChangePassComponent

@@ -34,10 +34,6 @@ export class AdminGamesListComponent implements OnInit {
     }
 
     refreshList() {
-        // todo: this is for UI designer
-        //this.games = GAMES;
-        //this.gamesClone = lodash.cloneDeep(this.games);
-
         this.changePage(1);
     }
 

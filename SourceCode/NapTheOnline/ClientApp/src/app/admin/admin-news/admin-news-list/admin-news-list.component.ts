@@ -6,6 +6,8 @@ import { Utility } from '../../../share/utility';
 import { GameModel } from '../../../share/view-model/game.model';
 import * as lodash from 'lodash';
 import { NEWS } from '../../../share/mock-data';
+import { finalize } from 'rxjs/operators';
+import { ShareService } from '../../../service/share.service';
 
 @Component({
     selector: 'app-admin-news-list',
@@ -23,7 +25,8 @@ export class AdminNewsListComponent implements OnInit {
     totalPage = [];
 
     constructor(private router: Router,
-        private newsService: NewsService) {
+        private newsService: NewsService,
+        private shareService: ShareService) {
     }
 
     ngOnInit() {
@@ -31,10 +34,6 @@ export class AdminNewsListComponent implements OnInit {
     }
 
     refreshList() {
-        // todo: this is for UI designer
-        //this.listNews = NEWS;
-        //this.listNewsClone = lodash.cloneDeep(this.listNews);
-
         this.changePage(1);
     }
 
@@ -54,7 +53,9 @@ export class AdminNewsListComponent implements OnInit {
         }
 
         this.pageIndex = pageIndex;
-        this.newsService.getNews(pageIndex, 0).subscribe(res => {
+        this.newsService.getNews(pageIndex, 0).pipe(
+            finalize(() => this.shareService.setLoading(false))
+        ).subscribe(res => {
             this.total = res.total;
             this.listNews = res.result;
             this.listNews = Utility.generateFriendlyName(this.listNews);

@@ -73,6 +73,18 @@
                     <td>Mã bảo mật</td>
                     <td>
                         <div class="security_code">
+                            <form [formGroup]="aFormGroup">
+                                <ngx-recaptcha2 #captchaElem
+                                                [siteKey]="siteKey"
+                                                (expire)="handleExpire()"
+                                                (success)="handleSuccess()"
+                                                [useGlobalDomain]="true"
+                                                [size]="'compact'"
+                                                [hl]="'en'"
+                                                [theme]="'light'"
+                                                formControlName="recaptcha">
+                                </ngx-recaptcha2>
+                            </form>
                         </div>
                         <br/>
                     </td>

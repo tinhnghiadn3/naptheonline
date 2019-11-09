@@ -8,12 +8,18 @@ import { ShareService } from '../../service/share.service';
 })
 export class AdminNavMenuComponent implements OnInit {
 
+  selectedMenu: number = 1;
+
   constructor(private shareService: ShareService) { }
 
   ngOnInit() {
   }
 
-  changeMenu() {
+  changeMenu(index: number) {
+    if(this.selectedMenu === index) {
+      return;
+    }
+    this.selectedMenu = index;
     this.shareService.setLoading(true);
   }
 }

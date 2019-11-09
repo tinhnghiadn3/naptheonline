@@ -298,7 +298,12 @@ body {
 }
 
 .news-247 .new-thumb .title-thumb {
-  font-size: 12px
+   font-size: 14px;
+        
+}
+.news-247 .new-thumb .title-thumb a{
+text-transform: capitalize;
+        
 }
 
 .news-item {

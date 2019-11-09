@@ -27,12 +27,7 @@ export class GamesDetailComponent implements OnInit {
   ngOnInit() {
   }
 
-  getPrices() {
-    if (this.selectedGame && this.selectedGame.id) {
-      this.gameService.getPricesGame(this.selectedGame.id)
-        .pipe(finalize(() => {
-          this.shareService.setLoading(false);
-        })).subscribe(res => this.selectedGame.prices = res);
-    }
+  onPay() {
+    this.router.navigate(['/pay']);
   }
 }
