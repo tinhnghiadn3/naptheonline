@@ -16,20 +16,15 @@ import { NEW_TYPES } from '../../share/constant';
 })
 export class NewsListComponent implements OnInit {
 
-    // searchExp: string;
     newType: number = 1;
     listNews: NewsModel[] = [];
     listNewsClone: NewsModel[] = [];
-    listBestViewed: NewsModel[] = [];
     title: string;
     NEW_TYPES = NEW_TYPES;
 
     constructor(private router: Router,
         private newsService: NewsService,
         private shareService: ShareService) {
-        // this.shareService.subscribeProject(searchExp => {
-        //     this.searchExp = searchExp;
-        // });
 
         this.shareService.subscribeNewType(value => {
             this.newType = value;
@@ -45,25 +40,11 @@ export class NewsListComponent implements OnInit {
         this.getNews();
     }
 
-    // filterList() {
-    //     if (!this.searchExp || !this.searchExp.trim()) {
-    //         return;
-    //     }
-
-    //     this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
-    // }
-
     getNews() {
-        // todo: this is for UI designer
-        // this.listNews = NEWS;
-        // this.getBestViewed();
-        // this.filterList();
-
         const that = this;
         const newType = this.newType || 0;
         this.newsService.getNews(0, newType).pipe(
             finalize(() => {
-                // that.filterList();
                 that.shareService.setLoading(false);
             })
         ).subscribe(res => {
@@ -80,19 +61,22 @@ export class NewsListComponent implements OnInit {
         }
 
         if (this.listNews.length <= 5) {
-            this.listBestViewed = this.listNews;
+            this.shareService.setBestViewed(this.listNews);
             return;
         }
 
+        let listBestViewed = [];
         for (let i = 0; i < 5; i++) {
             const randomObject = this.listNews[Math.floor(Math.random() * this.listNews.length)];
-            this.listBestViewed.push(randomObject);
+            listBestViewed.push(randomObject);
         }
+
+        this.shareService.setBestViewed(listBestViewed);
     }
 
     showDetail(news: NewsModel) {
         this.newsService.selectedNews = news;
-        this.shareService.setLoading(true);
+        // this.shareService.setLoading(true);
         this.router.navigate([`/news/${news.friendlyName}`]);
     }
 }

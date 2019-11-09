@@ -58,7 +58,6 @@ export class GamesListComponent implements OnInit {
     }
 
     this.games = this.gamesClone.filter(_ => _.name.toLocaleLowerCase().indexOf(this.searchExp.toLocaleLowerCase()) !== -1);
-    // this.games = this.gamesClone.filter(_ => _.name.includes(this.searchExp));
   }
 
   showDetail(game: GameModel) {

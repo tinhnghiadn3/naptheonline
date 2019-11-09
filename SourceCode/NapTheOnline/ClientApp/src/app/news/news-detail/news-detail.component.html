@@ -1,7 +1,9 @@
 <section class="new-detail news-247">
     <div class="container">
         <ul class="breadcrumb">
-            <li><a [routerLink]="'/news'">Danh sách</a></li>
+            <li>
+                <a [routerLink]="'/news'">Danh sách</a>
+            </li>
             <li class="active">Tin tức chi tiết</li>
         </ul>
         <div class="content-new-detail">
@@ -26,9 +28,8 @@
 
                 <div class="col-md-4">
                     <!-- news xem nhieu nhat -->
-
+                    <app-news-best-view></app-news-best-view>
                 </div>
-
             </div>
         </div>
     </div>

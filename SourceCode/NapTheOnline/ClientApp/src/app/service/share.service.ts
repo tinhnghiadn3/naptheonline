@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { NewsModel } from '../share/view-model/news.model';
+import {isEqual} from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +15,8 @@ export class ShareService {
     private logOutSubject = new BehaviorSubject<boolean>(null);
 
     private loadingSubject = new BehaviorSubject<boolean>(false);
+
+    private listBestViewedSubject = new BehaviorSubject<NewsModel[]>([]);
 
     constructor() { }
 
@@ -56,5 +60,19 @@ export class ShareService {
         }
 
         this.loadingSubject.next(isLoading);
+    }
+
+    subscribeBestViewed(next?: (value: NewsModel[]) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+        return this.listBestViewedSubject.subscribe(next, error, complete);
+    }
+
+    setBestViewed(items: NewsModel[]) {
+        const selectedItems = this.listBestViewedSubject.getValue();
+
+        if (isEqual(items, selectedItems)) {
+            return;
+        }
+
+        this.listBestViewedSubject.next(items);
     }
 }

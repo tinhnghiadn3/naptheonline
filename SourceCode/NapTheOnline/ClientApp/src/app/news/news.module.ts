@@ -4,13 +4,15 @@ import {RouterModule} from '@angular/router';
 import {NewsComponent} from './news.component';
 import {NewsDetailComponent} from './news-detail/news-detail.component';
 import { NewsListComponent } from './news-list/news-list.component';
+import { NewsBestViewComponent } from './news-best-view/news-best-view.component';
 
 
 @NgModule({
   declarations: [
     NewsComponent,
     NewsDetailComponent,
-    NewsListComponent
+    NewsListComponent,
+    NewsBestViewComponent
   ],
   imports: [
     CommonModule,

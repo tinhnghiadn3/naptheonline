@@ -1,0 +1,27 @@
+<div class="top mb-4 ">
+    <div class="center">
+        <h1 class="pb-2">Xem nhiều nhất</h1>
+    </div>
+</div>
+<div class=" news-list">
+    <!-- item -->
+    <div *ngFor="let item of listBestViewed" class="news-item  mb-4">
+        <div class="row row-247online">
+            <div class="col-lg-4 mb-5 mb-lg-0 col-247online">
+                <div class="card">
+                    <div>
+                        <img src="{{item.logo}}" alt="News">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="text-gray">
+                    <h5 class="text-uppercase fw-600 title-thumb"><a (click)="showDetail(item)">{{item.name}}</a></h5>
+                    <div class="small-3 mb-2">
+                        <span class="mr-2"><i class="fas fa-calendar-alt mr-1"></i> {{item.dateCreated}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -119,6 +119,10 @@ namespace NapTheOnline
                 app.UseSpaStaticFiles();
             }
 
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
             var cachePeriod = env.IsDevelopment() ? "600" : "604800";
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -129,15 +133,18 @@ namespace NapTheOnline
                     ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
                 },
 
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images")),
+                FileProvider = new PhysicalFileProvider(path),
                 RequestPath = new PathString("/Uploads/Images")
             });
 
+            
+
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images")),
+                FileProvider = new PhysicalFileProvider(path),
                 RequestPath = new PathString("/Uploads/Images")
             });
+           
 
             app.UseRouting();
 
