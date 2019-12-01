@@ -4,52 +4,61 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { AccountLoginInputModel } from '../share/view-model/account-login-input.model';
 import { map } from 'rxjs/operators';
 import * as jwt_decode from "jwt-decode";
+import { ShareService } from './share.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AdminService {
 
-    public currentUserSubject = new BehaviorSubject<AccountLoginInputModel>(null);
+    public currentUserSubject = new BehaviorSubject<AccountLoginInputModel>(new AccountLoginInputModel());
     public currentUser: Observable<AccountLoginInputModel>;
 
     private authenticationUrl: string = this.baseService.authenticationUrl;
 
-    constructor(private baseService: ApiService) {
-        this.currentUserSubject = new BehaviorSubject<AccountLoginInputModel>(JSON.parse(localStorage.getItem('currentUser')));
+    constructor(private baseService: ApiService,
+        private shareService: ShareService) {
+            
         this.currentUser = this.currentUserSubject.asObservable();
+        this.currentUserSubject.next(this.getLoggedUser());
     }
 
     public get currentUserValue(): AccountLoginInputModel {
         return this.currentUserSubject.value;
     }
 
+    getLoggedUser(): AccountLoginInputModel {
+        const user = localStorage.getItem('APP_USER');
+        return JSON.parse(user);
+    }
+
     login(loginData: AccountLoginInputModel) {
         return this.baseService.post<any>(`${this.authenticationUrl}/login`, loginData)
             .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('APP_TOKEN', user.Token);
+                localStorage.setItem('APP_USER', JSON.stringify(user));
                 this.currentUserSubject.next(user);
                 return user;
             }));
     }
 
     logout() {
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('APP_TOKEN');
+        localStorage.removeItem('APP_USER');
         this.currentUserSubject.next(null);
     }
 
     getToken(): string {
-        return localStorage.getItem('currentUser');
+        return localStorage.getItem('APP_TOKEN');
     }
 
     setToken(token: string): void {
-        localStorage.setItem('currentUser', token);
+        localStorage.setItem('APP_TOKEN', token);
     }
 
     getTokenExpirationDate(token: string): Date {
-        if(!token) {
-            localStorage.removeItem('currentUser');
+        if (!token) {
+            localStorage.removeItem('APP_TOKEN');
             this.currentUserSubject.next(null);
             return null;
         }
@@ -68,7 +77,7 @@ export class AdminService {
         if (!token) return true;
 
         const date = this.getTokenExpirationDate(token);
-        if (date === undefined) return false;
+        if (!date) return false;
         return !(date.valueOf() > new Date().valueOf());
     }
 

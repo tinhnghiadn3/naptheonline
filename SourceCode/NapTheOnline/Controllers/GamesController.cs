@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
@@ -12,6 +13,7 @@ using NapTheOnline.Services;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class GamesController : BaseController
     {
         private readonly GameService _gameService;
@@ -27,8 +29,8 @@ namespace NapTheOnline.Controllers
         [HttpGet("page/{pageIndex}")]
         public ListResultViewModel<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
 
-        // GET api/games/5
-        [HttpGet("{id:length(24)}", Name = "GetGame")]
+        [Authorize]
+        [HttpGet("{id:length(24)}")]
         public ActionResult<Game> Get(string id)
         {
             var game = _gameService.Get(id);
@@ -41,7 +43,7 @@ namespace NapTheOnline.Controllers
             return game;
         }
 
-        // POST api/games
+        [Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]Game game)
         {
@@ -50,7 +52,7 @@ namespace NapTheOnline.Controllers
             return new JsonResult(new { id = game.id });
         }
 
-        // PUT api/games/5
+        [Authorize]
         [HttpPut]
         public bool Update([FromBody]Game gameIn)
         {
@@ -66,7 +68,7 @@ namespace NapTheOnline.Controllers
             return true;
         }
 
-        // DELETE api/games/5
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete([FromRoute]string id)
         {
@@ -91,6 +93,8 @@ namespace NapTheOnline.Controllers
 
             return Ok();
         }
+
+        [Authorize]
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
         {

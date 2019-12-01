@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
@@ -37,8 +37,6 @@ namespace NapTheOnline
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<GameService>();
-            services.AddSingleton<NewsService>();
 
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
 
@@ -106,45 +104,49 @@ namespace NapTheOnline
                 .AllowAnyHeader());
 
             app.UseAuthentication();
+
             app.UseCookiePolicy();
 
             app.UseDefaultFiles();
+
             app.UseStaticFiles();
+
             app.UseSpaStaticFiles();
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
+
+                app.UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                });
             }
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "Images");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            //if (!Directory.Exists(path))
+            //    Directory.CreateDirectory(path);
 
             var cachePeriod = env.IsDevelopment() ? "600" : "604800";
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = ctx =>
                 {
-                    // Requires the following import:
-                    // using Microsoft.AspNetCore.Http;
                     ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={cachePeriod}");
                 },
 
                 FileProvider = new PhysicalFileProvider(path),
-                RequestPath = new PathString("/Uploads/Images")
+                RequestPath = new PathString("/images")
             });
-
-            
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
                 FileProvider = new PhysicalFileProvider(path),
-                RequestPath = new PathString("/Uploads/Images")
+                RequestPath = new PathString("/images")
             });
-           
 
             app.UseRouting();
 
@@ -164,6 +166,8 @@ namespace NapTheOnline
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            app.UseAuthorization();
         }
     }
 }

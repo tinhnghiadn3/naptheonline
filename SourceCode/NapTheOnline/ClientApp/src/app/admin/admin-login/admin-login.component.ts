@@ -14,6 +14,7 @@ import { map, finalize, first } from 'rxjs/operators';
 export class AdminLoginComponent implements OnInit, AfterViewInit {
     isLoading: boolean;
     account: AccountLoginInputModel;
+    returnUrl: string;
 
     loginForm = new FormGroup({
         emailAddress: new FormControl('', Validators.required),
@@ -25,12 +26,20 @@ export class AdminLoginComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         private shareService: ShareService,
         private router: Router) {
-        if (this.adminService.currentUserValue) {
-            this.router.navigate(['/admin']);
+
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+        if (!this.adminService.isTokenExpired()) {
+            if (this.returnUrl && this.returnUrl.length > 0) {
+                this.router.navigateByUrl(this.returnUrl);
+            } else {
+                this.router.navigate(['/admin']).then();
+            }
         }
     }
 
     ngOnInit() {
+
     }
 
     ngAfterViewInit() {
@@ -44,8 +53,6 @@ export class AdminLoginComponent implements OnInit, AfterViewInit {
             isKeepSignedIn: this.loginForm.value.isKeepSignedIn
         });
 
-        // this.submitted = true;
-
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
@@ -56,7 +63,7 @@ export class AdminLoginComponent implements OnInit, AfterViewInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate(['/admin/dashboard']);
+                    this.router.navigate(['/admin/games']);
                 },
                 error => {
                     this.shareService.setLoading(false);

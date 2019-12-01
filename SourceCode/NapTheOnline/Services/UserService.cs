@@ -4,11 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using NapTheOnline.Models;
+using NapTheOnline.Utilities;
 
 namespace NapTheOnline.Services
 {
@@ -18,7 +18,7 @@ namespace NapTheOnline.Services
 
         private List<User> _users = new List<User>
         {
-            new User { Id = 1, Username = "admin", Password = "admin" }
+            new User { Id = 1, Username = "lan.huynh", Password = "huynhvanlan" }
         };
 
         public UserService(IOptions<AppSettings> appSettings)
@@ -37,13 +37,15 @@ namespace NapTheOnline.Services
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var random = new Random();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Username),
-                    new Claim(ClaimTypes.AuthenticationMethod, user.Password)
+                    new Claim(AppClaims.UserId, random.Next(0, 96).ToString()),
+                    new Claim(AppClaims.UserName, user.Username),
+                    new Claim(AppClaims.Password, user.Username),
+                    new Claim(AppClaims.NCOL, "NCOL")
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

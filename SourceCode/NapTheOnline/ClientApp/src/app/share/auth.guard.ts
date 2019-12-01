@@ -11,16 +11,12 @@ export class AuthGuard implements CanActivate {
               private adminService: AdminService) {
   }
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        const currentUser = this.adminService.currentUserValue;
-        if (this.adminService.isTokenExpired() || !currentUser) {
-        // not logged in so redirect to login page with the return url
+        if (this.adminService.isTokenExpired()) {
+          this.adminService.logout();
           this.router.navigate(['admin/login'], { queryParams: { returnUrl: state.url } });
           return false;
         }
 
-        if (currentUser) {
-            // logged in so return true
-            return true;
-        }
+        return true;
   }
 }

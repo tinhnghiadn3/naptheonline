@@ -8,13 +8,9 @@ using NapTheOnline.Services;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthenticationController : Controller
     {
-        private List<User> _users = new List<User>
-        {
-            new User { Id = 1, Username = "test", Password = "test" }
-        };
-
         private UserService _userService;
 
         public AuthenticationController(UserService userService)
@@ -27,5 +23,12 @@ namespace NapTheOnline.Controllers
         {
             return _userService.Authenticate(user.Username, user.Password);
         }
+
+        //[Authorize]
+        //[HttpGet("user/{id}")]
+        //public User GetUser([FromRoute]int id)
+        //{
+        //    return _userService.Get(id);
+        //}
     }
 }

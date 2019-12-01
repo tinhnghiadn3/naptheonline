@@ -3,6 +3,7 @@ import { ShareService } from 'src/app/service/share.service';
 import { Router } from '@angular/router';
 import { AdminService } from '../../service/admin.service';
 import { AccountLoginInputModel } from '../../share/view-model/account-login-input.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-admin-nav-header',
@@ -12,20 +13,32 @@ import { AccountLoginInputModel } from '../../share/view-model/account-login-inp
 export class AdminNavHeaderComponent implements OnInit {
 
     @Input() nameComponent: string;
-    user: AccountLoginInputModel;
+    
+    private _user: AccountLoginInputModel;
+
+    get user(): AccountLoginInputModel {
+        return this._user;
+    }
+
+    set user(value: AccountLoginInputModel) {
+        this._user = value;
+    }
+
+    userSubscription: Subscription;
 
     constructor(private adminService: AdminService,
                 private router: Router,
                 private shareService: ShareService) {
-        this.user = this.adminService.currentUserValue;
     }
 
     ngOnInit() {
+        this.userSubscription = this.adminService.currentUser.subscribe(user => {
+            this.user = user;
+        });
     }
 
     logOut() {
         this.adminService.logout();
-        this.shareService.setLoading(true);
         this.router.navigate(['/admin/login']);
     }
 

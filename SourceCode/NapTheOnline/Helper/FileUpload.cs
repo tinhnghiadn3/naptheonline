@@ -18,7 +18,7 @@ namespace NapTheOnline.Helper
                     file.CopyTo(stream);
                 }
 
-                return "/Uploads/Images/" + fileName;
+                return "images/" + fileName;
             }
 
             return string.Empty;

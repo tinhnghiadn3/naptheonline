@@ -49,10 +49,6 @@ import { AuthGuard } from '../share/auth.guard';
                     {
                         path: '', redirectTo: 'games', pathMatch: 'full'
                     },
-                    // {
-                    //     path: 'dashboard',
-                    //     component: AdminDashboardComponent,
-                    // },
                     {
                         path: 'change-pass',
                         component: AdminChangePassComponent

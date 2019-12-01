@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Models;
 using NapTheOnline.Services;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class CardChargeController
     {
         private CardChargeService _cardChargeService;

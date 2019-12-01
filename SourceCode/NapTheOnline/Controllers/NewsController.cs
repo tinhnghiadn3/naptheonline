@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
@@ -13,6 +14,7 @@ using NapTheOnline.Services;
 namespace NapTheOnline.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class NewsController : BaseController
     {
         private readonly NewsService _newsService;
@@ -26,8 +28,8 @@ namespace NapTheOnline.Controllers
         [HttpGet("{typeId}/{pageIndex}")]
         public ListResultViewModel<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
 
-        // GET api/news/5
-        [HttpGet("{id:length(24)}", Name = "GetNews")]
+        [Authorize]
+        [HttpGet("{id:length(24)}")]
         public ActionResult<News> Get(string id)
         {
             var news = _newsService.Get(id);
@@ -40,7 +42,7 @@ namespace NapTheOnline.Controllers
             return news;
         }
 
-        // POST api/news
+        [Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]News news)
         {
@@ -49,7 +51,7 @@ namespace NapTheOnline.Controllers
             return new JsonResult(new { id = news.id });
         }
 
-        // PUT api/news/5
+        [Authorize]
         [HttpPut]
         public bool Update([FromBody]News newsIn)
         {
@@ -65,7 +67,7 @@ namespace NapTheOnline.Controllers
             return true;
         }
 
-        // DELETE api/news/5
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete([FromRoute]string id)
         {
@@ -89,6 +91,7 @@ namespace NapTheOnline.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
         {
