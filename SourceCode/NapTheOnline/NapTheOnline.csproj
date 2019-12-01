@@ -25,6 +25,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Google.Apis.Drive.v3" Version="1.42.0.1772" />
   </ItemGroup>
 
   <ItemGroup>
