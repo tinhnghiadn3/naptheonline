@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AdminService } from '../../service/admin.service';
 import { AccountLoginInputModel } from '../../share/view-model/account-login-input.model';
 import { Subscription } from 'rxjs';
+import { BackupService } from '../../service/backup.service';
 
 @Component({
     selector: 'app-admin-nav-header',
@@ -28,6 +29,7 @@ export class AdminNavHeaderComponent implements OnInit {
 
     constructor(private adminService: AdminService,
                 private router: Router,
+                private backupService: BackupService,
                 private shareService: ShareService) {
     }
 
@@ -42,4 +44,11 @@ export class AdminNavHeaderComponent implements OnInit {
         this.router.navigate(['/admin/login']);
     }
 
+    upload() {
+        this.backupService.upload().toPromise();
+    }
+
+    restore() {
+        this.backupService.restore().toPromise();
+    }
 }

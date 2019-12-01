@@ -15,6 +15,7 @@ export class ApiService {
   public gameUrl = 'api/games';
   public newsUrl = 'api/news';
   public authenticationUrl = 'api/authentication';
+  public backupUrl = 'api/backup';
   private routersNames: string[] = [];
 
   constructor(private httpClient: HttpClient, private router: Router) {
