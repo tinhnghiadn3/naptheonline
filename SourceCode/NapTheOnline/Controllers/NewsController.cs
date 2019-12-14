@@ -49,7 +49,7 @@ namespace NapTheOnline.Controllers
             return new JsonResult(new { id = news.id });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut]
         public bool Update([FromBody]News newsIn)
         {

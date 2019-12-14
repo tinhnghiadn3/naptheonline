@@ -29,7 +29,7 @@ namespace NapTheOnline.Controllers
         [HttpGet("page/{pageIndex}")]
         public ListResultViewModel<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id:length(24)}")]
         public ActionResult<Game> Get(string id)
         {
@@ -52,7 +52,7 @@ namespace NapTheOnline.Controllers
             return new JsonResult(new { id = game.id });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut]
         public bool Update([FromBody]Game gameIn)
         {
