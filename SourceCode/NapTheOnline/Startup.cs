@@ -113,7 +113,7 @@ namespace NapTheOnline
 
             app.UseSpaStaticFiles();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             if (!env.IsDevelopment())
