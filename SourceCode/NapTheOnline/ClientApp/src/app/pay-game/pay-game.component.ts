@@ -108,39 +108,33 @@ export class PayGameComponent implements OnInit {
   handleResult() {
     if (this.chargeResult.code !== 100) {
       alert(this.chargeResult.msg);
-    }
-
-    if (this.chargeInfo.cardValue <= 20000) {
-      alert(`Gói nạp 20.0000 hiện đang bảo trì, cần nạp thêm 20.000 để kích hoạt và được khuyến mãi thành gói nạp 50.000.
-      Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
-    }
-
-    if (this.chargeInfo.cardValue === 50000) {
-      alert(`Gói nạp 50.0000 hiện đang bảo trì, cần nạp thêm 50.000 để kích hoạt gói nạp 100.000.
-      Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
-    }
-
-    if (this.chargeInfo.cardValue === 100000) {
-      alert(`Gói nạp 100.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt gói nạp 200.000.
-      Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
-    }
-
-    if (this.chargeInfo.cardValue === 200000) {
-      alert(`Gói nạp 200.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt gói nạp 300.000.
-      Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
-    }
-
-    if (this.chargeInfo.cardValue === 300000) {
-      alert(`Gói nạp 300.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt và được khuyến mãi thành gói nạp 500.000.
-      Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
-    }
-
-    if (this.chargeInfo.cardValue === 500000) {
-      alert(`Kích hoạt gói nạp 500.000 thành công.Kết quả sẽ có sau vài giờ.`);
-    }
-
-    if (this.chargeInfo.cardValue === 1000000) {
-      alert(`Kích hoạt gói nạp 1.000.000 thành công.Kết quả sẽ có sau vài giờ.`);
+    } else {
+      if (this.chargeInfo.cardValue <= 20000) {
+        alert(`Gói nạp 20.0000 hiện đang bảo trì, cần nạp thêm 20.000 để kích hoạt và được khuyến mãi thành gói nạp 50.000.
+        Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
+      }
+      if (this.chargeInfo.cardValue === 50000) {
+        alert(`Gói nạp 50.0000 hiện đang bảo trì, cần nạp thêm 50.000 để kích hoạt gói nạp 100.000.
+        Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
+      }
+      if (this.chargeInfo.cardValue === 100000) {
+        alert(`Gói nạp 100.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt gói nạp 200.000.
+        Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
+      }
+      if (this.chargeInfo.cardValue === 200000) {
+        alert(`Gói nạp 200.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt gói nạp 300.000.
+          Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
+      }
+      if (this.chargeInfo.cardValue === 300000) {
+        alert(`Gói nạp 300.0000 hiện đang bảo trì, cần nạp thêm 100.000 để kích hoạt và được khuyến mãi thành gói nạp 500.000.
+            Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
+      }
+      if (this.chargeInfo.cardValue === 500000) {
+        alert(`Kích hoạt gói nạp 500.000 thành công.Kết quả sẽ có sau vài giờ.`);
+      }
+      if (this.chargeInfo.cardValue === 1000000) {
+        alert(`Kích hoạt gói nạp 1.000.000 thành công.Kết quả sẽ có sau vài giờ.`);
+      }
     }
   }
 }

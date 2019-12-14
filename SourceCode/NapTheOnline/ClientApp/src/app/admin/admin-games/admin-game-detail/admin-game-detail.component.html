@@ -7,7 +7,7 @@
                     <h6 *ngIf="game.id" class="m-0 font-weight-bold text-primary">Game Updating</h6>
                 </div>
                 <div class="card-body">
-                    <form autocomplete="off" *ngIf="game" (submit)="onSubmit()">
+                    <form autocomplete="off" *ngIf="game">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group name-game">
@@ -116,7 +116,7 @@
                             </tbody>
                         </table>
                         <div class="form-group d-flex justify-content-end action-edit">
-                            <button type="submit" class="btn btn-primary mr-3">
+                            <button type="submit" class="btn btn-primary mr-3" (click)="onSubmit()">
                 Save <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}}%</span></button>
                             <button type="button" (click)="backClick()" class="btn btn-back" [disabled]="isUploading">
                 Back

@@ -92,7 +92,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input [disabled]="isDisabled" class="btn btn-info" type="submit" value="Nạp thẻ" />
+                        <button [disabled]="isDisabled" class="btn btn-info" (click)="onSubmit()">Nạp thẻ</button>
                         <div id="loading_napthe" style="display: none; float: right">
                             <img src="../../assets/images/loading.gif" /> &nbsp;Xin mời chờ...
                         </div>
@@ -101,4 +101,4 @@
             </tbody>
         </table>
     </form>
-</div>
+</div>  

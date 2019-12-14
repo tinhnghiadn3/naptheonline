@@ -98,64 +98,74 @@ namespace NapTheOnline.Controllers
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
         {
-            var files = Request.Form.Files;
-            if (files.Count > 0)
+            try
             {
-                AddFolderStoringImage();
-
-                var game = _gameService.Get(id);
-                if (game != null)
+                var files = Request.Form.Files;
+                if (files.Count > 0)
                 {
-                    FileUpload fileUpload = new FileUpload();
-                    var result = new ImagePath();
-                    List<Image> listImage = new List<Image>();
-                    Image image;
-                    foreach (var file in files)
-                    {
-                        switch (file.Name)
-                        {
-                            case "banner":
-                                {
-                                    result.pathBanner = fileUpload.UploadImage(file, "Banner_");
-                                    fileUpload.DeleteImage(game.banner);
-                                    break;
-                                }
-                            case "logo":
-                                {
-                                    result.pathLogo = fileUpload.UploadImage(file, "Logo_");
-                                    fileUpload.DeleteImage(game.logo);
-                                    break;
-                                }
-                            default: break;
-                        }
-                        
-                        if (file.Name.Contains("description"))
-                        {
-                            var pathDesc = fileUpload.UploadImage(file, "Description_");
-                            result.pathDescription.Add(pathDesc);
-                            image = new Image(Guid.NewGuid().ToString(), pathDesc);
-                            listImage.Add(image);
-                        }
-                    }
-                    game.images = listImage;
-                    if (!string.IsNullOrEmpty(result.pathBanner))
-                    {
-                        game.banner = result.pathBanner;
-                    }
+                    AddFolderStoringImage();
 
-                    if (!string.IsNullOrEmpty(result.pathLogo))
+                    var game = _gameService.Get(id);
+                    if (game != null)
                     {
-                        game.logo = result.pathLogo;
-                    }
+                        FileUpload fileUpload = new FileUpload();
+                        var result = new ImagePath();
+                        List<Image> listImage = new List<Image>();
+                        Image image;
+                        foreach (var file in files)
+                        {
+                            switch (file.Name)
+                            {
+                                case "banner":
+                                    {
+                                        result.pathBanner = fileUpload.UploadImage(file, "Banner_");
+                                        fileUpload.DeleteImage(game.banner);
+                                        break;
+                                    }
+                                case "logo":
+                                    {
+                                        result.pathLogo = fileUpload.UploadImage(file, "Logo_");
+                                        fileUpload.DeleteImage(game.logo);
+                                        break;
+                                    }
+                                default: break;
+                            }
 
-                    for (int i = 0; i < result.pathDescription.Count; i++)
-                    {
-                        game.description = game.description.Replace("{" + i + "}", result.pathDescription[i]);
+                            if (file.Name.Contains("description"))
+                            {
+                                var pathDesc = fileUpload.UploadImage(file, "Description_");
+                                result.pathDescription.Add(pathDesc);
+                                image = new Image(Guid.NewGuid().ToString(), pathDesc);
+                                listImage.Add(image);
+                            }
+                        }
+                        game.images = listImage;
+                        if (!string.IsNullOrEmpty(result.pathBanner))
+                        {
+                            game.banner = result.pathBanner;
+                        }
+
+                        if (!string.IsNullOrEmpty(result.pathLogo))
+                        {
+                            game.logo = result.pathLogo;
+                        }
+
+                        for (int i = 0; i < result.pathDescription.Count; i++)
+                        {
+                            game.description = game.description.Replace("{" + i + "}", result.pathDescription[i]);
+                        }
+
+                        _gameService.Update(id, game);
                     }
-                    _gameService.Update(id, game);
                 }
+
+                return true;
             }
-            return true;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         [HttpPost("charge")]

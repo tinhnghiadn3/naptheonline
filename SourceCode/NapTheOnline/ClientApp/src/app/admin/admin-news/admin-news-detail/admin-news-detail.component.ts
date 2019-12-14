@@ -127,7 +127,9 @@ export class AdminNewsDetailComponent implements OnInit {
         let listBase64 = [];
         do {
             imgBase64 = regexImg.exec(source);
-            if (imgBase64 && !(imgBase64[1] as string).includes('../../assets/upload')) {
+            if (imgBase64 
+                && !(imgBase64[1] as string).includes('http')
+                && !(imgBase64[1] as string).includes('../../assets/upload')) {
                 listBase64.push(imgBase64[1]);
             }
         } while (imgBase64);
@@ -155,7 +157,7 @@ export class AdminNewsDetailComponent implements OnInit {
     }
 
     dataURItoBlob(dataURI) {
-        const byteString = window.atob(dataURI);
+        const byteString = atob(dataURI);
         const arrayBuffer = new ArrayBuffer(byteString.length);
         const int8Array = new Uint8Array(arrayBuffer);
         for (let i = 0; i < byteString.length; i++) {
