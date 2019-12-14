@@ -167,7 +167,7 @@ namespace NapTheOnline
                 }
             });
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
         }
     }
 }

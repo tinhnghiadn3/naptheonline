@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +26,7 @@ namespace NapTheOnline.Controllers
         [HttpGet("{typeId}/{pageIndex}")]
         public ListResultViewModel<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id:length(24)}")]
         public ActionResult<News> Get(string id)
         {
@@ -42,7 +40,7 @@ namespace NapTheOnline.Controllers
             return news;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]News news)
         {
@@ -67,7 +65,7 @@ namespace NapTheOnline.Controllers
             return true;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete([FromRoute]string id)
         {
@@ -91,7 +89,7 @@ namespace NapTheOnline.Controllers
             return NoContent();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
         {

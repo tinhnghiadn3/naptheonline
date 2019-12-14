@@ -23,11 +23,11 @@ export class AdminLoginComponent implements OnInit, AfterViewInit {
     });
 
     constructor(private adminService: AdminService,
-        private route: ActivatedRoute,
-        private shareService: ShareService,
-        private router: Router) {
+                private route: ActivatedRoute,
+                private shareService: ShareService,
+                private router: Router) {
 
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
 
         if (!this.adminService.isTokenExpired()) {
             if (this.returnUrl && this.returnUrl.length > 0) {

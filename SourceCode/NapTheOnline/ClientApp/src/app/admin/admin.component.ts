@@ -14,9 +14,12 @@ export class AdminComponent implements OnInit {
 
     user: AccountLoginInputModel;
 
-    constructor() {
+    constructor(private adminService: AdminService) {
     }
 
     ngOnInit() {
+        if (this.adminService.isTokenExpired()) {
+            this.adminService.logout();
+        }
     }
 }

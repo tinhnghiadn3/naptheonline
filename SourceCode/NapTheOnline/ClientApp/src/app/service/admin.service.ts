@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AccountLoginInputModel } from '../share/view-model/account-login-input.model';
 import { map } from 'rxjs/operators';
-import * as jwt_decode from "jwt-decode";
+import * as jwt_decode from 'jwt-decode';
 import { ShareService } from './share.service';
 
 @Injectable({
@@ -16,9 +16,7 @@ export class AdminService {
 
     private authenticationUrl: string = this.baseService.authenticationUrl;
 
-    constructor(private baseService: ApiService,
-        private shareService: ShareService) {
-            
+    constructor(private baseService: ApiService) {
         this.currentUser = this.currentUserSubject.asObservable();
         this.currentUserSubject.next(this.getLoggedUser());
     }

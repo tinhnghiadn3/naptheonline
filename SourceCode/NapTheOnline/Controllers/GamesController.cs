@@ -17,7 +17,7 @@ namespace NapTheOnline.Controllers
     public class GamesController : BaseController
     {
         private readonly GameService _gameService;
-        private CardChargeService _cardChargeService;
+        private readonly CardChargeService _cardChargeService;
 
         public GamesController(IHostingEnvironment env, GameService gameService, CardChargeService cardChargeService) : base(env)
         {
@@ -43,7 +43,7 @@ namespace NapTheOnline.Controllers
             return game;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]Game game)
         {
@@ -68,7 +68,7 @@ namespace NapTheOnline.Controllers
             return true;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete([FromRoute]string id)
         {
@@ -94,7 +94,7 @@ namespace NapTheOnline.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("{id}/upload/images")]
         public bool UploadImages([FromRoute] string id)
         {
