@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ImagesService } from '../../../service/images.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import * as lodash from 'lodash';
+import { cloneDeep } from 'lodash';
 import { NewsService } from '../../../service/news.service';
 import { NewsModel } from '../../../share/view-model/news.model';
 import { formatDate } from '@angular/common';
@@ -18,7 +18,8 @@ import { Utility } from '../../../share/utility';
 export class AdminNewsDetailComponent implements OnInit {
 
     selectedNews: NewsModel;
-    isValid = true;
+    isValid: boolean = true;
+    isSaving: boolean = false;
     message: string;
 
     // type
@@ -81,11 +82,16 @@ export class AdminNewsDetailComponent implements OnInit {
 
     constructor(private newsService: NewsService,
         private imageService: ImagesService,
-        private router: Router) {
+        private router: Router,
+        private activedRoute: ActivatedRoute) {
         if (this.newsService.adminNews) {
             this.selectedNews = this.newsService.adminNews;
         } else {
-            this.router.navigate(['/admin/news']);
+            const friendlyName = this.activedRoute.snapshot.paramMap.get('friendlyName');
+            this.newsService.getNewsByFriendlyName(friendlyName).subscribe(res => {
+                this.newsService.adminNews = res;
+                this.selectedNews = res;
+            })
         }
     }
 
@@ -127,9 +133,11 @@ export class AdminNewsDetailComponent implements OnInit {
         let listBase64 = [];
         do {
             imgBase64 = regexImg.exec(source);
-            if (imgBase64 
+            if (imgBase64
                 && !(imgBase64[1] as string).includes('http')
-                && !(imgBase64[1] as string).includes('../../assets/upload')) {
+                && !(imgBase64[1] as string).includes('images/Banner')
+                && !(imgBase64[1] as string).includes('images/Logo')
+                && !(imgBase64[1] as string).includes('images/Description')) {
                 listBase64.push(imgBase64[1]);
             }
         } while (imgBase64);
@@ -200,13 +208,16 @@ export class AdminNewsDetailComponent implements OnInit {
     }
 
     onSubmit() {
-        if (this.validateForm()) {
-
+        if (this.validateForm() && !this.isSaving) {
+            this.isSaving = true;
             this.isUploading = true;
-            const news = lodash.cloneDeep(this.selectedNews);
+            const news = cloneDeep(this.selectedNews);
             //
             // name
             news.name = Utility.replaceMoreSpace(news.name);
+            let friendlyName = cloneDeep(news.name);
+            friendlyName = Utility.removeSpace(friendlyName);
+            news.friendlyName = friendlyName.removeVietnamese();
             //
             // date created
             news.dateCreated = formatDate(new Date(), 'HH:MM MMM, dd yyyy', 'en');
@@ -221,36 +232,40 @@ export class AdminNewsDetailComponent implements OnInit {
             const formData = this.createFormData();
 
             if (this.selectedNews.id) {
-                this.newsService.updateNews(news).pipe(finalize(() => this.isUploading = false))
-                    .subscribe(() => {
-                        if (this.isImageChange) {
-                            this.imageService.uploadNewsImages(formData, news.id).then(() => {
-                                this.isImageChange = false;
-                                alert('Update Successfully');
-                                this.router.navigate(['admin/news']);
-                            });
-                        } else {
+                this.newsService.updateNews(news).pipe(finalize(() => {
+                    this.isUploading = false;
+                    this.isSaving = false;
+                })).subscribe(() => {
+                    if (this.isImageChange) {
+                        this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                            this.isImageChange = false;
                             alert('Update Successfully');
                             this.router.navigate(['admin/news']);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Update Successfully');
+                        this.router.navigate(['admin/news']);
+                    }
+                });
             } else {
-                this.newsService.addNews(news).pipe(finalize(() => this.isUploading = false))
-                    .subscribe(res => {
-                        this.newsService.adminNews.id = res.id;
-                        news.id = res.id;
+                this.newsService.addNews(news).pipe(finalize(() => {
+                    this.isUploading = false;
+                    this.isSaving = false;
+                })).subscribe(res => {
+                    this.newsService.adminNews.id = res.id;
+                    news.id = res.id;
 
-                        if (this.isImageChange) {
-                            this.imageService.uploadNewsImages(formData, news.id).then(() => {
-                                this.isImageChange = false;
-                                alert('Add Successfully');
-                                this.router.navigate(['admin/news']);
-                            });
-                        } else {
+                    if (this.isImageChange) {
+                        this.imageService.uploadNewsImages(formData, news.id).then(() => {
+                            this.isImageChange = false;
                             alert('Add Successfully');
                             this.router.navigate(['admin/news']);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Add Successfully');
+                        this.router.navigate(['admin/news']);
+                    }
+                });
             }
         }
     }

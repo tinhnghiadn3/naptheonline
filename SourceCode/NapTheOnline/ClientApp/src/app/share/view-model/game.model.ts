@@ -8,9 +8,7 @@ export class GameModel {
   prices: PriceModel[] = [];
   banner: string;
   currency: string;
-
-  // only UI
-  friendlyName: string;
+  friendlyname: string;
 
   public constructor(init?: Partial<GameModel>) {
     Object.assign(this, init);

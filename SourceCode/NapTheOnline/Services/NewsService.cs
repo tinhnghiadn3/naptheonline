@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using MongoDB.Driver;
 using NapTheOnline.Models;
 
@@ -42,8 +43,12 @@ namespace NapTheOnline.Services
 
         public News Get(string id) => _news.Find<News>(news => news.id == id).FirstOrDefault();
 
+        public News GetByFriendlyName(string friendlyname) => _news.Find<News>(news => news.friendlyname == friendlyname).FirstOrDefault();
+
         public News Create(News news)
         {
+            news.friendlyname = RemoveSpecialCharacters(news.friendlyname);
+            news.friendlyname = UniqueFriendlyName(news.friendlyname);
             _news.InsertOne(news);
             return news;
         }
@@ -53,5 +58,32 @@ namespace NapTheOnline.Services
         public void Remove(News newsIn) => _news.DeleteOne(news => news.id == newsIn.id);
 
         public void Remove(string id) => _news.DeleteOne(news => news.id == id);
+
+        public string RemoveSpecialCharacters(string str)
+        {
+            var sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '-')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
+
+        public string UniqueFriendlyName(string str)
+        {
+            var news = _news.Find(news => true).ToList();
+            var newfriendlyName = str;
+            var i = 1;
+            while (news.Any(_ => _.friendlyname == newfriendlyName))
+            {
+                newfriendlyName = newfriendlyName + "-" + i;
+                i++;
+            }
+
+            return newfriendlyName;
+        }
     }
 }

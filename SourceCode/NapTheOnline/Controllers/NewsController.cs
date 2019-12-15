@@ -41,6 +41,20 @@ namespace NapTheOnline.Controllers
         }
 
         //[Authorize]
+        [HttpGet("{friendlyname}")]
+        public ActionResult<News> GetByFriendlyName([FromRoute]string friendlyname)
+        {
+            var news = _newsService.GetByFriendlyName(friendlyname);
+
+            if (news == null)
+            {
+                return NotFound();
+            }
+
+            return news;
+        }
+
+        //[Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]News news)
         {

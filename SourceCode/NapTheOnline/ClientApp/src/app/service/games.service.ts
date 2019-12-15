@@ -25,6 +25,10 @@ export class GamesService {
     return this.baseService.get(`${this.gameUrl}/page/${pageIndex}`);
   }
 
+  getGameByFriendlyName(friendlyname: string): Observable<GameModel> {
+    return this.baseService.get(`${this.gameUrl}/${friendlyname}`);
+  }
+
   getPricesGame(gameId: string): Observable<PriceModel[]> {
     return this.baseService.get(`${this.gameUrl}/${gameId}`);
   }

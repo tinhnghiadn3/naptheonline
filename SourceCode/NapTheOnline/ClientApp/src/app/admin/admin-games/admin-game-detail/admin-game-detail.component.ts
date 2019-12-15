@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GamesService} from '../../../service/games.service';
-import {GameModel} from '../../../share/view-model/game.model';
-import {AngularEditorConfig} from '@kolkov/angular-editor';
-import {Router} from '@angular/router';
-import {finalize} from 'rxjs/operators';
-import {ImagesService} from '../../../service/images.service';
-import {PriceModel} from '../../../share/view-model/price.model';
-import * as lodash from 'lodash';
+import { Component, EventEmitter, Input, OnInit, Output, AfterViewInit } from '@angular/core';
+import { GamesService } from '../../../service/games.service';
+import { GameModel } from '../../../share/view-model/game.model';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { Router, ActivatedRoute } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { ImagesService } from '../../../service/images.service';
+import { PriceModel } from '../../../share/view-model/price.model';
+import { cloneDeep, isEqual } from 'lodash';
 import { Utility } from '../../../share/utility';
 
 @Component({
@@ -20,6 +20,7 @@ export class AdminGameDetailComponent implements OnInit {
   game: GameModel;
 
   isValid = true;
+  fieldError: string;
   message: string;
 
   // logo
@@ -35,7 +36,8 @@ export class AdminGameDetailComponent implements OnInit {
   listBase64s: any[] = [];
 
   isImageChange = false;
-  isUploading: boolean;
+  isUploading: boolean = false;
+  isSaving: boolean = false;
 
   // editor
   editorConfig: AngularEditorConfig = {
@@ -54,10 +56,10 @@ export class AdminGameDetailComponent implements OnInit {
     defaultFontName: '',
     defaultFontSize: '',
     fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
     ],
     customClasses: [
       {
@@ -82,27 +84,32 @@ export class AdminGameDetailComponent implements OnInit {
   // price
   addingPrice: PriceModel;
   isPriceAdding = false;
+  isPriceUpdating = false;
   updatingPrice: PriceModel;
 
   constructor(private gameService: GamesService,
-              private imageService: ImagesService,
-              private router: Router) {
+    private imageService: ImagesService,
+    private router: Router,
+    private activedRoute: ActivatedRoute) {
     if (this.gameService.adminGame) {
-      this.game = this.gameService.adminGame;
+      this.game = cloneDeep(this.gameService.adminGame);
     } else {
-      this.router.navigate(['/admin/games']);
+      const friendlyName = this.activedRoute.snapshot.paramMap.get('friendlyName');
+      this.gameService.getGameByFriendlyName(friendlyName).subscribe(res => {
+        this.gameService.adminGame = res;
+        this.game = res;
+      })
     }
   }
 
   ngOnInit() {
-    // this.getPrices();
   }
 
   getPrices() {
     if (this.game && this.game.id) {
       this.gameService.getPricesGame(this.game.id).subscribe(res => {
-          this.game.prices = res;
-        },
+        this.game.prices = res;
+      },
         () => this.router.navigate(['admin/games']));
     }
   }
@@ -159,7 +166,9 @@ export class AdminGameDetailComponent implements OnInit {
       imgBase64 = regexImg.exec(source);
       if (imgBase64
         && !(imgBase64[1] as string).includes('http')
-        && !(imgBase64[1] as string).includes('../../assets/upload')) {
+        && !(imgBase64[1] as string).includes('images/Banner')
+        && !(imgBase64[1] as string).includes('images/Logo')
+        && !(imgBase64[1] as string).includes('images/Description')) {
         listBase64.push(imgBase64[1]);
       }
     } while (imgBase64);
@@ -182,7 +191,7 @@ export class AdminGameDetailComponent implements OnInit {
       const imageName = index + '.jpg';
       // call method that creates a blob from dataUri
       const imageBlob = this.dataURItoBlob(shortBase64);
-      const imageFile = new File([imageBlob], imageName, {type: 'image/jpg'});
+      const imageFile = new File([imageBlob], imageName, { type: 'image/jpg' });
       images.push(imageFile);
     });
 
@@ -196,7 +205,7 @@ export class AdminGameDetailComponent implements OnInit {
     for (let i = 0; i < byteString.length; i++) {
       int8Array[i] = byteString.charCodeAt(i);
     }
-    const blob = new Blob([int8Array], {type: 'image/jpeg'});
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
     return blob;
   }
 
@@ -204,10 +213,12 @@ export class AdminGameDetailComponent implements OnInit {
     this.isValid = true;
     if (!this.game.name || !this.game.name.trim() || this.game.name.trim().length <= 0) {
       this.message = 'Name is required';
+      this.fieldError = 'name';
       this.isValid = false;
     }
     if (!this.game.currency || !this.game.currency.trim() || this.game.currency.trim().length <= 0) {
       this.message = 'Currency is required';
+      this.fieldError = 'currency';
       this.isValid = false;
     }
     return this.isValid;
@@ -241,13 +252,16 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.validateForm()) {
+    if (this.validateForm() && !this.isPriceAdding && !this.isPriceUpdating) {
       this.isUploading = true;
-
-      const newGame = lodash.cloneDeep(this.game);
+      this.isSaving = true;
+      const newGame = cloneDeep(this.game);
       //
       // name
       newGame.name = Utility.replaceMoreSpace(newGame.name);
+      let friendlyName = cloneDeep(newGame.name);
+      friendlyName = Utility.removeSpace(friendlyName);
+      newGame.friendlyName = friendlyName.removeVietnamese();
       //
       // Get img from description and return list base64 to replace
       this.getImageFromDescription(this.game.description);
@@ -259,7 +273,10 @@ export class AdminGameDetailComponent implements OnInit {
       const formData = this.createFormData();
 
       if (this.game.id) {
-        this.gameService.updateGame(newGame).pipe(finalize(() => this.isUploading = false))
+        this.gameService.updateGame(newGame).pipe(finalize(() => {
+          this.isUploading = false;
+          this.isSaving = false;
+        }))
           .subscribe(() => {
             if (this.isImageChange) {
               this.imageService.uploadGameImages(formData, newGame.id).then(() => {
@@ -273,11 +290,14 @@ export class AdminGameDetailComponent implements OnInit {
             }
           });
       } else {
-        this.gameService.addGame(newGame).pipe(finalize(() => this.isUploading = false))
-            .subscribe(res => {
-                this.gameService.adminGame.id = res.id;
-                newGame.id = res.id;
-           
+        this.gameService.addGame(newGame).pipe(finalize(() => {
+          this.isUploading = false;
+          this.isSaving = false;
+        }))
+          .subscribe(res => {
+            this.gameService.adminGame.id = res.id;
+            newGame.id = res.id;
+
             if (this.isImageChange) {
               this.imageService.uploadGameImages(formData, newGame.id).then(() => {
                 this.isImageChange = false;
@@ -319,18 +339,21 @@ export class AdminGameDetailComponent implements OnInit {
   }
 
   enablePriceUpdating(price: PriceModel) {
-    this.updatingPrice = lodash.cloneDeep(price);
+    this.updatingPrice = cloneDeep(price);
+    this.isPriceUpdating = true;
     price.isUpdating = true;
   }
 
   editPrice(price) {
     price.isUpdating = false;
+    this.isPriceUpdating = false;
   }
 
   cancelUpdatingPrice(price: PriceModel) {
     price.name = this.updatingPrice.name;
     price.value = this.updatingPrice.value;
     price.isUpdating = false;
+    this.isPriceUpdating = false;
   }
 
   deletePrice(index) {

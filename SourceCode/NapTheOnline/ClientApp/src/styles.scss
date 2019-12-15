@@ -1,5 +1,23 @@
 @charset "UTF-8";
 @import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+img.wp-smiley, img.emoji {
+    display: inline !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 1em !important;
+    width: 1em !important;
+    margin: 0 .07em !important;
+    vertical-align: -0.1em !important;
+    background: none !important;
+    padding: 0 !important;
+}
+
+img.aligncenter {
+    display: block;
+    margin: 0 auto;
+}
+
 .floating-labels input.form-control:focus,
 .floating-labels textarea.form-control:focus,
 .floating-labels select.form-control:focus {
@@ -236,6 +254,7 @@ a {
     margin: 10px 0 20px;
     img {
         width: 100%;
+        max-height: 250px;
     }
 }
 
@@ -336,7 +355,7 @@ a {
 }
 
 .news-247 img {
-    margin: 0;
+    // margin: 0;
     padding: 0;
     max-width: 100%;
     height: auto;

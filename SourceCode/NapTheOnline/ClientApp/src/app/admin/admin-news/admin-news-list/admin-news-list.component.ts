@@ -33,8 +33,8 @@ export class AdminNewsListComponent implements OnInit {
         this.refreshList();
     }
 
-    refreshList() {
-        this.changePage(1);
+    refreshList(index: number = null) {
+        this.changePage(index || 1);
     }
 
     search() {
@@ -58,7 +58,6 @@ export class AdminNewsListComponent implements OnInit {
         ).subscribe(res => {
             this.total = res.total;
             this.listNews = res.result;
-            this.listNews = Utility.generateFriendlyName(this.listNews);
             this.listNewsClone = lodash.cloneDeep(this.listNews);
             this.getListPagination();
         });
@@ -88,7 +87,7 @@ export class AdminNewsListComponent implements OnInit {
 
     openForEdit(news: NewsModel) {
         this.newsService.adminNews = news;
-        this.router.navigate([`admin/news/${news.friendlyName}`]).then();
+        this.router.navigate([`admin/news/${news.friendlyname}`]).then();
     }
 
     createNews() {
@@ -103,7 +102,7 @@ export class AdminNewsListComponent implements OnInit {
                 if (index > -1) {
                     this.listNews.splice(index, 1);
                 }
-                // this.refreshList();
+                this.refreshList(this.pageIndex);
                 alert('Deleted Successfully');
             },
                 () => {

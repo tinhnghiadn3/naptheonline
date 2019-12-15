@@ -33,8 +33,8 @@ export class AdminGamesListComponent implements OnInit {
         this.refreshList();
     }
 
-    refreshList() {
-        this.changePage(1);
+    refreshList(index: number = null) {
+        this.changePage(index || 1);
     }
 
     search() {
@@ -49,7 +49,7 @@ export class AdminGamesListComponent implements OnInit {
 
     openForEdit(game: GameModel) {
         this.gamesService.adminGame = game;
-        this.router.navigate([`admin/games/${game.friendlyName}`]);
+        this.router.navigate([`admin/games/${game.friendlyname}`]);
     }
 
     createGame() {
@@ -64,7 +64,7 @@ export class AdminGamesListComponent implements OnInit {
                 if (index > -1) {
                     this.games.splice(index, 1);
                 }
-                // this.refreshList();
+                this.refreshList(this.pageIndex);
                 alert('Deleted Successfully');
             },
                 error => {
@@ -85,7 +85,6 @@ export class AdminGamesListComponent implements OnInit {
         ).subscribe(res => {
             this.total = res.total;
             this.games = res.result;
-            this.games = Utility.generateFriendlyName(this.games);
             this.gamesClone = lodash.cloneDeep(this.games);
             this.getListPagination();
         });

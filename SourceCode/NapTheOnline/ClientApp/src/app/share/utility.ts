@@ -32,4 +32,14 @@ export class Utility {
 
     return str.trim();
   }
+
+  public static removeSpace(str) {
+    if(!str || str.length <= 0) return;
+
+    while (str.indexOf(' ') !== -1) {
+      str = str.replace(/ /g, '-');
+    }
+
+    return str.trim();
+  }
 }

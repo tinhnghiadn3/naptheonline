@@ -3,8 +3,8 @@
         <div class="col-12">
             <div class="card position-relative">
                 <div class="card-header py-3">
-                    <h6 *ngIf="!selectedNews.id" class="m-0 font-weight-bold text-primary">News Creating</h6>
-                    <h6 *ngIf="selectedNews.id" class="m-0 font-weight-bold text-primary">News Updating</h6>
+                    <h6 *ngIf="!selectedNews?.id" class="m-0 font-weight-bold text-primary">News Creating</h6>
+                    <h6 *ngIf="selectedNews?.id" class="m-0 font-weight-bold text-primary">News Updating</h6>
                 </div>
                 <div class="card-body">
                     <form autocomplete="off" *ngIf="selectedNews">
@@ -49,12 +49,12 @@
                             </div>
                         </div>
                         <div class="form-group d-flex justify-content-end action-edit">
-                            <button type="submit" class="btn btn-primary mr-3" (click)="onSubmit()">
+                            <button type="submit" class="btn btn-primary mr-3" (click)="onSubmit()"  [disabled]="isSaving">
                                 Save
                                 <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}} %
                                 </span>
                             </button>
-                            <button [disabled]="isUploading" type="button" (click)="backClick()" class="btn btn-back">
+                            <button [disabled]="isSaving" type="button" (click)="backClick()" class="btn btn-back">
                                 Back
                             </button>
                         </div>

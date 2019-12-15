@@ -76,6 +76,6 @@ export class NewsListComponent implements OnInit {
 
     showDetail(news: NewsModel) {
         this.newsService.selectedNews = news;
-        this.router.navigate([`/news/${news.friendlyName}`]);
+        this.router.navigate([`/news/${news.friendlyname}`]);
     }
 }

@@ -17,8 +17,8 @@
                     <div class="date-update">
                         <img [src]="selectedNews.logo" />
                         <div class="mhead">
-                            <div class="date_added">Ngày đăng:
-                                <time datetime="">{{selectedNews.dateCreated}}</time>
+                            <div class="date_added">
+                                Ngày đăng: {{selectedNews.datecreated | date:'medium'}}
                             </div>
                             <div class="mnview">Lượt xem: 16569</div>
                         </div>

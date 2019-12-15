@@ -60,6 +60,6 @@ export class GamesListComponent implements OnInit {
   showDetail(game: GameModel) {
     this.gameService.selectedGame = game;
     // this.shareService.setLoading(true);
-    this.router.navigate([`/games/${game.friendlyName}`]);
+    this.router.navigate([`/games/${game.friendlyname}`]);
   }
 }

@@ -24,6 +24,10 @@ export class NewsService {
     return this.baseService.get(`${this.newUrl}/${typeId}/${pageIndex}`);
   }
 
+  getNewsByFriendlyName(friendlyname: string): Observable<NewsModel> {
+    return this.baseService.get(`${this.newUrl}/${friendlyname}`);
+  }
+
   addNews(news: NewsModel): Observable<IdModel> {
     return this.baseService.post(`${this.newUrl}`, news);
   }

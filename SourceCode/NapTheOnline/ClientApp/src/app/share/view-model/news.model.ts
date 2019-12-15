@@ -3,11 +3,9 @@ export class NewsModel {
     logo: string;
     name: string;
     description: string;
-    datecreated: string;
+    datecreated: Date;
     typeId: number;
-
-    // only UI
-    friendlyName: string;
+    friendlyname: string;
 
     public constructor(init?: Partial<NewsModel>) {
         Object.assign(this, init);

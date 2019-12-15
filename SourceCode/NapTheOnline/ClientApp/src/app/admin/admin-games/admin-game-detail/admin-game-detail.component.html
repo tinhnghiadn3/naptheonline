@@ -3,8 +3,8 @@
         <div class="col-12">
             <div class="card position-relative">
                 <div class="card-header py-3">
-                    <h6 *ngIf="!game.id" class="m-0 font-weight-bold text-primary">Game Creating</h6>
-                    <h6 *ngIf="game.id" class="m-0 font-weight-bold text-primary">Game Updating</h6>
+                    <h6 *ngIf="!game?.id" class="m-0 font-weight-bold text-primary">Game Creating</h6>
+                    <h6 *ngIf="game?.id" class="m-0 font-weight-bold text-primary">Game Updating</h6>
                 </div>
                 <div class="card-body">
                     <form autocomplete="off" *ngIf="game">
@@ -13,14 +13,14 @@
                                 <div class="form-group name-game">
                                     <label>Name</label>
                                     <input name="name" [(ngModel)]="game.name" class="form-control" [required]="true">
-                                    <span style="color: red">{{message}}</span>
+                                    <span *ngIf="fieldError === 'name'" style="color: red">{{message}}</span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group name-game">
                                     <label>Currency</label>
                                     <input name="currency" [(ngModel)]="game.currency" class="form-control" [required]="true">
-                                    <span style="color: red">{{message}}</span>
+                                    <span *ngIf="fieldError === 'currency'" style="color: red">{{message}}</span>
                                 </div>
                             </div>
                             <div class="col-12 mt-2">
@@ -32,9 +32,9 @@
                                                 <input style="display: none" accept="image/*" type="file" (change)="logoSelected($event)" name="logo" #logoInput/>
                                                 <img style="width: 98px; height: 98px" [attr.src]="logoBase64" *ngIf="logoBase64" />
                                                 <img style="width: 98px; height: 98px" [src]="game.logo" *ngIf="!logoBase64 && game.logo" />
-                                                <button type="button" (click)="logoInput.click()" class="button-upload"><i
-                          class="fa fa-upload mr-2"></i> Select file
-                        </button>
+                                                <button type="button" (click)="logoInput.click()" class="button-upload">
+                                                    <i class="fa fa-upload mr-2"></i> Select file
+                                                </button>
                                             </div>
 
                                         </div>
@@ -46,12 +46,10 @@
                                                 <input style="display: none" type="file" accept="image/*" (change)="bannerSelected($event)" name="logo" #bannerInput/>
                                                 <img class="img-logo-banner" style="height: 98px" [src]="bannerBase64" *ngIf="bannerBase64" />
                                                 <img class="img-logo-banner" style="height: 98px" [src]="game.banner" *ngIf="!bannerBase64 && game.banner" />
-                                                <button type="button" (click)="bannerInput.click()" class="button-upload"><i
-                          class="fa fa-upload mr-2"></i> Select file
-                        </button>
-
+                                                <button type="button" (click)="bannerInput.click()" class="button-upload">
+                                                    <i class="fa fa-upload mr-2"></i> Select file
+                                                </button>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -70,8 +68,8 @@
                                 <th>Price (VND)</th>
                                 <th>Quantity</th>
                                 <th>
-                                    <a class="d-flex align-items-center justify-content-end" (click)="enablePriceAdding()"><i
-                  class="fa fa-plus-circle mr-2"></i> Add item </a>
+                                    <a class="d-flex align-items-center justify-content-end" (click)="enablePriceAdding()">
+                                        <i class="fa fa-plus-circle mr-2"></i> Add item </a>
                                 </th>
                             </thead>
                             <tbody>
@@ -83,44 +81,60 @@
 
                                 <tr *ngFor="let item of game.prices;let i=index;">
                                     <td *ngIf="!item.isUpdating">{{item.name | currency:"VND":""}}</td>
-                                    <td *ngIf="item.isUpdating"><input [(ngModel)]="item.name" name="priceName"></td>
+                                    <td *ngIf="item.isUpdating">
+                                        <input [(ngModel)]="item.name" name="priceName">
+                                    </td>
 
                                     <td *ngIf="!item.isUpdating">{{item.value}}</td>
-                                    <td *ngIf="item.isUpdating"><input type="number" [(ngModel)]="item.value" name="priceValue"></td>
+                                    <td *ngIf="item.isUpdating">
+                                        <input type="number" [(ngModel)]="item.value" name="priceValue">
+                                    </td>
 
                                     <td *ngIf="!item.isUpdating " class="text-right">
                                         <a class="text-info text-white mr-3" (click)="enablePriceUpdating(item)">
-                                            <i class="far fa-edit"></i></a>
+                                            <i class="far fa-edit"></i>
+                                        </a>
                                         <a class="text-danger text-white ml-1" (click)="deletePrice(i)">
-                                            <i class="far fa-trash-alt"></i></a>
+                                            <i class="far fa-trash-alt"></i>
+                                        </a>
                                     </td>
                                     <td *ngIf="item.isUpdating" class="text-right">
                                         <a class="text-info text-white mr-3" (click)="editPrice(item)">
-                                            <i class="fas fa-save"></i></a>
+                                            <i class="fas fa-save"></i>
+                                        </a>
                                         <a class="text-danger text-white ml-1 p-3" (click)="cancelUpdatingPrice(item)">
-                                            <i class="fas fa-times-circle"></i></a>
+                                            <i class="fas fa-times"></i>
+                                        </a>
                                     </td>
                                 </tr>
 
                                 <tr *ngIf="isPriceAdding">
-                                    <td><input [(ngModel)]="addingPrice.name" name="addingPriceName"></td>
-                                    <td><input [(ngModel)]="addingPrice.value" name="addingPriceValue"></td>
+                                    <td>
+                                        <input [(ngModel)]="addingPrice.name" name="addingPriceName">
+                                    </td>
+                                    <td>
+                                        <input [(ngModel)]="addingPrice.value" name="addingPriceValue">
+                                    </td>
                                     <td class="text-right">
                                         <a class="text-info text-white" (click)="addPrice()">
-                                            <i class="fas fa-save"></i></a>
+                                            <i class="fas fa-save"></i>
+                                        </a>
                                         <a class="text-danger text-white ml-1 p-3" (click)="cancelAddingPrice()">
-                                            <i class="far fa-trash-alt"></i></a>
+                                            <i class="fas fa-times"></i>
+                                        </a>
                                     </td>
                                 </tr>
 
                             </tbody>
                         </table>
                         <div class="form-group d-flex justify-content-end action-edit">
-                            <button type="submit" class="btn btn-primary mr-3" (click)="onSubmit()">
-                Save <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}}%</span></button>
-                            <button type="button" (click)="backClick()" class="btn btn-back" [disabled]="isUploading">
-                Back
-              </button>
+                            <button class="btn btn-primary mr-3" (click)="onSubmit()" [disabled]="isPriceAdding || isSaving || isPriceUpdating">
+                                Save
+                                <span *ngIf="imageService.uploadingPercent > 0">{{imageService.uploadingPercent}}%</span>
+                            </button>
+                            <button  [disabled]="isPriceAdding || isSaving || isPriceUpdating" (click)="backClick()" class="btn btn-back">
+                                Back
+                            </button>
                         </div>
                     </form>
                 </div>

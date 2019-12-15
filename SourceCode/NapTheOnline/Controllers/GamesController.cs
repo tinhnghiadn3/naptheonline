@@ -44,6 +44,20 @@ namespace NapTheOnline.Controllers
         }
 
         //[Authorize]
+        [HttpGet("{friendlyname}")]
+        public ActionResult<Game> GetByFriendlyName([FromRoute]string friendlyname)
+        {
+            var game = _gameService.GetByFriendlyName(friendlyname);
+
+            if (game == null)
+            {
+                return NotFound();
+            }
+
+            return game;
+        }
+
+        //[Authorize]
         [HttpPost]
         public JsonResult Create([FromBody]Game game)
         {

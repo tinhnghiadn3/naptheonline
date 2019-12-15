@@ -10,7 +10,7 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_filter">
                                 <label>Search:
-                                    <input type="search" class="form-control form-control-sm" placeholder="">
+                                    <input type="search" [(ngModel)]="searchExp" (ngModelChange)="search()" class="form-control form-control-sm" placeholder="Enter name to search...">
                                 </label>
                             </div>
                         </div>
@@ -35,13 +35,17 @@
                             <tr *ngFor="let item of listNews, let i = index ">
                                 <th>{{i + 1}}</th>
                                 <th>{{item.name}}</th>
-                                <td><img src="{{item.logo}}" alt="" height=69 width=69/></td>
+                                <td>
+                                    <img src="{{item.logo}}" alt="" height=69 width=69/>
+                                </td>
                                 <td>{{item.datecreated}}</td>
                                 <td class="action">
-                                    <a class="btn text-info" (click)="openForEdit(item)" title="Edit"><i
-                                    class="far fa-edit"></i></a>
-                                    <a class="btn text-danger" (click)="deleteNews(item.id)" title="Delete"><i
-                                    class="far fa-trash-alt"></i></a>
+                                    <a class="btn text-info" (click)="openForEdit(item)" title="Edit">
+                                        <i class="far fa-edit"></i>
+                                    </a>
+                                    <a class="btn text-danger" (click)="deleteNews(item.id)" title="Delete">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
