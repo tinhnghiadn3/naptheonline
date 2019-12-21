@@ -21,6 +21,7 @@ export class PayGameComponent implements OnInit {
 
   // todo: use live siteKey
   // siteKey = '6Ld3bbEUAAAAANTQQXLu6kluxsOSXALOV-gwQ_5q';
+  // dev siteKey
   siteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
   isDisabled = true;
   isValid: boolean;

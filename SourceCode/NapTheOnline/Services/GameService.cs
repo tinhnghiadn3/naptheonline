@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MongoDB.Driver;
@@ -22,14 +21,14 @@ namespace NapTheOnline.Services
         public ListResultViewModel<List<Game>> GetGame(int pageIndex)
         {
             int pageCount = (int)_games.CountDocuments(game => true);
-            if (pageIndex == 0)
+            if (pageIndex == -1)
             {
                 return new ListResultViewModel<List<Game>>(_games.Find(game => true).ToList(), pageCount);
             }
             else
             {
-                var take = 5;
-                var skip = (pageIndex - 1) * take;
+                var take = 20;
+                var skip = (pageIndex) * take;
                 var data = _games.Find(game => true).Skip(skip).Limit(take).ToList();
                 return new ListResultViewModel<List<Game>>(data, pageCount);
             }

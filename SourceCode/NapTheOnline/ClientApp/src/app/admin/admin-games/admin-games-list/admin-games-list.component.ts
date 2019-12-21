@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ɵɵtemplateRefExtractor } from '@angular/core';
 import { GameModel } from '../../../share/view-model/game.model';
 import { Router } from '@angular/router';
 import { GamesService } from '../../../service/games.service';
@@ -7,6 +7,8 @@ import * as lodash from 'lodash';
 import { Utility } from '../../../share/utility';
 import { ShareService } from '../../../service/share.service';
 import { finalize } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
     selector: 'app-admin-games-list',
@@ -14,15 +16,17 @@ import { finalize } from 'rxjs/operators';
     styleUrls: ['./admin-games-list.component.scss']
 })
 export class AdminGamesListComponent implements OnInit {
+    @ViewChild('paginator', { static: true }) paginator: MatPaginator;
 
     total: number;
-    games: GameModel[];
-    gamesClone: GameModel[];
+    pageSize: number = 20;
+    games: any;
     searchExp: string;
 
-    pageIndex = 1;
+    displayedColumns: string[] = ['logo', 'name', 'banner', 'actions'];
     maxPage: number;
     totalPage = [];
+    pageEvent: PageEvent;
 
     constructor(private router: Router,
         private gamesService: GamesService,
@@ -34,17 +38,11 @@ export class AdminGamesListComponent implements OnInit {
     }
 
     refreshList(index: number = null) {
-        this.changePage(index || 1);
+        this.changePage(index || 0);
     }
 
-    search() {
-        if (this.searchExp && this.searchExp.trim().length > 0) {
-            this.games = this.gamesClone.filter(_ => _.name.includes(this.searchExp));
-            this.pageIndex = 1;
-            this.getListPagination();
-        } else {
-            this.games = this.gamesClone;
-        }
+    applyFilter() {
+        this.games.filter = this.searchExp.trim().toLowerCase();
     }
 
     openForEdit(game: GameModel) {
@@ -59,12 +57,15 @@ export class AdminGamesListComponent implements OnInit {
 
     deleteGame(id: string) {
         if (confirm('Are you sure to delete this record?')) {
-            this.gamesService.deleteGame(id).subscribe(res => {
-                const index = this.games.findIndex(_ => _.id === id);
-                if (index > -1) {
-                    this.games.splice(index, 1);
-                }
-                this.refreshList(this.pageIndex);
+            this.shareService.setLoading(true);
+            this.gamesService.deleteGame(id).pipe(
+                finalize(() => {
+                    setTimeout(() => {
+                        this.shareService.setLoading(false);
+                    }, 100);
+                })
+            ).subscribe(res => {
+                this.refreshList(this.paginator.pageIndex);
                 alert('Deleted Successfully');
             },
                 error => {
@@ -75,39 +76,19 @@ export class AdminGamesListComponent implements OnInit {
     }
 
     changePage(pageIndex) {
-        if ((this.pageIndex === pageIndex && this.pageIndex > 1) || pageIndex <= 0 || pageIndex > this.maxPage) {
+        if (pageIndex == null || pageIndex < 0) {
             return;
         }
-
-        this.pageIndex = pageIndex;
+        this.shareService.setLoading(true);
         this.gamesService.getGames(pageIndex).pipe(
-            finalize(() => this.shareService.setLoading(false))
+            finalize(() => {
+                setTimeout(() => {
+                    this.shareService.setLoading(false);
+                }, 100);
+            })
         ).subscribe(res => {
             this.total = res.total;
-            this.games = res.result;
-            this.gamesClone = lodash.cloneDeep(this.games);
-            this.getListPagination();
+            this.games = new MatTableDataSource(res.result);
         });
-    }
-
-    getListPagination() {
-        if (this.total > 0) {
-            const listPagination = [];
-            if (this.total <= 5) {
-                this.maxPage = 1;
-                listPagination.push(1);
-            } else {
-                this.maxPage = Math.floor(this.total / 5);
-                if ((this.total % 5) >= 1) {
-                    this.maxPage += 1;
-                }
-
-                for (let i = 1; i <= this.maxPage; i++) {
-                    listPagination.push(i);
-                }
-            }
-
-            this.totalPage = listPagination;
-        }
     }
 }

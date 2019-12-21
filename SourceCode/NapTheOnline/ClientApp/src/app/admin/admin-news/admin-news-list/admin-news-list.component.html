@@ -10,7 +10,7 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="dataTables_filter">
                                 <label>Search:
-                                    <input type="search" [(ngModel)]="searchExp" (ngModelChange)="search()" class="form-control form-control-sm" placeholder="Enter name to search...">
+                                    <input type="search" [(ngModel)]="searchExp" (ngModelChange)="applyFilter()" class="form-control form-control-sm" placeholder="Enter name to search...">
                                 </label>
                             </div>
                         </div>
@@ -22,50 +22,48 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-hover">
-                        <thead class="thead-light">
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Logo</th>
-                            <th>Last Modified</th>
-                            <th>
-                            </th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of listNews, let i = index ">
-                                <th>{{i + 1}}</th>
-                                <th>{{item.name}}</th>
-                                <td>
-                                    <img src="{{item.logo}}" alt="" height=69 width=69/>
-                                </td>
-                                <td>{{item.datecreated}}</td>
-                                <td class="action">
-                                    <a class="btn text-info" (click)="openForEdit(item)" title="Edit">
-                                        <i class="far fa-edit"></i>
-                                    </a>
-                                    <a class="btn text-danger" (click)="deleteNews(item.id)" title="Delete">
-                                        <i class="far fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
+                    <table mat-table [dataSource]="listNews" class="mat-elevation-z8 w-100">
+                        <!-- Name Column -->
+
+                        <ng-container matColumnDef="logo">
+                            <th mat-header-cell *matHeaderCellDef> Logo </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div style="height: 48px; width: 48px;" *ngIf="!element.logo">Empty</div>
+                                <div style="height: 48px; width: 48px;" *ngIf="element.logo">
+                                    <img src="{{element.logo}}" *ngIf="element.logo" class="logo-list" alt="" height=48 width=48/>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef> Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="datecreated">
+                            <th mat-header-cell *matHeaderCellDef> Last Modified </th>
+                            <td mat-cell *matCellDef="let element">  {{element.datecreated}} 
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Actions </th>
+                            <td mat-cell *matCellDef="let element" style="width: 115px">
+                                <a class="btn text-info" style="padding: 7px" (click)="openForEdit(element)" title="Edit">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <a class="btn text-danger" style="padding: 7px" (click)="deleteNews(element.id)" title="Delete">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate">
-                                <ul class="pagination">
-                                    <li class="paginate_button page-item previous" [ngClass]="{disabled: pageIndex === 1}" (click)="changePage(pageIndex - 1)">
-                                        <a aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                                    </li>
-                                    <li *ngFor="let i of totalPage" class="paginate_button page-item" [ngClass]="{active: i == pageIndex}" (click)="changePage(i)">
-                                        <a aria-controls="dataTable" tabindex="0" class="page-link">{{i}}</a>
-                                    </li>
-                                    <li class="paginate_button page-item next" [ngClass]="{disabled: pageIndex === maxPage}" (click)="changePage(pageIndex + 1)">
-                                        <a aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="w-100">
+                        <mat-paginator #paginator [length]="total" [pageSize]="pageSize" (page)="pageEvent = changePage($event.pageIndex)">
+                        </mat-paginator>
                     </div>
                 </div>
             </div>

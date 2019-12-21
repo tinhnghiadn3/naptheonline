@@ -38,7 +38,7 @@ export class GamesListComponent implements OnInit {
 
   getGames() {
     const that = this;
-    this.gameService.getGames(0).pipe(
+    this.gameService.getGames(-1).pipe(
       finalize(() => {
         that.filterList();
         that.shareService.setLoading(false);

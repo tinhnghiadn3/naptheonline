@@ -20,6 +20,5 @@ export class AdminNavMenuComponent implements OnInit {
       return;
     }
     this.selectedMenu = index;
-    this.shareService.setLoading(true);
   }
 }

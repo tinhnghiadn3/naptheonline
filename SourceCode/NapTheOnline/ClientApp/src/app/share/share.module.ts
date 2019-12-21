@@ -7,13 +7,17 @@ import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AutoFocusDirective } from './directive/auto-focus.directive';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const BASE_MODULES = [
   CommonModule,
   RouterModule,
   FormsModule,
   ReactiveFormsModule,
-  HttpClientModule
+  HttpClientModule,
+  MatTableModule,
+  MatPaginatorModule
 ];
 
 const COMPONENTS = [

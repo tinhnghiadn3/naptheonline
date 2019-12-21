@@ -43,7 +43,7 @@ export class NewsListComponent implements OnInit {
     getNews() {
         const that = this;
         const newType = this.newType || 0;
-        this.newsService.getNews(0, newType).pipe(
+        this.newsService.getNews(-1, newType).pipe(
             finalize(() => {
                 that.shareService.setLoading(false);
             })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NewsModel } from '../../../share/view-model/news.model';
 import { NewsService } from '../../../service/news.service';
@@ -8,6 +8,8 @@ import * as lodash from 'lodash';
 import { NEWS } from '../../../share/mock-data';
 import { finalize } from 'rxjs/operators';
 import { ShareService } from '../../../service/share.service';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-admin-news-list',
@@ -15,14 +17,17 @@ import { ShareService } from '../../../service/share.service';
     styleUrls: ['./admin-news-list.component.scss']
 })
 export class AdminNewsListComponent implements OnInit {
-    total: number;
-    listNews: NewsModel[];
-    listNewsClone: NewsModel[];
-    searchExp: string;
+    @ViewChild('paginator', { static: true }) paginator: MatPaginator;
 
-    pageIndex = 1;
+    total: number;
+    listNews: any;
+    searchExp: string;
+    pageSize: number = 20;
+
+    displayedColumns: string[] = ['logo', 'name', 'datecreated', 'actions'];
     maxPage: number;
     totalPage = [];
+    pageEvent: PageEvent;
 
     constructor(private router: Router,
         private newsService: NewsService,
@@ -34,55 +39,28 @@ export class AdminNewsListComponent implements OnInit {
     }
 
     refreshList(index: number = null) {
-        this.changePage(index || 1);
+        this.changePage(index || 0);
     }
 
-    search() {
-        if (this.searchExp && this.searchExp.trim().length > 0) {
-            this.listNews = this.listNewsClone.filter(_ => _.name.includes(this.searchExp));
-            this.pageIndex = 1;
-            this.getListPagination();
-        } else {
-            this.listNews = this.listNewsClone;
-        }
+    applyFilter() {
+        this.listNews.filter = this.searchExp.trim().toLowerCase();
     }
 
     changePage(pageIndex) {
-        if ((this.pageIndex === pageIndex && this.pageIndex > 1) || pageIndex <= 0 || pageIndex > this.maxPage) {
+        if (pageIndex === null || pageIndex < 0) {
             return;
         }
-
-        this.pageIndex = pageIndex;
+        this.shareService.setLoading(true);
         this.newsService.getNews(pageIndex, 0).pipe(
-            finalize(() => this.shareService.setLoading(false))
+            finalize(() => {
+                setTimeout(() => {
+                    this.shareService.setLoading(false);
+                }, 100);
+            })
         ).subscribe(res => {
             this.total = res.total;
-            this.listNews = res.result;
-            this.listNewsClone = lodash.cloneDeep(this.listNews);
-            this.getListPagination();
+            this.listNews = new MatTableDataSource(res.result);
         });
-    }
-
-    getListPagination() {
-        if (this.total > 0) {
-            const listPagination = [];
-            if (this.total <= 5) {
-                this.maxPage = 1;
-                listPagination.push(1);
-            } else {
-                this.maxPage = Math.floor(this.total / 5);
-                if ((this.total % 5) >= 1) {
-                    this.maxPage += 1;
-                }
-
-                for (let i = 1; i <= this.maxPage; i++) {
-                    listPagination.push(i);
-                }
-            }
-
-            this.totalPage = listPagination;
-        }
-
     }
 
     openForEdit(news: NewsModel) {
@@ -97,17 +75,18 @@ export class AdminNewsListComponent implements OnInit {
 
     deleteNews(id: string) {
         if (confirm('Are you sure to delete this record?')) {
-            this.newsService.deleteNews(id).subscribe(() => {
-                const index = this.listNews.findIndex(_ => _.id === id);
-                if (index > -1) {
-                    this.listNews.splice(index, 1);
-                }
-                this.refreshList(this.pageIndex);
+            this.shareService.setLoading(true);
+            this.newsService.deleteNews(id).pipe(
+                finalize(() => {
+                    setTimeout(() => {
+                        this.shareService.setLoading(false);
+                    }, 100);
+                })
+            ).subscribe(() => {
+                this.refreshList(this.pageEvent.pageIndex);
                 alert('Deleted Successfully');
             },
-                () => {
-                    alert('Deleted Failed');
-                }
+                () => { alert('Deleted Failed') }
             );
         }
     }
