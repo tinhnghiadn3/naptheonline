@@ -45,7 +45,9 @@ export class NewsListComponent implements OnInit {
         const newType = this.newType || 0;
         this.newsService.getNews(-1, newType).pipe(
             finalize(() => {
-                that.shareService.setLoading(false);
+                setTimeout(() => {
+                    this.shareService.setLoading(false);
+                }, 100);
             })
         ).subscribe(res => {
             this.listNews = res.result;

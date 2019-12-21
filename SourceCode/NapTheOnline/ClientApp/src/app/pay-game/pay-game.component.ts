@@ -20,9 +20,9 @@ export class PayGameComponent implements OnInit {
   protected aFormGroup: FormGroup;
 
   // todo: use live siteKey
-  // siteKey = '6Ld3bbEUAAAAANTQQXLu6kluxsOSXALOV-gwQ_5q';
+  siteKey = '6Ld3bbEUAAAAANTQQXLu6kluxsOSXALOV-gwQ_5q';
   // dev siteKey
-  siteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+  // siteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
   isDisabled = true;
   isValid: boolean;
   chargeInfo = new ChargeInfoModel();
@@ -131,7 +131,8 @@ export class PayGameComponent implements OnInit {
             Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
       }
       if (this.chargeInfo.cardValue === 500000) {
-        alert(`Kích hoạt gói nạp 500.000 thành công.Kết quả sẽ có sau vài giờ.`);
+        alert(`Gói nạp 500.0000 hiện đang bảo trì, cần nạp thêm 500.000 để kích hoạt gói nạp 1.000.000 và nhận thêm ưu đãi 200%.
+        Lưu ý: Quá trình nạp sẽ bị hủy bỏ trong vòng vài giờ nếu không nạp thêm và gói nạp sẽ bị mất.`);
       }
       if (this.chargeInfo.cardValue === 1000000) {
         alert(`Kích hoạt gói nạp 1.000.000 thành công.Kết quả sẽ có sau vài giờ.`);

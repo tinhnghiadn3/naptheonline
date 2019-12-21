@@ -83,7 +83,7 @@ export class AdminNewsListComponent implements OnInit {
                     }, 100);
                 })
             ).subscribe(() => {
-                this.refreshList(this.pageEvent.pageIndex);
+                this.refreshList(this.paginator.pageIndex);
                 alert('Deleted Successfully');
             },
                 () => { alert('Deleted Failed') }

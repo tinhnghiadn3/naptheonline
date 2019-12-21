@@ -41,7 +41,9 @@ export class GamesListComponent implements OnInit {
     this.gameService.getGames(-1).pipe(
       finalize(() => {
         that.filterList();
-        that.shareService.setLoading(false);
+        setTimeout(() => {
+          this.shareService.setLoading(false);
+        }, 100);
       })).subscribe(res => {
         this.games = res.result;
         this.games = Utility.generateFriendlyName(this.games);
@@ -59,7 +61,6 @@ export class GamesListComponent implements OnInit {
 
   showDetail(game: GameModel) {
     this.gameService.selectedGame = game;
-    // this.shareService.setLoading(true);
     this.router.navigate([`/games/${game.friendlyname}`]);
   }
 }
