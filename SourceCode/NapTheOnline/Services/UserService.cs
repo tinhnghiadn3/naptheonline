@@ -18,7 +18,7 @@ namespace NapTheOnline.Services
 
         private List<User> _users = new List<User>
         {
-            new User { Id = 1, Username = "lan.huynh", Password = "huynhvanlan" }
+            new User { Id = 1, Username = "pikachu@pikachu.com", Password = "Pikachu936" }
         };
 
         public UserService(IOptions<AppSettings> appSettings)
