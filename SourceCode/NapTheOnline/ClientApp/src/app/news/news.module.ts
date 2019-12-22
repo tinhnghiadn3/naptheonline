@@ -1,10 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {RouterModule} from '@angular/router';
-import {NewsComponent} from './news.component';
-import {NewsDetailComponent} from './news-detail/news-detail.component';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NewsComponent } from './news.component';
+import { NewsDetailComponent } from './news-detail/news-detail.component';
 import { NewsListComponent } from './news-list/news-list.component';
 import { NewsBestViewComponent } from './news-best-view/news-best-view.component';
+import { NewsGameTricksComponent } from './news-game-tricks/news-game-tricks.component';
+import { NewsTechnologyComponent } from './news-technology/news-technology.component';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import { NewsBestViewComponent } from './news-best-view/news-best-view.component
     NewsComponent,
     NewsDetailComponent,
     NewsListComponent,
-    NewsBestViewComponent
+    NewsBestViewComponent,
+    NewsGameTricksComponent,
+    NewsTechnologyComponent
   ],
   imports: [
     CommonModule,
@@ -21,13 +25,18 @@ import { NewsBestViewComponent } from './news-best-view/news-best-view.component
         path: '',
         component: NewsComponent,
         children: [
+          { path: '', redirectTo: 'games', pathMatch: 'full' },
           {
-            path: '', pathMatch: 'full',
-            component: NewsListComponent,
+            path: 'games', component: NewsListComponent,
           },
           {
-            path: ':friendlyName',
-            component: NewsDetailComponent,
+            path: 'game-tricks', component: NewsGameTricksComponent,
+          },
+          {
+            path: 'technology', component: NewsTechnologyComponent,
+          },
+          {
+            path: ':friendlyName', component: NewsDetailComponent,
           }
         ]
       }

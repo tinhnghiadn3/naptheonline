@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using NapTheOnline.Models;
+using System.Collections.Generic;
 
-namespace NapTheOnline.Models
+namespace NapTheOnline.ViewModels
 {
-    public class News
+    public class GameModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -14,13 +14,8 @@ namespace NapTheOnline.Models
         public string name { get; set; }
         public string friendlyname { get; set; }
         public string description { get; set; }
-        public string datecreated { get; set; }
-        public int typeid { get; set; }
-        public List<Image> images { get; set; }
-
-        public News()
-        {
-            images = new List<Image>();
-        }
+        public string banner { get; set; }
+        public List<Price> prices { get; set; }
+        public string currency { get; set; }
     }
 }

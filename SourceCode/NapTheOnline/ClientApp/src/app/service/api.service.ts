@@ -94,15 +94,6 @@ export class ApiService {
 
     if (response.status === 401) {
       alert('Your session is expired. Please login again.');
-      //
-      // Remove user
-      // this.user = null;
-      //
-      // Remove access token
-      // this.removeUserInLocalStore();
-      //
-      // Navigate to login
-      // this.navigateToLogin();
 
       return throwError(response);
     }

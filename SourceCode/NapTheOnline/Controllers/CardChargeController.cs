@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using NapTheOnline.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Services;
+using NapTheOnline.ViewModels;
 using System.Threading.Tasks;
 
 namespace NapTheOnline.Controllers

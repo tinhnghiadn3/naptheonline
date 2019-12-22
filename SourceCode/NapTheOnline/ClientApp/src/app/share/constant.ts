@@ -1,17 +1,15 @@
 export const MENU_VALUE = {
-  PayGame: 1,
-  News: 2,
-  GameInfo: 3,
-  AboutUs: 4,
-  Support: 5
+  Game: 1,
+  NewsGame: 2,
+  NewsGameTricks: 3,
+  NewsTechnology: 4,
 };
 
 export const MENU_ITEMS = [
-  {value: MENU_VALUE.PayGame, text: 'Nạp game'},
-  {value: MENU_VALUE.News, text: 'Tin tức'},
-  {value: MENU_VALUE.GameInfo, text: 'Thông tin game'},
-  {value: MENU_VALUE.AboutUs, text: 'About us'},
-  {value: MENU_VALUE.Support, text: 'Support'},
+  {value: MENU_VALUE.Game, path: '/games'},
+  {value: MENU_VALUE.NewsGame, path: '/news/game'},
+  {value: MENU_VALUE.NewsGameTricks, path: '/news/game-tricks'},
+  {value: MENU_VALUE.NewsTechnology, path: 'About us'},
 ];
 
 export const PRICE_VALUE = {

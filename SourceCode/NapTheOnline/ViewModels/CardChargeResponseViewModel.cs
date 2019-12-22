@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NapTheOnline.Models
+namespace NapTheOnline.ViewModels
 {
     public class CardChargeResponseViewModel
     {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace NapTheOnline.Models
+namespace NapTheOnline.ViewModels
 {
-    public class News
+    public class NewsModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -16,11 +15,5 @@ namespace NapTheOnline.Models
         public string description { get; set; }
         public string datecreated { get; set; }
         public int typeid { get; set; }
-        public List<Image> images { get; set; }
-
-        public News()
-        {
-            images = new List<Image>();
-        }
     }
 }

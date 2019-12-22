@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MENU_ITEMS } from '../constant';
 import { ShareService } from 'src/app/service/share.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-nav-menu',
@@ -12,10 +12,16 @@ export class NavMenuComponent implements OnInit {
 
     MENU_ITEMS = MENU_ITEMS;
     searchExp: string;
-    selectedType: number = 0;
+    selectedType: number = 0; 
 
     constructor(private shareService: ShareService,
-        private router: Router) { }
+        private router: Router) {
+        this.router.events.subscribe(value => {
+            if(router.url.toString() === '/news') {
+                this.selectedType = 1;
+            }
+        });
+    }
 
     ngOnInit() {
     }
@@ -26,7 +32,6 @@ export class NavMenuComponent implements OnInit {
             if (this.router.url !== '/games') {
                 this.router.navigate(['/games']);
             }
-            // this.router.navigate(['/news']);
         }
     }
 
@@ -36,14 +41,11 @@ export class NavMenuComponent implements OnInit {
         }
     }
 
-    changeMenu(type: number, url: string) {
-        if (this.router.url === url && this.selectedType == type) {
+    changeMenu(url: string) {
+        if (this.router.url === url) {
             return;
         }
+
         this.shareService.setLoading(true);
-        if (type && type > 0) {
-            this.shareService.setNewType(type);
-            this.selectedType = type;
-        }
     }
 }

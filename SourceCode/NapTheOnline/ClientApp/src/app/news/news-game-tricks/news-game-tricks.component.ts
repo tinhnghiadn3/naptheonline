@@ -10,13 +10,13 @@ import { finalize } from 'rxjs/operators';
 import { NEW_TYPES } from '../../share/constant';
 
 @Component({
-    selector: 'app-news-list',
-    templateUrl: './news-list.component.html',
-    styleUrls: ['./news-list.component.scss']
+    selector: 'app-news-game-tricks',
+    templateUrl: './news-game-tricks.component.html',
+    styleUrls: ['./news-game-tricks.component.scss']
 })
-export class NewsListComponent implements OnInit {
+export class NewsGameTricksComponent implements OnInit {
 
-    newType: number = 1;
+    newType: number = 2;
     listNews: NewsModel[] = [];
     listNewsClone: NewsModel[] = [];
     title: string;
@@ -25,7 +25,7 @@ export class NewsListComponent implements OnInit {
     constructor(private router: Router,
         private newsService: NewsService,
         private shareService: ShareService) {
-        this.title = NEW_TYPES.find(_ => _.value === 2).text;
+        this.title = NEW_TYPES.find(_ => _.value === 1).text;
     }
 
     ngOnInit() {

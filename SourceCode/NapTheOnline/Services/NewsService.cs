@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using MongoDB.Driver;
 using NapTheOnline.Models;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Services
 {
@@ -18,24 +19,72 @@ namespace NapTheOnline.Services
             _news = database.GetCollection<News>("News");
         }
 
-        public ListResultViewModel<List<News>> Get(int typeId, int pageIndex)
+        public ListResultViewModel<List<NewsModel>> Get(int typeId, int pageIndex)
         {
             int pageCount = (int)_news.CountDocuments(news => true);
             if (pageIndex == -1)
             {
                 if (typeId == 0)
-                    return new ListResultViewModel<List<News>>(_news.Find(news => true).ToList(), pageCount);
+                {
+                    var listNews = _news.Find(news => true).ToList().Select(_ => new NewsModel
+                    {
+                        id = _.id,
+                        logo = _.logo,
+                        name = _.name,
+                        friendlyname = _.friendlyname,
+                        description = _.description,
+                        datecreated = _.datecreated,
+                        typeid = _.typeid,
+                    }).ToList();
+                    return new ListResultViewModel<List<NewsModel>>(listNews, pageCount);
+                }
                 else
-                    return new ListResultViewModel<List<News>>(_news.Find(news => true && news.typeid == typeId).ToList(), pageCount);
+                {
+                    var listNews = _news.Find(news => true && news.typeid == typeId).ToList().Select(_ => new NewsModel
+                    {
+                        id = _.id,
+                        logo = _.logo,
+                        name = _.name,
+                        friendlyname = _.friendlyname,
+                        description = _.description,
+                        datecreated = _.datecreated,
+                        typeid = _.typeid,
+                    }).ToList();
+                    return new ListResultViewModel<List<NewsModel>>(listNews, pageCount);
+                }
             }
             else
             {
                 var take = 20;
                 var skip = (pageIndex) * take;
                 if (typeId == 0)
-                    return new ListResultViewModel<List<News>>(_news.Find(news => true).Skip(skip).Limit(take).ToList(), pageCount);
+                {
+                    var listNews = _news.Find(news => true).Skip(skip).Limit(take).ToList().Select(_ => new NewsModel
+                    {
+                        id = _.id,
+                        logo = _.logo,
+                        name = _.name,
+                        friendlyname = _.friendlyname,
+                        description = _.description,
+                        datecreated = _.datecreated,
+                        typeid = _.typeid,
+                    }).ToList();
+                    return new ListResultViewModel<List<NewsModel>>(listNews, pageCount);
+                }
                 else
-                    return new ListResultViewModel<List<News>>(_news.Find(news => true && news.typeid == typeId).Skip(skip).Limit(take).ToList(), pageCount);
+                {
+                    var listNews = _news.Find(news => true && news.typeid == typeId).Skip(skip).Limit(take).ToList().Select(_ => new NewsModel
+                    {
+                        id = _.id,
+                        logo = _.logo,
+                        name = _.name,
+                        friendlyname = _.friendlyname,
+                        description = _.description,
+                        datecreated = _.datecreated,
+                        typeid = _.typeid,
+                    }).ToList();
+                    return new ListResultViewModel<List<NewsModel>>(listNews, pageCount);
+                }
             }
         }
 

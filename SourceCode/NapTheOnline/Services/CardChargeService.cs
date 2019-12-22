@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using NLog;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Services
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using MongoDB.Driver;
 using NapTheOnline.Models;
+using NapTheOnline.ViewModels;
 
 namespace NapTheOnline.Services
 {
@@ -18,19 +19,40 @@ namespace NapTheOnline.Services
             _games = database.GetCollection<Game>("Game");
         }
 
-        public ListResultViewModel<List<Game>> GetGame(int pageIndex)
+        public ListResultViewModel<List<GameModel>> GetGame(int pageIndex)
         {
             int pageCount = (int)_games.CountDocuments(game => true);
             if (pageIndex == -1)
             {
-                return new ListResultViewModel<List<Game>>(_games.Find(game => true).ToList(), pageCount);
+                var games = _games.Find(game => true).ToList().Select(_ => new GameModel
+                {
+                    id = _.id,
+                    logo = _.logo,
+                    name = _.name,
+                    friendlyname = _.friendlyname,
+                    description = _.description,
+                    banner = _.banner,
+                    prices = _.prices,
+                    currency = _.currency,
+                }).ToList(); 
+                return new ListResultViewModel<List<GameModel>>(games, pageCount);
             }
             else
             {
                 var take = 20;
                 var skip = (pageIndex) * take;
-                var data = _games.Find(game => true).Skip(skip).Limit(take).ToList();
-                return new ListResultViewModel<List<Game>>(data, pageCount);
+                var games = _games.Find(game => true).Skip(skip).Limit(take).ToList().Select(_ => new GameModel
+                {
+                    id = _.id,
+                    logo = _.logo,
+                    name = _.name,
+                    friendlyname = _.friendlyname,
+                    description = _.description,
+                    banner = _.banner,
+                    prices = _.prices,
+                    currency = _.currency,
+                }).ToList();
+                return new ListResultViewModel<List<GameModel>>(games, pageCount);
             }
         }
 

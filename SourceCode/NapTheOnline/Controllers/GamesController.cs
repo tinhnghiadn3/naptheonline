@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
 using NapTheOnline.Models;
 using NapTheOnline.Services;
+using NapTheOnline.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +27,7 @@ namespace NapTheOnline.Controllers
 
         // GET: api/games
         [HttpGet("page/{pageIndex}")]
-        public ListResultViewModel<List<Game>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
+        public ListResultViewModel<List<GameModel>> Get([FromRoute]int pageIndex) => _gameService.GetGame(pageIndex);
 
         //[Authorize]
         [HttpGet("{id:length(24)}")]

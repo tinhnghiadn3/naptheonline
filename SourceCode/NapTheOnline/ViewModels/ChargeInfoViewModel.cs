@@ -1,4 +1,4 @@
-﻿namespace NapTheOnline.Models
+﻿namespace NapTheOnline.ViewModels
 {
     public class ChargeInfoViewModel
     {

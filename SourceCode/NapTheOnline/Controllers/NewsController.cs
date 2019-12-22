@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NapTheOnline.Helper;
 using NapTheOnline.Models;
 using NapTheOnline.Services;
+using NapTheOnline.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,7 @@ namespace NapTheOnline.Controllers
 
         // GET: api/news
         [HttpGet("{typeId}/{pageIndex}")]
-        public ListResultViewModel<List<News>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
+        public ListResultViewModel<List<NewsModel>> Get([FromRoute]int typeId, [FromRoute]int pageIndex) => _newsService.Get(typeId, pageIndex);
 
         //[Authorize]
         [HttpGet("{id:length(24)}")]

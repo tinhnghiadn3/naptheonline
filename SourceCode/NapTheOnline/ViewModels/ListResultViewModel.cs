@@ -1,5 +1,4 @@
-﻿using System;
-namespace NapTheOnline.Models
+﻿namespace NapTheOnline.ViewModels
 {
     public class ListResultViewModel<T>
     {

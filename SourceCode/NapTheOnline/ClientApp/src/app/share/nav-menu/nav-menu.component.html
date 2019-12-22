@@ -28,23 +28,23 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsingNavbar">
             <ul class="navbar-nav">
-                <li class="nav-item" (click)="changeMenu(0, '/games')">
+                <li class="nav-item" (click)="changeMenu('/games')">
                     <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/games']">
                         <span>Dịch vụ game</span>
                     </a>
                 </li>
-                <li class="nav-item" (click)="changeMenu(1, '/news')">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
+                <li class="nav-item" (click)="changeMenu('/news/games')">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news/games']">
                         <span>Tin tức game</span>
                     </a>
                 </li>
-                <li class="nav-item" (click)="changeMenu(2, '/news')">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
+                <li class="nav-item" (click)="changeMenu('/news/game-tricks')">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news/game-tricks']">
                         <span>Mẹo chơi game</span>
                     </a>
                 </li>
-                <li class="nav-item" (click)="changeMenu(3, '/news')">
-                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news']">
+                <li class="nav-item" (click)="changeMenu('/news/technology')">
+                    <a class="nav-link pl-lg-0" routerLinkActive="active" [routerLink]="['/news/technology']">
                         <span>Công nghệ</span>
                     </a>
                 </li>
